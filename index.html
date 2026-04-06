@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ombouwen</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">7/8 Choco</p>
+        <h1>ombouwen</h1>
+        <p class="subtitle">Conversion assistant</p>
+      </div>
+      <button id="topBackBtn" class="ghost-btn hidden">Back</button>
+    </header>
+
+    <main>
+      <section id="screen-home" class="screen active">
+        <div class="card hero-card">
+          <h2>Choose conversion</h2>
+          <p class="muted">Start with the test line. Later we can add more lines with bigger changeovers.</p>
+
+          <div class="button-stack">
+            <button class="big-option" data-conversion="3_to_5">
+              <strong>3 lagen → 5 lagen</strong>
+              <span>Open conversion checklist</span>
+            </button>
+
+            <button class="big-option" data-conversion="5_to_3">
+              <strong>5 lagen → 3 lagen</strong>
+              <span>Open conversion checklist</span>
+            </button>
+          </div>
+        </div>
+
+        <div id="resumeCard" class="card hidden"></div>
+      </section>
+
+      <section id="screen-overview" class="screen">
+        <div class="card">
+          <div class="row-between gap-bottom">
+            <div>
+              <p class="eyebrow">Overview</p>
+              <h2 id="overviewTitle">Conversion</h2>
+            </div>
+            <span id="overviewProgressBadge" class="pill neutral">0 / 0</span>
+          </div>
+
+          <div class="toggle-group gap-bottom">
+            <button id="showAllBtn" class="toggle-btn active">All steps</button>
+            <button id="showChangedBtn" class="toggle-btn">Changed only</button>
+          </div>
+
+          <div class="info-box gap-bottom">
+            <strong>Flow packer</strong>
+            <span>No changes required</span>
+          </div>
+
+          <div id="overviewSections" class="section-list"></div>
+
+          <div class="progress-wrap">
+            <div class="row-between">
+              <span class="muted">Total progress</span>
+              <span id="overviewProgressText">0 / 0</span>
+            </div>
+            <div class="progress-bar">
+              <div id="overviewProgressFill" class="progress-fill"></div>
+            </div>
+          </div>
+
+          <div class="button-stack top-gap">
+            <button id="startWizardBtn" class="primary-btn">Start wizard</button>
+            <button id="resetBtn" class="secondary-btn">Reset progress</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="screen-section" class="screen">
+        <div class="card">
+          <div class="row-between gap-bottom align-start">
+            <div>
+              <p class="eyebrow">Section</p>
+              <h2 id="sectionTitle">Section title</h2>
+              <p id="sectionMeta" class="muted small"></p>
+            </div>
+            <button id="sectionBackBtn" class="ghost-btn">Overview</button>
+          </div>
+
+          <div class="toggle-group gap-bottom">
+            <button id="sectionShowAllBtn" class="toggle-btn active">All steps</button>
+            <button id="sectionShowChangedBtn" class="toggle-btn">Changed only</button>
+          </div>
+
+          <div id="sectionSteps"></div>
+        </div>
+      </section>
+
+      <section id="screen-wizard" class="screen">
+        <div class="card wizard-card">
+          <div class="row-between gap-bottom">
+            <p id="wizardCounter" class="eyebrow">Step 1 / 1</p>
+            <span id="wizardStateBadge" class="pill neutral">Ready</span>
+          </div>
+
+          <div class="progress-bar gap-bottom">
+            <div id="wizardProgressFill" class="progress-fill"></div>
+          </div>
+
+          <div id="wizardEmpty" class="empty-state hidden">
+            <p>No more visible steps in this mode.</p>
+            <button id="wizardBackOverviewBtn" class="primary-btn">Back to overview</button>
+          </div>
+
+          <div id="wizardStepCard">
+            <p id="wizardSectionTag" class="section-tag robert">Robert pack</p>
+            <div id="wizardReference" class="reference-big">NR 1</div>
+            <h2 id="wizardName">Step name</h2>
+
+            <div class="value-grid gap-bottom">
+              <div class="value-card">
+                <span class="value-label">From</span>
+                <strong id="wizardFrom">150 mm</strong>
+              </div>
+              <div class="value-card">
+                <span class="value-label">To</span>
+                <strong id="wizardTo">280 mm</strong>
+              </div>
+            </div>
+
+            <div class="gap-bottom">
+              <span id="wizardChangedBadge" class="pill changed">Changed</span>
+            </div>
+
+            <div id="wizardNoteBox" class="note-box hidden"></div>
+
+            <div class="button-grid top-gap">
+              <button id="doneBtn" class="primary-btn compact">Done</button>
+              <button id="skipBtn" class="secondary-btn compact">Skip</button>
+              <button id="noteBtn" class="secondary-btn compact">Note</button>
+              <button id="prevBtn" class="ghost-btn compact">Back one step</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="noteModal" class="modal-backdrop hidden">
+    <div class="modal-card">
+      <p class="eyebrow">Add note</p>
+      <h3 id="noteTitle">Step</h3>
+      <textarea id="noteInput" placeholder="Write note here..."></textarea>
+      <div class="button-grid">
+        <button id="saveNoteBtn" class="primary-btn compact">Save</button>
+        <button id="cancelNoteBtn" class="secondary-btn compact">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
