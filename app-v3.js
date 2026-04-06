@@ -11,7 +11,7 @@ const data = {
           sections: [
             {
               id: 'robertpack',
-              name: 'Robertpack & Bedo',
+              name: 'Robertpack',
               steps: [
                 { ref: '7-A/A', name: 'Doos breedte', from: '64,5 x 155', to: '64,5 x 155', changed: false },
                 { ref: '7-B/C = 1', name: 'Doos hoogte', from: '19,1', to: '19,1', changed: false },
