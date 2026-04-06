@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ombouwen — pro v1</title>
+  <link rel="stylesheet" href="styles-pro-v1.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div>
+        <div class="eyebrow">ombouwen</div>
+        <h1>Conversion workflow</h1>
+        <p class="subtitle">Professional changeover assistant for packaging lines.</p>
+      </div>
+      <button id="topBackBtn" class="btn btn-ghost hidden">Back</button>
+    </header>
+
+    <main>
+      <section id="screen-lines" class="screen active">
+        <div class="panel hero-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Step 1</p>
+              <h2>Select line</h2>
+            </div>
+            <span class="badge badge-neutral">Start here</span>
+          </div>
+          <p class="body-copy">Choose the production line first. The app is ready for future expansion, so lines can be added without changing the UX flow.</p>
+          <div id="lineOptions" class="card-stack"></div>
+        </div>
+      </section>
+
+      <section id="screen-conversions" class="screen">
+        <div class="panel hero-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Step 2</p>
+              <h2 id="conversionLineTitle">Line 7-8</h2>
+            </div>
+            <span class="badge badge-neutral">Choose direction</span>
+          </div>
+          <p class="body-copy">Select the box size direction for the current changeover.</p>
+          <div id="conversionOptions" class="card-stack"></div>
+        </div>
+      </section>
+
+      <section id="screen-sections" class="screen">
+        <div class="panel hero-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Step 3</p>
+              <h2 id="selectedConversionTitle">Small boxes → Big boxes</h2>
+            </div>
+            <span class="badge badge-neutral">Choose section</span>
+          </div>
+          <p class="body-copy">Open the machine section you want to work on.</p>
+          <div id="sectionOptions" class="card-stack"></div>
+        </div>
+      </section>
+
+      <section id="screen-section-detail" class="screen">
+        <div class="panel">
+          <div class="panel-head panel-head-top">
+            <div>
+              <p id="detailLineLabel" class="eyebrow">Line 7-8</p>
+              <h2 id="detailSectionTitle">Robertpack &amp; Bedo</h2>
+              <p id="detailMeta" class="body-copy small-copy"></p>
+            </div>
+            <div class="header-right">
+              <span id="detailChangedCount" class="badge badge-neutral">0 changed</span>
+              <span id="detailProgressCount" class="badge badge-progress">0 / 0 done</span>
+            </div>
+          </div>
+
+          <div class="toolbar">
+            <div class="chip-group">
+              <button id="detailShowAllBtn" class="chip active">All steps</button>
+              <button id="detailShowChangedBtn" class="chip">Changed only</button>
+            </div>
+            <div class="action-row">
+              <button id="startWizardBtn" class="btn btn-primary">Start ombouwen</button>
+              <button id="resetSectionBtn" class="btn btn-secondary">Reset section</button>
+            </div>
+          </div>
+
+          <div id="detailSteps" class="card-stack"></div>
+        </div>
+      </section>
+
+      <section id="screen-wizard" class="screen">
+        <div class="panel wizard-panel">
+          <div class="wizard-top">
+            <div>
+              <p id="wizardCounter" class="eyebrow">Step 1 / 1</p>
+              <h2 id="wizardName">Step name</h2>
+            </div>
+            <div class="wizard-badges">
+              <span id="wizardChangedBadge" class="badge badge-changed">Changed</span>
+              <span id="wizardStatusBadge" class="badge badge-neutral">Pending</span>
+            </div>
+          </div>
+
+          <div class="progress-block">
+            <div class="progress-meta">
+              <span id="wizardSectionTag" class="section-label">Robertpack &amp; Bedo</span>
+              <span id="wizardProgressText">1 / 1</span>
+            </div>
+            <div class="progress-bar"><div id="wizardProgressFill" class="progress-fill"></div></div>
+          </div>
+
+          <div class="reference-block">
+            <div class="reference-label">Reference</div>
+            <div id="wizardReference" class="reference-value">NR 1</div>
+          </div>
+
+          <div class="value-grid">
+            <div class="value-card">
+              <span class="value-label">From</span>
+              <strong id="wizardFrom">0</strong>
+            </div>
+            <div class="value-card">
+              <span class="value-label">To</span>
+              <strong id="wizardTo">0</strong>
+            </div>
+          </div>
+
+          <div id="wizardInstruction" class="instruction-box">Apply the change on the machine, then confirm the step.</div>
+
+          <div class="wizard-actions primary-actions">
+            <button id="wizardDoneBtn" class="btn btn-primary">Done</button>
+            <button id="wizardSkipBtn" class="btn btn-secondary">Skip</button>
+          </div>
+
+          <div class="wizard-actions secondary-actions">
+            <button id="wizardPrevBtn" class="btn btn-ghost">Previous</button>
+            <button id="wizardNextBtn" class="btn btn-ghost">Next</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="app-pro-v1.js"></script>
+</body>
+</html>
