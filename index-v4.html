@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ombouwen v4</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">ombouwen</p>
+        <h1>Line → Conversion → Section</h1>
+        <p class="subtitle">Choose line, choose box size change, choose section, then start ombouwen with the current filter.</p>
+      </div>
+      <button id="topBackBtn" class="ghost-btn hidden">Back</button>
+    </header>
+
+    <main>
+      <section id="screen-lines" class="screen active">
+        <div class="card hero-card">
+          <h2>Choose line</h2>
+          <p class="muted">7-8 is active now. 9-10 stays ready for later.</p>
+          <div id="lineOptions" class="button-stack"></div>
+        </div>
+      </section>
+
+      <section id="screen-conversions" class="screen">
+        <div class="card hero-card">
+          <p class="eyebrow">Selected line</p>
+          <h2 id="conversionLineTitle">Line 7-8</h2>
+          <p class="muted">Choose the box size change.</p>
+          <div id="conversionOptions" class="button-stack"></div>
+        </div>
+      </section>
+
+      <section id="screen-sections" class="screen">
+        <div class="card hero-card">
+          <p class="eyebrow">Selected conversion</p>
+          <h2 id="selectedConversionTitle">Small boxes → Big boxes</h2>
+          <p class="muted">Choose what you want to open.</p>
+          <div id="sectionOptions" class="button-stack"></div>
+        </div>
+      </section>
+
+      <section id="screen-section-detail" class="screen">
+        <div class="card">
+          <div class="row-between gap-bottom align-start">
+            <div>
+              <p class="eyebrow" id="detailLineLabel">Line 7-8</p>
+              <h2 id="detailSectionTitle">Robert pack</h2>
+              <p id="detailMeta" class="muted small"></p>
+            </div>
+            <span id="detailChangedCount" class="pill neutral">0 changed</span>
+          </div>
+
+          <div class="toggle-group gap-bottom">
+            <button id="detailShowAllBtn" class="toggle-btn active">All steps</button>
+            <button id="detailShowChangedBtn" class="toggle-btn">Changed only</button>
+          </div>
+
+          <div class="button-stack gap-bottom">
+            <button id="startWizardBtn" class="primary-btn">Start ombouwen</button>
+          </div>
+
+          <div id="detailSteps"></div>
+        </div>
+      </section>
+
+      <section id="screen-wizard" class="screen">
+        <div class="card wizard-card">
+          <div class="row-between gap-bottom">
+            <p id="wizardCounter" class="eyebrow">Step 1 / 1</p>
+            <span id="wizardChangedBadge" class="pill changed">Changed</span>
+          </div>
+
+          <div class="progress-bar gap-bottom">
+            <div id="wizardProgressFill" class="progress-fill"></div>
+          </div>
+
+          <p id="wizardSectionTag" class="section-tag">Robert pack</p>
+          <div id="wizardReference" class="reference-big">NR 1</div>
+          <h2 id="wizardName">Step name</h2>
+
+          <div class="value-grid gap-bottom">
+            <div class="value-card">
+              <span class="value-label">From</span>
+              <strong id="wizardFrom">0</strong>
+            </div>
+            <div class="value-card">
+              <span class="value-label">To</span>
+              <strong id="wizardTo">0</strong>
+            </div>
+          </div>
+
+          <div id="wizardNote" class="note-box gap-bottom">Make this change on the machine, then continue.</div>
+
+          <div class="button-grid top-gap">
+            <button id="wizardPrevBtn" class="ghost-btn compact">Previous</button>
+            <button id="wizardNextBtn" class="primary-btn compact">Next</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="app-v4.js"></script>
+</body>
+</html>
