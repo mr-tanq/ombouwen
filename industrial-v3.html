@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ombouwen — industrial v3</title>
+  <link rel="stylesheet" href="industrial-v2.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">ombouwen</p>
+        <h1>Changeover assistant</h1>
+        <p class="subtitle">Step by step machine changeovers for 7-8 and 9-10.</p>
+      </div>
+      <button id="topBackBtn" class="btn btn-ghost hidden">Back</button>
+    </header>
+
+    <main>
+      <section id="screen-lines" class="screen active">
+        <div class="panel hero-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Step 1</p>
+              <h2>Select line</h2>
+            </div>
+            <span class="badge badge-neutral">Start here</span>
+          </div>
+          <p class="body-copy">Choose the production line you want to work on.</p>
+          <div id="lineOptions" class="stack"></div>
+        </div>
+      </section>
+
+      <section id="screen-conversions" class="screen">
+        <div class="panel hero-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Step 2</p>
+              <h2 id="conversionLineTitle">Line</h2>
+            </div>
+            <span id="conversionModeBadge" class="badge badge-neutral">Choose conversion</span>
+          </div>
+          <p id="conversionHelp" class="body-copy">Choose the changeover direction.</p>
+          <div id="conversionOptions" class="stack"></div>
+        </div>
+      </section>
+
+      <section id="screen-sections" class="screen">
+        <div class="panel hero-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Step 3</p>
+              <h2 id="selectedConversionTitle">Conversion</h2>
+            </div>
+            <span class="badge badge-neutral">Choose machine section</span>
+          </div>
+          <p class="body-copy">Open the section you want to adjust.</p>
+          <div id="sectionOptions" class="stack"></div>
+        </div>
+      </section>
+
+      <section id="screen-section-detail" class="screen">
+        <div class="panel detail-panel">
+          <div class="panel-head detail-head">
+            <div>
+              <p id="detailContext" class="eyebrow">Context</p>
+              <h2 id="detailSectionTitle">Section</h2>
+              <p id="detailMeta" class="body-copy small-copy"></p>
+            </div>
+            <div class="detail-badges">
+              <span id="detailChangedCount" class="badge badge-changed">0 changes</span>
+              <span id="detailDoneCount" class="badge badge-neutral">0 / 0 done</span>
+            </div>
+          </div>
+
+          <div class="detail-toolbar">
+            <div class="chip-row">
+              <button id="showAllBtn" class="chip active">All steps</button>
+              <button id="showChangedBtn" class="chip">Only changes</button>
+            </div>
+            <div class="button-row">
+              <button id="startWizardBtn" class="btn btn-primary">Start ombouwen</button>
+              <button id="resetSectionBtn" class="btn btn-secondary">Reset section</button>
+            </div>
+          </div>
+
+          <div class="table-head">
+            <div>Reference</div>
+            <div>Step</div>
+            <div>From</div>
+            <div>To</div>
+            <div>Type</div>
+          </div>
+
+          <div id="stepList" class="step-list"></div>
+        </div>
+      </section>
+
+      <section id="screen-wizard" class="screen">
+        <div class="panel wizard-panel">
+          <div class="wizard-header">
+            <div>
+              <p id="wizardCounter" class="eyebrow">Step 1 / 1</p>
+              <h2 id="wizardStepName">Step name</h2>
+            </div>
+            <div class="detail-badges">
+              <span id="wizardChangeBadge" class="badge badge-changed">Changed</span>
+              <span id="wizardStateBadge" class="badge badge-neutral">Pending</span>
+            </div>
+          </div>
+
+          <div class="wizard-progress-block">
+            <div class="row-between compact-row">
+              <span id="wizardSectionTag" class="section-tag">Section</span>
+              <span id="wizardProgressText" class="small-copy">1 / 1</span>
+            </div>
+            <div class="progress-bar"><div id="wizardProgressFill" class="progress-fill"></div></div>
+          </div>
+
+          <div class="reference-card">
+            <div class="reference-label">Reference</div>
+            <div id="wizardReference" class="reference-value">NR 1</div>
+          </div>
+
+          <div class="value-grid">
+            <div class="value-card">
+              <div class="value-label">From</div>
+              <div id="wizardFrom" class="value-main">0</div>
+            </div>
+            <div class="value-card">
+              <div class="value-label">To</div>
+              <div id="wizardTo" class="value-main">0</div>
+            </div>
+          </div>
+
+          <div id="wizardInstruction" class="instruction-card">Apply the setting on the machine, then confirm the step.</div>
+
+          <div class="wizard-actions primary-actions">
+            <button id="doneBtn" class="btn btn-primary">Done</button>
+            <button id="skipBtn" class="btn btn-secondary">Skip</button>
+          </div>
+
+          <div class="wizard-actions secondary-actions">
+            <button id="prevBtn" class="btn btn-ghost">Previous</button>
+            <button id="nextBtn" class="btn btn-ghost">Next</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="industrial-v3.js"></script>
+</body>
+</html>
