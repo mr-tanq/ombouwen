@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ombouwen v19</title>
+  <style>
+    :root{
+      --bg:#f3f6fb;--bg2:#e9eef7;--card:rgba(255,255,255,.78);--card-strong:rgba(255,255,255,.96);
+      --border:rgba(15,23,42,.08);--text:#0f172a;--muted:#5b6b80;--blue:#1677ff;--blue2:#0a84ff;
+      --green:#16a34a;--red:#ef4444;--amber:#b45309;--shadow:0 18px 60px rgba(15,23,42,.10)
+    }
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sans-serif;background:radial-gradient(circle at top,#ffffff 0,var(--bg) 38%,var(--bg2) 100%);color:var(--text)}
+    .app{max-width:1120px;margin:0 auto;padding:18px 14px 40px}
+    .top,.row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+    .top{align-items:flex-start;margin-bottom:16px}.grid{display:grid;gap:14px}.g2{grid-template-columns:1.15fr .85fr}.g3{grid-template-columns:repeat(3,1fr)}
+    .brand,.panel,.summary,.wizardCard,.machineCard,.pickerCard,.stepCard,.emptyCard,.heroCard{background:var(--card);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid var(--border);box-shadow:var(--shadow)}
+    .brand,.panel,.summary,.wizardCard,.heroCard{border-radius:32px;padding:18px}.machineCard,.pickerCard,.stepCard,.emptyCard{border-radius:22px;padding:16px}
+    .ey{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#7a889b;margin:0 0 6px;font-weight:700}
+    h1,h2,h3{margin:0;letter-spacing:-.03em}h1{font-size:38px}h2{font-size:28px}h3{font-size:19px}
+    .sub{color:var(--muted);margin:8px 0 0;line-height:1.45}.muted{color:var(--muted)}
+    .select{width:100%;padding:14px 16px;border-radius:16px;border:1px solid var(--border);background:#fff;font-size:16px;color:var(--text);outline:none}
+    .label{font-size:12px;color:#73849a;text-transform:uppercase;font-weight:700;letter-spacing:.14em;margin-bottom:8px}
+    .chip,.btn{border:none;border-radius:999px;padding:12px 16px;font-weight:700;cursor:pointer;font-size:14px}.chip{background:#edf2f8;color:#486079}
+    .chip.active,.btn.primary{background:linear-gradient(180deg,var(--blue2),var(--blue));color:#fff;box-shadow:0 12px 24px rgba(22,119,255,.22)}
+    .btn.secondary{background:#eef2f7;color:#243649}.btn.ghost{background:transparent;border:1px solid var(--border);color:#243649}.btn:disabled{opacity:.45;cursor:not-allowed;box-shadow:none}
+    .badges{display:flex;gap:8px;flex-wrap:wrap}.badge{display:inline-flex;padding:8px 12px;border-radius:999px;font-size:12px;font-weight:700}.b-neutral{background:#eef4ff;color:#35506f}.b-change{background:#fff1f2;color:#b42318}.b-same{background:#ebfff2;color:#166534}.b-missing{background:#fff7ed;color:#9a3412}
+    .machineList,.stepList{display:grid;gap:12px}.machineCard,.pickerCard{cursor:pointer;transition:transform .15s ease,border-color .15s ease}.machineCard:hover,.pickerCard:hover{transform:translateY(-1px);border-color:rgba(10,132,255,.22)}.machineCard.active,.pickerCard.active{outline:2px solid rgba(10,132,255,.20);border-color:rgba(10,132,255,.22)}
+    .summary{position:sticky;top:12px}.summaryList{display:grid;gap:10px;margin-top:10px}.summaryItem{display:flex;justify-content:space-between;gap:12px;font-size:14px;border-bottom:1px solid rgba(15,23,42,.06);padding-bottom:8px}.summaryItem:last-child{border-bottom:none;padding-bottom:0}
+    .sectionTitle{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px}.heroCard{background:linear-gradient(180deg,rgba(255,255,255,.95),rgba(255,255,255,.78))}.heroFlow{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:10px}.heroNode{padding:12px 14px;border-radius:18px;background:var(--card-strong);border:1px solid rgba(15,23,42,.06);font-weight:800}.heroArrow{color:#7a889b;font-weight:900}
+    .thead,.stepCard{display:grid;grid-template-columns:100px 1.5fr 1fr 1fr 90px;gap:10px;align-items:center}.thead{padding:10px 6px;color:#73849a;font-size:12px;text-transform:uppercase;font-weight:700}.ref{font-weight:800}.small{font-size:13px}
+    .wizardOverlay{position:fixed;inset:0;background:rgba(15,23,42,.28);display:none;align-items:center;justify-content:center;padding:18px;z-index:20}.wizardOverlay.open{display:flex}.wizardCard{width:min(760px,100%);background:var(--card-strong)}
+    .prog{height:10px;background:#e8eff8;border-radius:999px;overflow:hidden;margin-top:12px}.fill{height:100%;background:linear-gradient(90deg,var(--blue2),#69b4ff);width:0}.values{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}.valueBox{background:var(--card-strong);border:1px solid rgba(15,23,42,.06);border-radius:20px;padding:16px}.valueText{font-size:26px;font-weight:900;letter-spacing:-.04em;word-break:break-word}.instruction{margin-top:16px;background:var(--card-strong);border:1px solid rgba(15,23,42,.06);border-radius:20px;padding:16px;font-size:16px;line-height:1.45}.wizardActions{display:flex;justify-content:space-between;gap:10px;margin-top:16px}.emptyCard{text-align:center;color:var(--muted)}
+    @media (max-width:900px){.g2,.g3,.values{grid-template-columns:1fr}.thead,.stepCard{grid-template-columns:1fr}.summary{position:static}h1{font-size:32px}}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="top">
+      <div class="brand">
+        <p class="ey">ombouwen</p>
+        <h1>Changeover assistant</h1>
+        <p class="sub">v19 starts from the real production question: from which biscuit are we leaving, and to which biscuit are we going. Cavanna is driven by biscuit choice. Box format is handled separately for Robert Pack, Dozen Opzetter and Dekselaar.</p>
+      </div>
+    </div>
+
+    <div class="heroCard">
+      <p class="ey">Main flow</p>
+      <h2>Biscuit first</h2>
+      <p class="sub">First set the new biscuit on the Cavanna side. After that, set the packing machines for the target box format.</p>
+      <div class="heroFlow">
+        <div id="heroFrom" class="heroNode">Koffiekoek</div>
+        <div class="heroArrow">→</div>
+        <div id="heroTo" class="heroNode">Rich Tea</div>
+        <div class="heroArrow">→</div>
+        <div class="heroNode">Cavanna</div>
+        <div class="heroArrow">→</div>
+        <div class="heroNode">Packing machines</div>
+      </div>
+    </div>
+
+    <div style="height:16px"></div>
+
+    <div class="grid g2">
+      <div class="grid">
+        <div class="panel">
+          <div class="sectionTitle">
+            <div>
+              <p class="ey">Step 1</p>
+              <h2>Biscuit change</h2>
+              <p class="sub">This is the main ombouwen choice.</p>
+            </div>
+          </div>
+          <div class="grid g3">
+            <div>
+              <div class="label">Current biscuit</div>
+              <select id="fromProduct" class="select">
+                <option value="koffiekoek">Koffiekoek</option>
+                <option value="theekokos">Thee / Kokos</option>
+                <option value="richtea">Rich Tea</option>
+              </select>
+            </div>
+            <div>
+              <div class="label">Next biscuit</div>
+              <select id="toProduct" class="select">
+                <option value="koffiekoek">Koffiekoek</option>
+                <option value="theekokos">Thee / Kokos</option>
+                <option value="richtea">Rich Tea</option>
+              </select>
+            </div>
+            <div>
+              <div class="label">Visible mode</div>
+              <div class="row" style="gap:8px;flex-wrap:wrap">
+                <button id="allBtn" class="chip active">All steps</button>
+                <button id="changesBtn" class="chip">Only changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="sectionTitle">
+            <div>
+              <p class="ey">Step 2</p>
+              <h2>Cavanna change</h2>
+              <p class="sub">Set the line for the new biscuit. Cavanna depends on biscuit type, not box format.</p>
+            </div>
+          </div>
+          <div id="cavannaMachineList" class="machineList"></div>
+        </div>
+
+        <div class="panel">
+          <div class="sectionTitle">
+            <div>
+              <p class="ey">Step 3</p>
+              <h2>Packing format change</h2>
+              <p class="sub">After the biscuit change, select the box format change for Robert Pack, Dozen and Dekselaar.</p>
+            </div>
+          </div>
+          <div class="grid g3">
+            <div>
+              <div class="label">Current box format</div>
+              <select id="fromFormat" class="select"></select>
+            </div>
+            <div>
+              <div class="label">Next box format</div>
+              <select id="toFormat" class="select"></select>
+            </div>
+            <div>
+              <div class="label">Tools</div>
+              <div class="row" style="gap:8px;flex-wrap:wrap">
+                <button id="resetBtn" class="btn ghost">Reset</button>
+              </div>
+            </div>
+          </div>
+          <div style="height:14px"></div>
+          <div id="packingMachineList" class="machineList"></div>
+        </div>
+      </div>
+
+      <div class="summary">
+        <p class="ey">Summary</p>
+        <h2 id="summaryTitle">Koffiekoek → Rich Tea</h2>
+        <p id="summarySub" class="sub">Select a machine to review steps.</p>
+        <div class="summaryList">
+          <div class="summaryItem"><span>Biscuit change</span><strong id="sumBiscuit">-</strong></div>
+          <div class="summaryItem"><span>Box change</span><strong id="sumBox">-</strong></div>
+          <div class="summaryItem"><span>Visible mode</span><strong id="sumMode">All steps</strong></div>
+          <div class="summaryItem"><span>Visible steps</span><strong id="sumVisible">0</strong></div>
+          <div class="summaryItem"><span>Changed steps</span><strong id="sumChanged">0</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="height:16px"></div>
+
+    <div id="detailsPanel" class="panel" style="display:none">
+      <div class="sectionTitle">
+        <div>
+          <p class="ey">Machine detail</p>
+          <h2 id="detailsTitle">Machine</h2>
+          <p id="detailsSub" class="sub">Review values or start the ombouwen wizard.</p>
+        </div>
+        <div class="badges">
+          <span id="changedBadge" class="badge b-change">0 changes</span>
+          <span id="visibleBadge" class="badge b-neutral">0 visible</span>
+          <span id="statusBadge" class="badge b-neutral">Ready</span>
+        </div>
+      </div>
+
+      <div class="row" style="margin:14px 0">
+        <button id="startWizardBtn" class="btn primary">Start ombouwen</button>
+      </div>
+
+      <div id="tableHead" class="thead">
+        <div>Reference</div>
+        <div>Step</div>
+        <div>From</div>
+        <div>To</div>
+        <div>Status</div>
+      </div>
+      <div id="stepList" class="stepList"></div>
+    </div>
+  </div>
+
+  <div id="wizardOverlay" class="wizardOverlay">
+    <div class="wizardCard">
+      <div class="row" style="align-items:flex-start">
+        <div>
+          <p id="wizardCount" class="ey">Step 1 / 1</p>
+          <h2 id="wizardName">Step</h2>
+        </div>
+        <div class="badges">
+          <span id="wizardStatus" class="badge b-change">Change</span>
+          <span id="wizardMachine" class="badge b-neutral">Machine</span>
+        </div>
+      </div>
+      <div class="prog"><div id="wizardFill" class="fill"></div></div>
+      <div class="values">
+        <div class="valueBox"><div class="label">From</div><div id="wizardFrom" class="valueText">-</div></div>
+        <div class="valueBox"><div class="label">To</div><div id="wizardTo" class="valueText">-</div></div>
+      </div>
+      <div id="wizardInstruction" class="instruction">Apply this setting on the machine.</div>
+      <div class="wizardActions">
+        <button id="wizardPrev" class="btn secondary">Previous</button>
+        <button id="wizardClose" class="btn ghost">Close</button>
+        <button id="wizardNext" class="btn primary">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const productFormats = { koffiekoek:['4x4','4x5','5x5'], theekokos:['5x5'], richtea:['5x6','3x6'] };
+    const machineLabels = { dozen:'Dozen Opzetter', dekselaar:'Dekselaar Opzetter', robertpack:'Robert Pack', cavanna9:'Cavanna 9', cavanna10:'Cavanna 10' };
+    const biscuitMachines = ['cavanna9','cavanna10'];
+    const packingMachines = ['robertpack','dozen','dekselaar'];
+    const state = { fromProduct:'koffiekoek', toProduct:'richtea', fromFormat:'4x4', toFormat:'5x6', selectedMachine:null, changesOnly:false, wizardRows:[], wizardIndex:0 };
+
+    const dozen = JSON.parse(`{"4x4":{"NR 1 Hoogte":"275","NR 2 Verstelbare balk":"532.5","NR 3 Veiligheidsschijf":"133","NR 4 Karton neerdrukker":"132","NR 5 Achterste kartongeleiding breed":"240","NR 8 Fixatieplaat onder":"260","NR 9 Zuigerbalk hoogte":"28","NR 10 Zuiger":"490","NR 11 Zuiger":"240","NR 12 A Zuiger voor":"310","NR 12 B Zuiger achter":"310","NR 13 Achterste binnenklepinslager":"310","NR 14 Breedte":"243","NR 15 A Meenemer links":"310","NR 15 B Meenemer rechts":"310","NR 16 Boven kartongeleiding":"140","NR 17 Grijper":"127","NR 18 Breedte":"270","NR 19 Formaat":"40","NR 20 Printer hoogte":"75"},"4x5":{"NR 1 Hoogte":"286.5","NR 2 Verstelbare balk":"544","NR 3 Veiligheidsschijf":"155","NR 4 Karton neerdrukker":"175.5","NR 5 Achterste kartongeleiding breed":"246.5","NR 8 Fixatieplaat onder":"260","NR 9 Zuigerbalk hoogte":"30","NR 10 Zuiger":"490","NR 11 Zuiger":"240","NR 12 A Zuiger voor":"310","NR 12 B Zuiger achter":"310","NR 13 Achterste binnenklepinslager":"310","NR 14 Breedte":"249.5","NR 15 A Meenemer links":"310","NR 15 B Meenemer rechts":"340","NR 16 Boven kartongeleiding":"17","NR 17 Grijper":"150","NR 18 Breedte":"270","NR 19 Formaat":"4","NR 20 Printer hoogte":"75"},"5x5":{"NR 1 Hoogte":"291","NR 2 Verstelbare balk":"653","NR 3 Veiligheidsschijf":"175","NR 4 Karton neerdrukker":"170","NR 5 Achterste kartongeleiding breed":"270","NR 8 Fixatieplaat onder":"260","NR 9 Zuigerbalk hoogte":"30","NR 10 Zuiger":"490","NR 11 Zuiger":"240","NR 12 A Zuiger voor":"347","NR 12 B Zuiger achter":"310","NR 13 Achterste binnenklepinslager":"322","NR 14 Breedte":"290","NR 15 A Meenemer links":"360","NR 15 B Meenemer rechts":"400","NR 16 Boven kartongeleiding":"16.5","NR 17 Grijper":"147.5","NR 18 Breedte":"325.5","NR 19 Formaat":"5","NR 20 Printer hoogte":"99"},"theekokos":{"NR 1 Hoogte":"237.5","NR 2 Verstelbare balk":"541","NR 3 Veiligheidsschijf":"248","NR 4 Karton neerdrukker":"226","NR 5 Achterste kartongeleiding breed":"245","NR 8 Fixatieplaat onder":"260","NR 9 Zuigerbalk hoogte":"60","NR 10 Zuiger":"450","NR 11 Zuiger":"280","NR 12 A Zuiger voor":"290","NR 12 B Zuiger achter":"290","NR 13 Achterste binnenklepinslager":"290","NR 14 Breedte":"257","NR 15 A Meenemer links":"250","NR 15 B Meenemer rechts":"350","NR 16 Boven kartongeleiding":"220","NR 17 Grijper":"225","NR 18 Breedte":"274","NR 19 Formaat":"1","NR 20 Printer hoogte":"171"},"5x6":{"NR 1 Hoogte":"263","NR 2 Verstelbare balk":"629","NR 3 Veiligheidsschijf":"315","NR 4 Karton neerdrukker":"337","NR 5 Achterste kartongeleiding breed":"249","NR 8 Fixatieplaat onder":"260","NR 9 Zuigerbalk hoogte":"70","NR 10 Zuiger":"550","NR 11 Zuiger":"280","NR 12 A Zuiger voor":"380","NR 12 B Zuiger achter":"380","NR 13 Achterste binnenklepinslager":"360","NR 14 Breedte":"264","NR 15 A Meenemer links":"390","NR 15 B Meenemer rechts":"395","NR 16 Boven kartongeleiding":"325","NR 17 Grijper":"310","NR 18 Breedte":"380","NR 19 Formaat":"3","NR 20 Printer hoogte":"180"},"3x6":{"NR 1 Hoogte":"263","NR 2 Verstelbare balk":"628","NR 3 Veiligheidsschijf":"200","NR 4 Karton neerdrukker":"195","NR 5 Achterste kartongeleiding breed":"249","NR 8 Fixatieplaat onder":"262","NR 9 Zuigerbalk hoogte":"70","NR 10 Zuiger":"550","NR 11 Zuiger":"280","NR 12 A Zuiger voor":"380","NR 12 B Zuiger achter":"380","NR 13 Achterste binnenklepinslager":"360","NR 14 Breedte":"264","NR 15 A Meenemer links":"390","NR 15 B Meenemer rechts":"395","NR 16 Boven kartongeleiding":"210","NR 17 Grijper":"185","NR 18 Breedte":"380","NR 19 Formaat":"3A","NR 20 Printer hoogte":"136"}}`);
+    const dekselaar = JSON.parse(`{"4x4":{"NR 2 Magazijn breedte links":"425.5","NR 4 Zuigerbalk":"85","NR 5 Zuigerbalk":"352","NR 6 Transportbalk":"260","NR 8 Planobreedte":"421.5","NR 11 Breedte vouwers":"312","NR 12 A Diepte vouwer":"242","NR 12 B Diepte vouwer":"242","NR 13 Geleiding invoer":"B","NR 14 Transport band":"240","NR 15 Geleiding uitvoer":"B","NR 16 Zijgeleider kartontransport":"NEE","NR 17 Zijgeleider kartontransport":"NEE","NR 18 Lijmkop houder":"150","NR 19 Formaat":"*****"},"4x5":{"NR 2 Magazijn breedte links":"425.5","NR 4 Zuigerbalk":"85","NR 5 Zuigerbalk":"352","NR 6 Transportbalk":"260","NR 8 Planobreedte":"421.5","NR 11 Breedte vouwers":"312","NR 12 A Diepte vouwer":"242","NR 12 B Diepte vouwer":"242","NR 13 Geleiding invoer":"B","NR 14 Transport band":"240","NR 15 Geleiding uitvoer":"B","NR 16 Zijgeleider kartontransport":"NEE","NR 17 Zijgeleider kartontransport":"NEE","NR 18 Lijmkop houder":"150","NR 19 Formaat":"4"},"5x5":{"NR 2 Magazijn breedte links":"301","NR 4 Zuigerbalk":"10","NR 5 Zuigerbalk":"44","NR 6 Transportbalk":"26","NR 8 Planobreedte":"495.5","NR 11 Breedte vouwers":"395","NR 12 A Diepte vouwer":"268","NR 12 B Diepte vouwer":"242","NR 13 Geleiding invoer":"B","NR 14 Transport band":"275","NR 15 Geleiding uitvoer":"B","NR 16 Zijgeleider kartontransport":"NEE","NR 17 Zijgeleider kartontransport":"NEE","NR 18 Lijmkop houder":"150","NR 19 Formaat":"5"},"theekokos":{"NR 2 Magazijn breedte links":"418","NR 4 Zuigerbalk":"8.5","NR 5 Zuigerbalk":"35.5","NR 6 Transportbalk":"260","NR 8 Planobreedte":"410.5","NR 11 Breedte vouwers":"311","NR 12 A Diepte vouwer":"242","NR 12 B Diepte vouwer":"217","NR 13 Geleiding invoer":"B","NR 14 Transport band":"239","NR 15 Geleiding uitvoer":"B","NR 16 Zijgeleider kartontransport":"NEE","NR 17 Zijgeleider kartontransport":"NEE","NR 18 Lijmkop houder":"150","NR 19 Formaat":"1"},"5x6":{"NR 2 Magazijn breedte links":"510","NR 4 Zuigerbalk":"11","NR 5 Zuigerbalk":"36","NR 6 Transportbalk":"230","NR 8 Planobreedte":"507","NR 11 Breedte vouwers":"395","NR 12 A Diepte vouwer":"258","NR 12 B Diepte vouwer":"251","NR 13 Geleiding invoer":"B","NR 14 Transport band":"260","NR 15 Geleiding uitvoer":"B","NR 16 Zijgeleider kartontransport":"JA","NR 17 Zijgeleider kartontransport":"JA","NR 18 Lijmkop houder":"150","NR 19 Formaat":"3"},"3x6":{"NR 2 Magazijn breedte links":"502","NR 4 Zuigerbalk":"110","NR 5 Zuigerbalk":"360","NR 6 Transportbalk":"230","NR 8 Planobreedte":"505","NR 11 Breedte vouwers":"395","NR 12 A Diepte vouwer":"257","NR 12 B Diepte vouwer":"251","NR 13 Geleiding invoer":"B","NR 14 Transport band":"255","NR 15 Geleiding uitvoer":"B","NR 16 Zijgeleider kartontransport":"NEE","NR 17 Zijgeleider kartontransport":"NEE","NR 18 Lijmkop houder":"150","NR 19 Formaat":"3A"}}`);
+    const robertpack = JSON.parse(`{"4x4":{"Doos breedte":"007.9","Doos hoogte":"40","Doos hoogte 2":"40","Doos hoogte 3":"40","Doos hoogte 4":"40","Gripper":"Rood/Wit","Invoergeleider":"DICHT","Race track voor":"nr.4 - 1x | nr.5 - 6x | nr.7 - 1x","Race track achter":"nr.8 - 1x | nr.6 - 6x | nr.9 - 1x","Induwers voor":"Rood/Wit","Induwers achter":"Rood/Wit","Oppak positie geleider NR22":"x1","Oppak positie geleider NR23":"x6","Oppak positie geleider NR24":"x1","Product geleider midden NR25":"x1","Spreider hendel":"70","Recept":"4444"},"4x5":{"Doos breedte":"011.0","Doos hoogte":"80","Doos hoogte 2":"80","Doos hoogte 3":"80","Doos hoogte 4":"80","Gripper":"Rood/Wit","Invoergeleider":"DICHT","Race track voor":"nr.4 - 1x | nr.5 - 6x | nr.7 - 1x","Race track achter":"nr.8 - 1x | nr.6 - 6x | nr.9 - 1x","Induwers voor":"Rood/Wit","Induwers achter":"Rood/Wit","Oppak positie geleider NR22":"x1","Oppak positie geleider NR23":"x6","Oppak positie geleider NR24":"x1","Product geleider midden NR25":"x1","Spreider hendel":"70","Recept":"4"},"5x5":{"Doos breedte":"011.1","Doos hoogte":"80","Doos hoogte 2":"80","Doos hoogte 3":"80","Doos hoogte 4":"80","Gripper":"Rood/Wit","Invoergeleider":"DICHT","Race track voor":"nr.4 - 1x | nr.5 - 6x | nr.7 - 1x","Race track achter":"nr.8 - 1x | nr.6 - 6x | nr.9 - 1x","Induwers voor":"Rood/Wit","Induwers achter":"Rood/Wit","Oppak positie geleider NR22":"x1","Oppak positie geleider NR23":"x6","Oppak positie geleider NR24":"x1","Product geleider midden NR25":"x1","Spreider hendel":"86","Recept":"5"},"theekokos":{"Doos breedte":"98","Doos hoogte":"121","Doos hoogte 2":"121","Doos hoogte 3":"120","Doos hoogte 4":"120","Gripper":"Rood/Wit","Invoergeleider":"DICHT","Race track voor":"nr.4 - 1x | nr.6 - 6x | nr.7 - 1x","Race track achter":"nr.8 - 1x | nr.6 - 6x | nr.9 - 1x","Induwers voor":"Rood/Wit","Induwers achter":"Rood/Wit","Oppak positie geleider NR22":"x1","Oppak positie geleider NR23":"x6","Oppak positie geleider NR24":"x1","Product geleider midden NR25":"x1","Spreider hendel":"187","Recept":"1"},"5x6":{"Doos breedte":"011.3","Doos hoogte":"225","Doos hoogte 2":"223","Doos hoogte 3":"223","Doos hoogte 4":"223","Gripper":"Rood/Blauw","Invoergeleider":"OPEN","Race track voor":"nr.1 - 1x | nr.3 - 11x","Race track achter":"nr.1 - 1x | nr.2 - 11x","Induwers voor":"Rood/Blauw","Induwers achter":"Rood/Blauw","Oppak positie geleider NR22":"uit","Oppak positie geleider NR23":"uit","Oppak positie geleider NR24":"uit","Product geleider midden NR25":"uit","Spreider hendel":"140","Recept":"3"},"3x6":{"Doos breedte":"011.3","Doos hoogte":"102","Doos hoogte 2":"100","Doos hoogte 3":"100","Doos hoogte 4":"100","Gripper":"Rood/Blauw","Invoergeleider":"OPEN","Race track voor":"nr.1 - 1x | nr.3 - 11x","Race track achter":"nr.1 - 1x | nr.2 - 11x","Induwers voor":"Rood/Blauw","Induwers achter":"Rood/Blauw","Oppak positie geleider NR22":"uit","Oppak positie geleider NR23":"uit","Oppak positie geleider NR24":"uit","Product geleider midden NR25":"uit","Spreider hendel":"140","Recept":"3A"}}`);
+    const cavanna9 = JSON.parse(`{"koffiekoek":{"2 Fotocel baanbreedte koek lijn 9":"-","3 Luchtverdeler":"3B","4 Stekker luchtverdeler":"4B","5 Luchtslang":"5B","6 Druk luchtverdeler":"1,5","8 Geleiders afstelling":"Rood/Bruin","9 Glijgoot groot":"Rood/Bruin","10 Glijgoot klein":"Rood/Bruin","11 Recept Banen":"4","15 Trilgoten voor inlegger":"Rood/Bruin","16 Inlegger bakken (LET OP Verstelbare bakjes)":"Geheel ingeschoven / Geheel uitschoven","21 A Breedte verstelling":"Wit","21 B Breedte verstelling":"Wit","21 C Breedte verstelling":"Wit","21 D Breedte verstelling":"Wit","21 E Breedte verstelling":"Wit","21 F Breedte verstelling":"Blauw","18 Ketting pennen":"1ste gat","19 Product taster (Bij gebruik 3d camera \"A\")":"B","20 Bovengeleiding":"A","20A Boven geleiding (achter de inlegger)":"A","23 Geleiding naar BeckHoff":"NEE","24 Dekplaten Beckhoff":"Rood/Wit","24 A Breedte geleidingen boven beckhoff":"Wit","24B Breedte geleidingen boven beckhoff":"Wit","24C Breedte geleidingen boven beckhoff":"Wit","25A Breedte geleidingen invoer ketting":"Wit","25B Breedte geleidingen invoer ketting":"Wit","25C Breedte geleidingen invoer ketting":"Wit","25D Breedte geleidingen invoer ketting":"Wit","26 Hoogtebewaking":"30.9","29 Folierolhouder links":"25","29 Folierolhouder rechts":"25","30 Hoek folierollen - 7":"55","31 Positie folierol - 8":"460","32 Positie folierol - 10":"380","33 Foliegeleider":"Rood/Bruin","34 Breedtepositie foliecel spotdetectie":"208","38 Hoogte sensor invoerketting":"30","39 Gelijde plaat":"Rood/Bruin","40 Vulringen zijgeleiding groot":"Rood/Bruin","41 Vulringen zijgeleiding klein":"Rood/Bruin","42 Breedte instelling geleiders":"NEE","43 Zijkettingen":"Rood/Bruin","44 Hoogte beitel":"48","45 Steunwagen dwarssea":"Rood/Bruin","46 Positie intikkers BZ":"72","47 Positie intikkers NBZ":"72","48 Hoogte borstel (tot onderkant as)":"Wit","51 Hoogte beck off systeem":"12,4","52 Afstelling trekrollen":"26,0","53 Zijketting afstelling inloop":"10,1/Wit","54 Zijketting afstelling uit loop":"26,1/Wit","55 Lucht druk":"3.5","56 Recept":"4","58 Recept Checkweger":"34"},"theekokos":{"2 Fotocel baanbreedte koek lijn 9":"005.4","3 Luchtverdeler":"3A","4 Stekker luchtverdeler":"4A","5 Luchtslang":"1,5","6 Druk luchtverdeler":"Rood/Wit","8 Geleiders afstelling":"Rood/Wit","9 Glijgoot groot":"Rood/Wit","10 Glijgoot klein":"1 - Thee / 5 - Kokos","11 Recept Banen":"Rood/Wit","15 Trilgoten voor inlegger":"Geheel ingeschoven / Geheel uitschoven 10x","16 Inlegger bakken (LET OP Verstelbare bakjes)":"Geleideplaten monteren 10x","21 A Breedte verstelling":"Zwart","21 B Breedte verstelling":"Zwart","21 C Breedte verstelling":"Zwart","21 D Breedte verstelling":"Zwart","21 E Breedte verstelling":"Zwart","21 F Breedte verstelling":"Wit","18 Ketting pennen":"1ste gat","19 Product taster (Bij gebruik 3d camera \"A\")":"A","20 Bovengeleiding":"B","20A Boven geleiding (achter de inlegger)":"B","23 Geleiding naar BeckHoff":"JA","24 Dekplaten Beckhoff":"Rood/Wit","24 A Breedte geleidingen boven beckhoff":"Zwart","24B Breedte geleidingen boven beckhoff":"Zwart","24C Breedte geleidingen boven beckhoff":"Zwart","25A Breedte geleidingen invoer ketting":"Zwart","25B Breedte geleidingen invoer ketting":"Zwart","25C Breedte geleidingen invoer ketting":"Zwart","25D Breedte geleidingen invoer ketting":"Zwart","26 Hoogtebewaking":"75.7","29 Folierolhouder links":"29","29 Folierolhouder rechts":"29","30 Hoek folierollen - 7":"65","31 Positie folierol - 8":"460","32 Positie folierol - 10":"380","33 Foliegeleider":"Rood/Wit","34 Breedtepositie foliecel spotdetectie":"220","38 Hoogte sensor invoerketting":"20","39 Gelijde plaat":"Rood/Wit","40 Vulringen zijgeleiding groot":"Rood/Wit","41 Vulringen zijgeleiding klein":"Rood/Wit","42 Breedte instelling geleiders":"NEE","43 Zijkettingen":"Rood/Wit","44 Hoogte beitel":"57","45 Steunwagen dwarssea":"Rood/Wit","46 Positie intikkers BZ":"72","47 Positie intikkers NBZ":"72","48 Hoogte borstel (tot onderkant as)":"Zwart","51 Hoogte beck off systeem":"55,3","52 Afstelling trekrollen":"8,8","53 Zijketting afstelling inloop":"Zwart","54 Zijketting afstelling uit loop":"Zwart","55 Lucht druk":"3,5","56 Recept":"1 - Thee / 5 - Kokos","58 Recept Checkweger":"35 / 98 (Food aid)"},"richtea":{"2 Fotocel baanbreedte koek lijn 9":"153,4","3 Luchtverdeler":"3A","4 Stekker luchtverdeler":"4A","5 Luchtslang":"5A","6 Druk luchtverdeler":"1,5","8 Geleiders afstelling":"Rood/Blauw","9 Glijgoot groot":"Rood/Blauw","10 Glijgoot klein":"Rood/Blauw","11 Recept Banen":"3","15 Trilgoten voor inlegger":"Rood/Wit","16 Inlegger bakken (LET OP Verstelbare bakjes)":"Tot merkstreep uitschuiven 9x","21 A Breedte verstelling":"Groen","21 B Breedte verstelling":"Groen","21 C Breedte verstelling":"Groen","21 D Breedte verstelling":"Groen","21 E Breedte verstelling":"Groen","21 F Breedte verstelling":"Zwart","18 Ketting pennen":"4de gat","19 Product taster (Bij gebruik 3d camera \"A\")":"A","20 Bovengeleiding":"B","20A Boven geleiding (achter de inlegger)":"B","23 Geleiding naar BeckHoff":"JA","24 Dekplaten Beckhoff":"Rood/Blauw","24 A Breedte geleidingen boven beckhoff":"20","24B Breedte geleidingen boven beckhoff":"20","24C Breedte geleidingen boven beckhoff":"-","25A Breedte geleidingen invoer ketting":"22,5","25B Breedte geleidingen invoer ketting":"12,5","25C Breedte geleidingen invoer ketting":"20","25D Breedte geleidingen invoer ketting":"15","26 Hoogtebewaking":"181.3","29 Folierolhouder links":"28","29 Folierolhouder rechts":"25","30 Hoek folierollen - 7":"65","31 Positie folierol - 8":"460","32 Positie folierol - 10":"374","33 Foliegeleider":"Rood/Blauw","34 Breedtepositie foliecel spotdetectie":"195","38 Hoogte sensor invoerketting":"22,5","39 Gelijde plaat":"Rood/Blauw","40 Vulringen zijgeleiding groot":"Rood/Blauw","41 Vulringen zijgeleiding klein":"Rood/Blauw","42 Breedte instelling geleiders":"NEE","43 Zijkettingen":"Rood/Blauw","44 Hoogte beitel":"61","45 Steunwagen dwarssea":"Rood/Blauw","46 Positie intikkers BZ":"65","47 Positie intikkers NBZ":"65","48 Hoogte borstel (tot onderkant as)":"Groen","51 Hoogte beck off systeem":"55","52 Afstelling trekrollen":"20.9","53 Zijketting afstelling inloop":"Groen","54 Zijketting afstelling uit loop":"Groen","55 Lucht druk":"3.5","56 Recept":"3","58 Recept Checkweger":"36"}}`);
+    const cavanna10 = { koffiekoek:{_status:'missing',_note:'Cavanna 10 data not filled yet'}, theekokos:{_status:'missing',_note:'Cavanna 10 data not filled yet'}, richtea:{_status:'missing',_note:'Cavanna 10 data not filled yet'} };
+    const datasets = { dozen, dekselaar, robertpack, cavanna9, cavanna10 };
+
+    const $ = (id) => document.getElementById(id);
+    function productLabel(v){ return ({koffiekoek:'Koffiekoek', theekokos:'Thee / Kokos', richtea:'Rich Tea'})[v] || v; }
+
+    function fillFormatOptions(){
+      const fromOptions = [...new Set(productFormats[state.fromProduct] || [])];
+      const toOptions = [...new Set(productFormats[state.toProduct] || [])];
+      const fromSel = $('fromFormat'); const toSel = $('toFormat');
+      fromSel.innerHTML = ''; toSel.innerHTML = '';
+      fromOptions.forEach(v => { const o=document.createElement('option'); o.value=v; o.textContent=v; fromSel.appendChild(o); });
+      toOptions.forEach(v => { const o=document.createElement('option'); o.value=v; o.textContent=v; toSel.appendChild(o); });
+      if(!fromOptions.includes(state.fromFormat)) state.fromFormat = fromOptions[0] || '';
+      if(!toOptions.includes(state.toFormat)) state.toFormat = toOptions[0] || '';
+      fromSel.value = state.fromFormat; toSel.value = state.toFormat;
+    }
+
+    function getMachinePack(machineKey){
+      const ds = datasets[machineKey];
+      if(biscuitMachines.includes(machineKey)){
+        const from = ds[state.fromProduct] || {};
+        const to = ds[state.toProduct] || {};
+        if(from._status === 'missing' || to._status === 'missing') return {missing:true,note:(to._note||from._note||'Data not available yet'),rows:[]};
+        const keys=[...new Set([...Object.keys(from),...Object.keys(to)])];
+        const rows=keys.map((key,idx)=>({ref:key.split(' ').slice(0,2).join(' '),order:idx+1,name:key,from:from[key]??'-',to:to[key]??'-',changed:(from[key]??'-')!==(to[key]??'-')}));
+        return {missing:false,note:'',rows};
+      }
+      const fromKey = state.fromProduct === 'theekokos' ? 'theekokos' : state.fromFormat;
+      const toKey = state.toProduct === 'theekokos' ? 'theekokos' : state.toFormat;
+      const from = ds[fromKey] || {};
+      const to = ds[toKey] || {};
+      const keys=[...new Set([...Object.keys(from),...Object.keys(to)])];
+      const rows=keys.map((key,idx)=>({ref:key.split(' ').slice(0,2).join(' '),order:idx+1,name:key,from:from[key]??'-',to:to[key]??'-',changed:(from[key]??'-')!==(to[key]??'-')}));
+      return {missing:false,note:'',rows};
+    }
+
+    function getVisiblePack(machineKey){
+      const pack = getMachinePack(machineKey);
+      if(pack.missing) return pack;
+      const rows = state.changesOnly ? pack.rows.filter(r=>r.changed) : pack.rows;
+      return {...pack, rows};
+    }
+
+    function renderMachineGroup(containerId, machineKeys){
+      const wrap = $(containerId); wrap.innerHTML = '';
+      machineKeys.forEach(machineKey => {
+        const pack = getMachinePack(machineKey);
+        const changed = pack.rows.filter ? pack.rows.filter(r=>r.changed).length : 0;
+        const card = document.createElement('div');
+        card.className = 'machineCard' + (state.selectedMachine === machineKey ? ' active' : '');
+        card.innerHTML = `
+          <div class="row">
+            <div>
+              <h3>${machineLabels[machineKey]}</h3>
+              <div class="muted small">${pack.missing ? pack.note : `${pack.rows.length} steps • ${changed} changes`}</div>
+            </div>
+            <span class="badge ${pack.missing ? 'b-missing' : (changed ? 'b-change' : 'b-same')}">${pack.missing ? 'Missing' : `${changed} changes`}</span>
+          </div>`;
+        card.onclick = () => { state.selectedMachine = machineKey; renderAll(); };
+        wrap.appendChild(card);
+      });
+    }
+
+    function renderSummary(){
+      $('heroFrom').textContent = productLabel(state.fromProduct);
+      $('heroTo').textContent = productLabel(state.toProduct);
+      $('summaryTitle').textContent = `${productLabel(state.fromProduct)} → ${productLabel(state.toProduct)}`;
+      $('summarySub').textContent = state.selectedMachine ? `${machineLabels[state.selectedMachine]} selected` : 'Select a machine to review steps.';
+      $('sumBiscuit').textContent = `${productLabel(state.fromProduct)} → ${productLabel(state.toProduct)}`;
+      $('sumBox').textContent = `${state.fromFormat || '-'} → ${state.toFormat || '-'}`;
+      $('sumMode').textContent = state.changesOnly ? 'Only changes' : 'All steps';
+      if(state.selectedMachine){
+        const pack = getMachinePack(state.selectedMachine); const visible = getVisiblePack(state.selectedMachine);
+        $('sumVisible').textContent = visible.rows.length; $('sumChanged').textContent = pack.rows.filter(r=>r.changed).length;
+      } else { $('sumVisible').textContent='0'; $('sumChanged').textContent='0'; }
+    }
+
+    function renderDetails(){
+      const machineKey = state.selectedMachine; const panel = $('detailsPanel');
+      if(!machineKey){ panel.style.display='none'; return; }
+      panel.style.display='block';
+      const pack = getMachinePack(machineKey); const visible = getVisiblePack(machineKey);
+      $('detailsTitle').textContent = machineLabels[machineKey];
+      $('detailsSub').textContent = pack.missing ? pack.note : (biscuitMachines.includes(machineKey) ? 'This machine follows biscuit-to-biscuit change.' : 'This machine follows box format change.');
+      $('changedBadge').textContent = `${pack.rows.filter(r=>r.changed).length} changes`;
+      $('visibleBadge').textContent = `${visible.rows.length} visible`;
+      $('statusBadge').textContent = pack.missing ? 'Missing data' : 'Ready';
+      $('statusBadge').className = 'badge ' + (pack.missing ? 'b-missing' : 'b-neutral');
+      $('startWizardBtn').disabled = pack.missing || !visible.rows.length;
+      const stepList = $('stepList'); stepList.innerHTML='';
+      if(pack.missing){ $('tableHead').style.display='none'; const empty=document.createElement('div'); empty.className='emptyCard'; empty.innerHTML=`<strong>${machineLabels[machineKey]}</strong><div class="small" style="margin-top:8px">${pack.note}</div>`; stepList.appendChild(empty); return; }
+      $('tableHead').style.display='grid';
+      visible.rows.forEach(row => {
+        const el=document.createElement('div'); el.className='stepCard';
+        el.innerHTML = `<div class="ref">${row.ref || `#${row.order}`}</div><div><strong>${row.name}</strong><div class="muted small">Step ${row.order}</div></div><div>${row.from}</div><div>${row.to}</div><div><span class="badge ${row.changed ? 'b-change' : 'b-same'}">${row.changed ? 'Change' : 'Same'}</span></div>`;
+        stepList.appendChild(el);
+      });
+    }
+
+    function openWizard(){
+      if(!state.selectedMachine) return; const visible = getVisiblePack(state.selectedMachine); if(visible.missing || !visible.rows.length) return;
+      state.wizardRows = visible.rows; state.wizardIndex = 0; $('wizardOverlay').classList.add('open'); renderWizard();
+    }
+
+    function renderWizard(){
+      const row = state.wizardRows[state.wizardIndex];
+      $('wizardCount').textContent = `Step ${state.wizardIndex + 1} / ${state.wizardRows.length}`;
+      $('wizardName').textContent = row.name; $('wizardStatus').textContent = row.changed ? 'Change' : 'Same'; $('wizardStatus').className = 'badge ' + (row.changed ? 'b-change' : 'b-same');
+      $('wizardMachine').textContent = machineLabels[state.selectedMachine]; $('wizardFill').style.width = `${((state.wizardIndex + 1) / state.wizardRows.length) * 100}%`;
+      $('wizardFrom').textContent = row.from; $('wizardTo').textContent = row.to; $('wizardInstruction').textContent = `Set ${row.name} from ${row.from} to ${row.to}.`;
+      $('wizardPrev').disabled = state.wizardIndex === 0; $('wizardNext').textContent = state.wizardIndex === state.wizardRows.length - 1 ? 'Finish' : 'Next';
+    }
+
+    function renderAll(){ renderMachineGroup('cavannaMachineList', biscuitMachines); renderMachineGroup('packingMachineList', packingMachines); renderSummary(); renderDetails(); }
+
+    $('fromProduct').addEventListener('change', e => { state.fromProduct=e.target.value; fillFormatOptions(); state.selectedMachine=null; renderAll(); });
+    $('toProduct').addEventListener('change', e => { state.toProduct=e.target.value; fillFormatOptions(); state.selectedMachine=null; renderAll(); });
+    $('fromFormat').addEventListener('change', e => { state.fromFormat=e.target.value; renderAll(); });
+    $('toFormat').addEventListener('change', e => { state.toFormat=e.target.value; renderAll(); });
+    $('allBtn').addEventListener('click', ()=>{ state.changesOnly=false; $('allBtn').classList.add('active'); $('changesBtn').classList.remove('active'); renderAll(); });
+    $('changesBtn').addEventListener('click', ()=>{ state.changesOnly=true; $('changesBtn').classList.add('active'); $('allBtn').classList.remove('active'); renderAll(); });
+    $('resetBtn').addEventListener('click', ()=>{ state.fromProduct='koffiekoek'; state.toProduct='richtea'; state.fromFormat='4x4'; state.toFormat='5x6'; state.selectedMachine=null; state.changesOnly=false; $('fromProduct').value=state.fromProduct; $('toProduct').value=state.toProduct; $('allBtn').classList.add('active'); $('changesBtn').classList.remove('active'); fillFormatOptions(); renderAll(); });
+    $('startWizardBtn').addEventListener('click', openWizard); $('wizardClose').addEventListener('click', ()=> $('wizardOverlay').classList.remove('open'));
+    $('wizardPrev').addEventListener('click', ()=>{ if(state.wizardIndex>0){ state.wizardIndex--; renderWizard(); } });
+    $('wizardNext').addEventListener('click', ()=>{ if(state.wizardIndex < state.wizardRows.length - 1){ state.wizardIndex++; renderWizard(); } else { $('wizardOverlay').classList.remove('open'); } });
+
+    $('fromProduct').value = state.fromProduct; $('toProduct').value = state.toProduct; fillFormatOptions(); renderAll();
+  </script>
+</body>
+</html>
