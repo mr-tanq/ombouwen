@@ -1,1 +1,199 @@
-<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0; url=industrial-v14.html"></head><body></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ombouwen v17</title>
+
+<style>
+body{
+  font-family: system-ui, -apple-system;
+  margin:0;
+  background:#f5f7fb;
+}
+.app{
+  max-width:900px;
+  margin:auto;
+  padding:20px;
+}
+.card{
+  background:white;
+  padding:16px;
+  border-radius:16px;
+  margin-bottom:10px;
+  box-shadow:0 5px 20px rgba(0,0,0,0.05);
+}
+.btn{
+  padding:12px 16px;
+  border-radius:999px;
+  background:#1677ff;
+  color:white;
+  border:none;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+<h1>Ombouwen v17</h1>
+
+<div class="card">
+Dozen Opzetter dataset loaded ✔
+</div>
+
+</div>
+
+<script>
+
+/* =========================
+   DOZEN OPZETTER (FINAL)
+   ========================= */
+
+const dozen = {
+
+  '4x4': {
+    'NR 1 Hoogte': '275',
+    'NR 2 Verstelbare balk': '532.5',
+    'NR 3 Veiligheidsschijf': '133',
+    'NR 4 Karton neerdrukker': '132',
+    'NR 5 Achterste kartongeleiding breed': '240',
+    'NR 8 Fixatieplaat onder': '260',
+    'NR 9 Zuigerbalk hoogte': '28',
+    'NR 10 Zuiger': '490',
+    'NR 11 Zuiger': '240',
+    'NR 12 A Zuiger voor': '310',
+    'NR 12 B Zuiger achter': '310',
+    'NR 13 Achterste binnenklepinslager': '310',
+    'NR 14 Breedte': '243',
+    'NR 15 A Meenemer links': '310',
+    'NR 15 B Meenemer rechts': '310',
+    'NR 16 Boven kartongeleiding': '140',
+    'NR 17 Grijper': '127',
+    'NR 18 Breedte': '270',
+    'NR 19 Formaat': '40',
+    'NR 20 Printer hoogte': '75'
+  },
+
+  '4x5': {
+    'NR 1 Hoogte': '286.5',
+    'NR 2 Verstelbare balk': '544',
+    'NR 3 Veiligheidsschijf': '155',
+    'NR 4 Karton neerdrukker': '175.5',
+    'NR 5 Achterste kartongeleiding breed': '246.5',
+    'NR 8 Fixatieplaat onder': '260',
+    'NR 9 Zuigerbalk hoogte': '30',
+    'NR 10 Zuiger': '490',
+    'NR 11 Zuiger': '240',
+    'NR 12 A Zuiger voor': '310',
+    'NR 12 B Zuiger achter': '310',
+    'NR 13 Achterste binnenklepinslager': '310',
+    'NR 14 Breedte': '249.5',
+    'NR 15 A Meenemer links': '310',
+    'NR 15 B Meenemer rechts': '340',
+    'NR 16 Boven kartongeleiding': '17',
+    'NR 17 Grijper': '150',
+    'NR 18 Breedte': '270',
+    'NR 19 Formaat': '4',
+    'NR 20 Printer hoogte': '75'
+  },
+
+  '5x5': {
+    'NR 1 Hoogte': '291',
+    'NR 2 Verstelbare balk': '653',
+    'NR 3 Veiligheidsschijf': '175',
+    'NR 4 Karton neerdrukker': '170',
+    'NR 5 Achterste kartongeleiding breed': '270',
+    'NR 8 Fixatieplaat onder': '260',
+    'NR 9 Zuigerbalk hoogte': '30',
+    'NR 10 Zuiger': '490',
+    'NR 11 Zuiger': '240',
+    'NR 12 A Zuiger voor': '347',
+    'NR 12 B Zuiger achter': '310',
+    'NR 13 Achterste binnenklepinslager': '322',
+    'NR 14 Breedte': '290',
+    'NR 15 A Meenemer links': '360',
+    'NR 15 B Meenemer rechts': '400',
+    'NR 16 Boven kartongeleiding': '16.5',
+    'NR 17 Grijper': '147.5',
+    'NR 18 Breedte': '325.5',
+    'NR 19 Formaat': '5',
+    'NR 20 Printer hoogte': '99'
+  },
+
+  'theekokos': {
+    'NR 1 Hoogte': '237.5',
+    'NR 2 Verstelbare balk': '541',
+    'NR 3 Veiligheidsschijf': '248',
+    'NR 4 Karton neerdrukker': '226',
+    'NR 5 Achterste kartongeleiding breed': '245',
+    'NR 8 Fixatieplaat onder': '260',
+    'NR 9 Zuigerbalk hoogte': '60',
+    'NR 10 Zuiger': '450',
+    'NR 11 Zuiger': '280',
+    'NR 12 A Zuiger voor': '290',
+    'NR 12 B Zuiger achter': '290',
+    'NR 13 Achterste binnenklepinslager': '290',
+    'NR 14 Breedte': '257',
+    'NR 15 A Meenemer links': '250',
+    'NR 15 B Meenemer rechts': '350',
+    'NR 16 Boven kartongeleiding': '220',
+    'NR 17 Grijper': '225',
+    'NR 18 Breedte': '274',
+    'NR 19 Formaat': '1',
+    'NR 20 Printer hoogte': '171'
+  },
+
+  '5x6': {
+    'NR 1 Hoogte': '263',
+    'NR 2 Verstelbare balk': '629',
+    'NR 3 Veiligheidsschijf': '315',
+    'NR 4 Karton neerdrukker': '337',
+    'NR 5 Achterste kartongeleiding breed': '249',
+    'NR 8 Fixatieplaat onder': '260',
+    'NR 9 Zuigerbalk hoogte': '70',
+    'NR 10 Zuiger': '550',
+    'NR 11 Zuiger': '280',
+    'NR 12 A Zuiger voor': '380',
+    'NR 12 B Zuiger achter': '380',
+    'NR 13 Achterste binnenklepinslager': '360',
+    'NR 14 Breedte': '264',
+    'NR 15 A Meenemer links': '390',
+    'NR 15 B Meenemer rechts': '395',
+    'NR 16 Boven kartongeleiding': '325',
+    'NR 17 Grijper': '310',
+    'NR 18 Breedte': '380',
+    'NR 19 Formaat': '3',
+    'NR 20 Printer hoogte': '180'
+  },
+
+  '3x6': {
+    'NR 1 Hoogte': '263',
+    'NR 2 Verstelbare balk': '628',
+    'NR 3 Veiligheidsschijf': '200',
+    'NR 4 Karton neerdrukker': '195',
+    'NR 5 Achterste kartongeleiding breed': '249',
+    'NR 8 Fixatieplaat onder': '262',
+    'NR 9 Zuigerbalk hoogte': '70',
+    'NR 10 Zuiger': '550',
+    'NR 11 Zuiger': '280',
+    'NR 12 A Zuiger voor': '380',
+    'NR 12 B Zuiger achter': '380',
+    'NR 13 Achterste binnenklepinslager': '360',
+    'NR 14 Breedte': '264',
+    'NR 15 A Meenemer links': '390',
+    'NR 15 B Meenemer rechts': '395',
+    'NR 16 Boven kartongeleiding': '210',
+    'NR 17 Grijper': '185',
+    'NR 18 Breedte': '380',
+    'NR 19 Formaat': '3A',
+    'NR 20 Printer hoogte': '136'
+  }
+
+};
+
+console.log("Dozen dataset loaded ✔", dozen);
+
+</script>
+</body>
+</html>
