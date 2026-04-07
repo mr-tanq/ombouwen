@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pally Ombouwen v20</title>
+  <style>
+    :root{
+      --bg:#0b0d12;
+      --bg2:#12161d;
+      --card:#171c24;
+      --card2:#1d2430;
+      --line:rgba(255,255,255,.08);
+      --line2:rgba(216,180,138,.18);
+      --text:#f5f7fb;
+      --muted:rgba(255,255,255,.58);
+      --soft:rgba(255,255,255,.08);
+      --gold:#d8b48a;
+      --gold2:#b89570;
+      --blue:#67b8ff;
+      --green:#59d48a;
+      --red:#ff8e7b;
+      --shadow:0 24px 70px rgba(0,0,0,.38);
+      --radius:28px;
+      --radius-sm:20px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:linear-gradient(180deg,var(--bg),#0e131a 40%,#0b0d12 100%);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    body{min-height:100vh}
+    button,select{font:inherit}
+    img{max-width:100%;display:block}
+
+    .app{
+      max-width:1100px;
+      margin:0 auto;
+      padding:20px 14px 48px;
+    }
+
+    .hero{
+      position:relative;
+      overflow:hidden;
+      border:1px solid var(--line2);
+      background:
+        radial-gradient(circle at top right, rgba(216,180,138,.14), transparent 30%),
+        radial-gradient(circle at top left, rgba(103,184,255,.08), transparent 28%),
+        linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+      border-radius:36px;
+      box-shadow:var(--shadow);
+      padding:22px;
+      margin-bottom:16px;
+    }
+
+    .heroTop{
+      display:flex;
+      gap:18px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+
+    .brandWrap{
+      display:flex;
+      align-items:center;
+      gap:16px;
+      min-width:0;
+    }
+
+    .logoBox{
+      width:88px;
+      height:88px;
+      border-radius:24px;
+      background:#0a0c10;
+      border:1px solid rgba(216,180,138,.16);
+      padding:10px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      flex:0 0 auto;
+    }
+
+    .logoBox img{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+    }
+
+    .eyebrow{
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.22em;
+      color:rgba(216,180,138,.72);
+      font-weight:800;
+      margin-bottom:6px;
+    }
+
+    h1,h2,h3,h4,p{margin:0}
+    h1{
+      font-size:clamp(30px,5vw,52px);
+      line-height:.95;
+      letter-spacing:-.05em;
+      font-weight:900;
+    }
+
+    .heroSub{
+      margin-top:10px;
+      max-width:760px;
+      color:var(--muted);
+      line-height:1.5;
+      font-size:15px;
+    }
+
+    .statusPill{
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(0,0,0,.18);
+      border-radius:999px;
+      padding:12px 16px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      color:var(--muted);
+      font-size:14px;
+      white-space:nowrap;
+    }
+
+    .statusDot{
+      width:10px;height:10px;border-radius:50%;
+      background:var(--green);
+      box-shadow:0 0 0 6px rgba(89,212,138,.12);
+      flex:0 0 auto;
+    }
+
+    .summaryBar{
+      margin-top:18px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      border-radius:24px;
+      padding:14px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+
+    .summaryNode,.summaryArrow{
+      border-radius:18px;
+      padding:12px 14px;
+      font-weight:800;
+    }
+
+    .summaryNode{
+      background:#0f1319;
+      border:1px solid rgba(255,255,255,.06);
+    }
+
+    .summaryNode.active{
+      color:#111;
+      background:var(--gold);
+      border-color:transparent;
+    }
+
+    .summaryArrow{
+      color:rgba(255,255,255,.35);
+      padding-left:4px;
+      padding-right:4px;
+    }
+
+    .stepTrack{
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      gap:8px;
+      margin:18px 0 16px;
+    }
+
+    .stepDot{
+      height:8px;
+      border-radius:999px;
+      background:rgba(255,255,255,.08);
+      overflow:hidden;
+    }
+
+    .stepDot.active{
+      background:linear-gradient(90deg,var(--gold),#f0d2af);
+    }
+
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border:1px solid var(--line);
+      border-radius:32px;
+      box-shadow:var(--shadow);
+      padding:18px;
+    }
+
+    .sectionHead{
+      display:flex;
+      gap:14px;
+      justify-content:space-between;
+      align-items:flex-end;
+      flex-wrap:wrap;
+      margin-bottom:14px;
+    }
+
+    .sectionTitle{
+      font-size:clamp(26px,4vw,38px);
+      font-weight:900;
+      letter-spacing:-.04em;
+    }
+
+    .sectionSub{
+      margin-top:8px;
+      color:var(--muted);
+      max-width:760px;
+      line-height:1.5;
+      font-size:15px;
+    }
+
+    .backBtn,.ghostBtn,.primaryBtn,.tileBtn{
+      border:none;
+      cursor:pointer;
+      transition:.18s ease;
+    }
+
+    .backBtn,.ghostBtn{
+      background:rgba(255,255,255,.04);
+      color:var(--text);
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:11px 15px;
+      font-weight:700;
+    }
+
+    .primaryBtn{
+      background:linear-gradient(180deg, #efd2b2, var(--gold));
+      color:#111;
+      border-radius:999px;
+      padding:14px 20px;
+      font-weight:900;
+      box-shadow:0 14px 32px rgba(216,180,138,.22);
+    }
+
+    .primaryBtn:disabled{
+      opacity:.45;
+      cursor:not-allowed;
+      box-shadow:none;
+    }
+
+    .row{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .grid3{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:14px;
+    }
+
+    .grid2{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:14px;
+    }
+
+    .tileBtn{
+      text-align:left;
+      border-radius:28px;
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      padding:18px;
+      color:var(--text);
+      min-height:170px;
+    }
+
+    .tileBtn:hover{
+      transform:translateY(-1px);
+      border-color:rgba(216,180,138,.25);
+    }
+
+    .tileBtn.selected{
+      border-color:rgba(216,180,138,.55);
+      background:linear-gradient(180deg, rgba(216,180,138,.14), rgba(216,180,138,.06));
+      box-shadow:0 0 0 1px rgba(216,180,138,.15) inset;
+    }
+
+    .tileIcon{
+      width:58px;height:58px;border-radius:18px;
+      display:flex;align-items:center;justify-content:center;
+      background:rgba(216,180,138,.12);
+      border:1px solid rgba(216,180,138,.14);
+      font-size:28px;
+      margin-bottom:16px;
+    }
+
+    .tileTitle{
+      font-size:24px;
+      font-weight:900;
+      letter-spacing:-.03em;
+    }
+
+    .tileMeta{
+      margin-top:10px;
+      color:var(--muted);
+      line-height:1.45;
+      font-size:14px;
+    }
+
+    .toolbar{
+      margin-top:14px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .chip{
+      border:none;
+      cursor:pointer;
+      border-radius:999px;
+      padding:11px 15px;
+      font-weight:800;
+      background:rgba(255,255,255,.05);
+      color:var(--muted);
+      border:1px solid var(--line);
+    }
+
+    .chip.active{
+      background:rgba(103,184,255,.14);
+      color:#dff1ff;
+      border-color:rgba(103,184,255,.28);
+    }
+
+    .formatGrid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:14px;
+      margin-top:8px;
+    }
+
+    .formatBtn{
+      border:none;
+      cursor:pointer;
+      border-radius:28px;
+      padding:24px 18px;
+      text-align:left;
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--line);
+      color:var(--text);
+      min-height:120px;
+    }
+
+    .formatBtn.selected{
+      background:rgba(216,180,138,.12);
+      border-color:rgba(216,180,138,.45);
+    }
+
+    .formatKicker{
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:.2em;
+      font-size:11px;
+      font-weight:800;
+    }
+
+    .formatValue{
+      margin-top:8px;
+      font-size:34px;
+      font-weight:900;
+      letter-spacing:-.05em;
+    }
+
+    .finalTop{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:14px;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      border-radius:999px;
+      padding:9px 12px;
+      font-size:12px;
+      font-weight:800;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      color:var(--muted);
+    }
+
+    .groups{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:14px;
+    }
+
+    .groups3{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:14px;
+    }
+
+    .groupCard{
+      border-radius:28px;
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      padding:16px;
+    }
+
+    .groupHead{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:center;
+      margin-bottom:12px;
+    }
+
+    .groupTitle{
+      font-size:22px;
+      font-weight:900;
+      letter-spacing:-.03em;
+    }
+
+    .soon{
+      color:#111;
+      background:var(--gold);
+      border-radius:999px;
+      padding:7px 10px;
+      font-size:11px;
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+    }
+
+    .valueList{
+      display:grid;
+      gap:10px;
+    }
+
+    .valueRow{
+      border-radius:20px;
+      border:1px solid rgba(255,255,255,.06);
+      background:rgba(0,0,0,.18);
+      padding:14px;
+    }
+
+    .valueLabel{
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.35;
+    }
+
+    .valueFlow{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+      margin-top:10px;
+    }
+
+    .valueBox{
+      border-radius:14px;
+      padding:10px 12px;
+      font-weight:800;
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.06);
+    }
+
+    .valueBox.new{
+      background:rgba(103,184,255,.12);
+      color:#cfe8ff;
+      border-color:rgba(103,184,255,.22);
+    }
+
+    .valueArrow{
+      color:rgba(255,255,255,.35);
+      font-weight:900;
+    }
+
+    .singleValue{
+      margin-top:10px;
+      border-radius:14px;
+      padding:10px 12px;
+      font-weight:800;
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.06);
+      display:inline-block;
+    }
+
+    .placeholder{
+      border-radius:20px;
+      border:1px dashed rgba(255,255,255,.12);
+      background:rgba(0,0,0,.18);
+      padding:18px;
+      color:var(--muted);
+      line-height:1.5;
+    }
+
+    .bottomBar{
+      position:sticky;
+      bottom:10px;
+      margin-top:18px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+      background:rgba(11,13,18,.72);
+      backdrop-filter:blur(18px);
+      -webkit-backdrop-filter:blur(18px);
+      border:1px solid var(--line);
+      border-radius:24px;
+      padding:12px;
+    }
+
+    @media (max-width:900px){
+      .grid3,.grid2,.groups,.groups3,.formatGrid{grid-template-columns:1fr}
+      .heroTop{align-items:flex-start}
+      .logoBox{width:72px;height:72px}
+      .summaryBar{padding:12px}
+    }
+  </style>
+</head>
+<body>
+  <div id=\"app\"></div>
+
+  <script crossorigin src=\"https://unpkg.com/react@18/umd/react.development.js\"></script>
+  <script crossorigin src=\"https://unpkg.com/react-dom@18/umd/react-dom.development.js\"></script>
+<script>
+    const BISCUITS = [
+      { id: "richtea", label: "Rich Tea", formats: ["5x6", "3x6"], icon: "🍪" },
+      { id: "koffiekoek", label: "Koffiekoek", formats: ["4x4", "4x5", "5x5"], icon: "🧈" },
+      { id: "theekokos", label: "Thee/Kokos", formats: ["5x5"], icon: "🥥" }
+    ];
+
+    const CAVANNA9 = {
+      koffiekoek: [
+        ["Fotocel baanbreedte koek lijn 9", "—", "-"],
+        ["Luchtverdeler", "—", "3B"],
+        ["Stekker luchtverdeler", "—", "4B"],
+        ["Luchtslang", "—", "5B"],
+        ["Druk luchtverdeler", "—", "1,5"],
+        ["Geleiders afstelling", "—", "Rood/Bruin"],
+        ["Glijgoot groot", "—", "Rood/Bruin"],
+        ["Glijgoot klein", "—", "Rood/Bruin"],
+        ["Recept Banen", "—", "4"],
+        ["Trilgoten voor inlegger", "—", "Rood/Bruin"],
+        ["Inlegger bakken", "—", "Geheel ingeschoven / Geheel uitschoven"],
+        ["Ketting pennen", "—", "1ste gat"],
+        ["Product taster", "—", "B"],
+        ["Bovengeleiding", "—", "A"],
+        ["Boven geleiding achter de inlegger", "—", "A"],
+        ["Geleiding naar BeckHoff", "—", "NEE"],
+        ["Hoogtebewaking", "—", "30.9"],
+        ["Hoek folierollen - 7", "—", "55"],
+        ["Positie folierol - 8", "—", "460"],
+        ["Positie folierol - 10", "—", "380"],
+        ["Hoogte beitel", "—", "48"],
+        ["Recept", "—", "4"],
+        ["Recept Checkweger", "—", "34"]
+      ],
+      theekokos: [
+        ["Fotocel baanbreedte koek lijn 9", "—", "005.4"],
+        ["Luchtverdeler", "—", "3A"],
+        ["Stekker luchtverdeler", "—", "4A"],
+        ["Luchtslang", "—", "1,5"],
+        ["Druk luchtverdeler", "—", "Rood/Wit"],
+        ["Geleiders afstelling", "—", "Rood/Wit"],
+        ["Glijgoot groot", "—", "Rood/Wit"],
+        ["Glijgoot klein", "—", "1 - Thee / 5 - Kokos"],
+        ["Recept Banen", "—", "Rood/Wit"],
+        ["Trilgoten voor inlegger", "—", "Geheel ingeschoven / Geheel uitschoven 10x"],
+        ["Inlegger bakken", "—", "Geleideplaten monteren 10x"],
+        ["Ketting pennen", "—", "1ste gat"],
+        ["Product taster", "—", "A"],
+        ["Bovengeleiding", "—", "B"],
+        ["Boven geleiding achter de inlegger", "—", "B"],
+        ["Geleiding naar BeckHoff", "—", "JA"],
+        ["Hoogtebewaking", "—", "75.7"],
+        ["Hoek folierollen - 7", "—", "65"],
+        ["Positie folierol - 8", "—", "460"],
+        ["Positie folierol - 10", "—", "380"],
+        ["Hoogte beitel", "—", "57"],
+        ["Recept", "—", "1 - Thee / 5 - Kokos"],
+        ["Recept Checkweger", "—", "35 / 98 (Food aid)"]
+      ],
+      richtea: [
+        ["Fotocel baanbreedte koek lijn 9", "—", "153,4"],
+        ["Luchtverdeler", "—", "3A"],
+        ["Stekker luchtverdeler", "—", "4A"],
+        ["Luchtslang", "—", "5A"],
+        ["Druk luchtverdeler", "—", "1,5"],
+        ["Geleiders afstelling", "—", "Rood/Blauw"],
+        ["Glijgoot groot", "—", "Rood/Blauw"],
+        ["Glijgoot klein", "—", "Rood/Blauw"],
+        ["Recept Banen", "—", "3"],
+        ["Trilgoten voor inlegger", "—", "Rood/Wit"],
+        ["Inlegger bakken", "—", "Tot merkstreep uitschuiven 9x"],
+        ["Ketting pennen", "—", "4de gat"],
+        ["Product taster", "—", "A"],
+        ["Bovengeleiding", "—", "B"],
+        ["Boven geleiding achter de inlegger", "—", "B"],
+        ["Geleiding naar BeckHoff", "—", "JA"],
+        ["Hoogtebewaking", "—", "181.3"],
+        ["Hoek folierollen - 7", "—", "65"],
+        ["Positie folierol - 8", "—", "460"],
+        ["Positie folierol - 10", "—", "374"],
+        ["Hoogte beitel", "—", "61"],
+        ["Recept", "—", "3"],
+        ["Recept Checkweger", "—", "36"]
+      ]
+    };
+
+    const ROBERTPACK = {
+      "4x4": [
+        ["Doos breedte", "007.9"],
+        ["Doos hoogte", "40"],
+        ["Gripper", "Rood/Wit"],
+        ["Invoergeleider", "DICHT"],
+        ["Race track voor", "nr.4 - 1x | nr.5 - 6x | nr.7 - 1x"],
+        ["Race track achter", "nr.8 - 1x | nr.6 - 6x | nr.9 - 1x"],
+        ["Induwers voor", "Rood/Wit"],
+        ["Induwers achter", "Rood/Wit"],
+        ["Spreider hendel", "70"],
+        ["Recept", "4444"]
+      ],
+      "4x5": [
+        ["Doos breedte", "011.0"],
+        ["Doos hoogte", "80"],
+        ["Gripper", "Rood/Wit"],
+        ["Invoergeleider", "DICHT"],
+        ["Race track voor", "nr.4 - 1x | nr.5 - 6x | nr.7 - 1x"],
+        ["Race track achter", "nr.8 - 1x | nr.6 - 6x | nr.9 - 1x"],
+        ["Induwers voor", "Rood/Wit"],
+        ["Induwers achter", "Rood/Wit"],
+        ["Spreider hendel", "70"],
+        ["Recept", "4"]
+      ],
+      "5x5": [
+        ["Doos breedte", "011.1"],
+        ["Doos hoogte", "80"],
+        ["Gripper", "Rood/Wit"],
+        ["Invoergeleider", "DICHT"],
+        ["Race track voor", "nr.4 - 1x | nr.5 - 6x | nr.7 - 1x"],
+        ["Race track achter", "nr.8 - 1x | nr.6 - 6x | nr.9 - 1x"],
+        ["Induwers voor", "Rood/Wit"],
+        ["Induwers achter", "Rood/Wit"],
+        ["Spreider hendel", "86"],
+        ["Recept", "5"]
+      ],
+      "5x6": [
+        ["Doos breedte", "011.3"],
+        ["Doos hoogte", "225"],
+        ["Gripper", "Rood/Blauw"],
+        ["Invoergeleider", "OPEN"],
+        ["Race track voor", "nr.1 - 1x | nr.3 - 11x"],
+        ["Race track achter", "nr.1 - 1x | nr.2 - 11x"],
+        ["Induwers voor", "Rood/Blauw"],
+        ["Induwers achter", "Rood/Blauw"],
+        ["Spreider hendel", "140"],
+        ["Recept", "3"]
+      ],
+      "3x6": [
+        ["Doos breedte", "011.3"],
+        ["Doos hoogte", "102"],
+        ["Gripper", "Rood/Blauw"],
+        ["Invoergeleider", "OPEN"],
+        ["Race track voor", "nr.1 - 1x | nr.3 - 11x"],
+        ["Race track achter", "nr.1 - 1x | nr.2 - 11x"],
+        ["Induwers voor", "Rood/Blauw"],
+        ["Induwers achter", "Rood/Blauw"],
+        ["Spreider hendel", "140"],
+        ["Recept", "3A"]
+      ]
+    };
+
+    const DOZEN = {
+      "4x4": [
+        ["NR1 Hoogte", "275"],
+        ["NR2 Verstelbare balk", "532.5"],
+        ["NR3 Veiligheidsschijf", "133"],
+        ["NR14 Breedte", "243"],
+        ["NR17 Grijper", "127"],
+        ["NR19 Formaat", "40"],
+        ["NR20 Printer hoogte", "75"]
+      ],
+      "4x5": [
+        ["NR1 Hoogte", "286.5"],
+        ["NR2 Verstelbare balk", "544"],
+        ["NR3 Veiligheidsschijf", "155"],
+        ["NR14 Breedte", "249.5"],
+        ["NR17 Grijper", "150"],
+        ["NR19 Formaat", "4"],
+        ["NR20 Printer hoogte", "75"]
+      ],
+      "5x5": [
+        ["NR1 Hoogte", "291"],
+        ["NR2 Verstelbare balk", "653"],
+        ["NR3 Veiligheidsschijf", "175"],
+        ["NR14 Breedte", "290"],
+        ["NR17 Grijper", "147.5"],
+        ["NR19 Formaat", "5"],
+        ["NR20 Printer hoogte", "99"]
+      ],
+      "5x6": [
+        ["NR1 Hoogte", "263"],
+        ["NR2 Verstelbare balk", "629"],
+        ["NR3 Veiligheidsschijf", "315"],
+        ["NR14 Breedte", "264"],
+        ["NR17 Grijper", "310"],
+        ["NR19 Formaat", "3"],
+        ["NR20 Printer hoogte", "180"]
+      ],
+      "3x6": [
+        ["NR1 Hoogte", "263"],
+        ["NR2 Verstelbare balk", "628"],
+        ["NR3 Veiligheidsschijf", "200"],
+        ["NR14 Breedte", "264"],
+        ["NR17 Grijper", "185"],
+        ["NR19 Formaat", "3A"],
+        ["NR20 Printer hoogte", "136"]
+      ]
+    };
+
+    const DEKSELAAR = {
+      "4x4": [
+        ["NR2 Magazijn breedte links", "425.5"],
+        ["NR4 Zuigerbalk", "85"],
+        ["NR8 Planobreedte", "421.5"],
+        ["NR18 Lijmkop houder", "150"],
+        ["NR19 Formaat", "*****"]
+      ],
+      "4x5": [
+        ["NR2 Magazijn breedte links", "425.5"],
+        ["NR4 Zuigerbalk", "85"],
+        ["NR8 Planobreedte", "421.5"],
+        ["NR18 Lijmkop houder", "150"],
+        ["NR19 Formaat", "4"]
+      ],
+      "5x5": [
+        ["NR2 Magazijn breedte links", "301"],
+        ["NR4 Zuigerbalk", "10"],
+        ["NR8 Planobreedte", "495.5"],
+        ["NR18 Lijmkop houder", "150"],
+        ["NR19 Formaat", "5"]
+      ],
+      "5x6": [
+        ["NR2 Magazijn breedte links", "510"],
+        ["NR4 Zuigerbalk", "11"],
+        ["NR8 Planobreedte", "507"],
+        ["NR18 Lijmkop houder", "150"],
+        ["NR19 Formaat", "3"]
+      ],
+      "3x6": [
+        ["NR2 Magazijn breedte links", "502"],
+        ["NR4 Zuigerbalk", "110"],
+        ["NR8 Planobreedte", "505"],
+        ["NR18 Lijmkop houder", "150"],
+        ["NR19 Formaat", "3A"]
+      ]
+    };
+
+    function biscuitLabel(id){
+      return BISCUITS.find(b => b.id === id)?.label || "";
+    }
+
+    function StepDots({ step }){
+      return React.createElement(
+        "div",
+        { className: "stepTrack" },
+        [1,2,3,4,5].map(n =>
+          React.createElement("div", {
+            key: n,
+            className: "stepDot" + (step >= n ? " active" : "")
+          })
+        )
+      );
+    }
+
+    function BiscuitTile({ biscuit, selected, onClick }){
+      return React.createElement(
+        "button",
+        { className: "tileBtn" + (selected ? " selected" : ""), onClick },
+        React.createElement("div", { className: "tileIcon" }, biscuit.icon),
+        React.createElement("div", { className: "tileTitle" }, biscuit.label),
+        React.createElement("div", { className: "tileMeta" }, "Formats: " + biscuit.formats.join(" • "))
+      );
+    }
+function ValueGroup({ title, rows, soon=false, mode="single" }){
+      return React.createElement(
+        "div",
+        { className: "groupCard" },
+        React.createElement(
+          "div",
+          { className: "groupHead" },
+          React.createElement("div", { className: "groupTitle" }, title),
+          soon ? React.createElement("div", { className: "soon" }, "Later") : null
+        ),
+        soon
+          ? React.createElement("div", { className: "placeholder" }, "Values will be added later.")
+          : React.createElement(
+              "div",
+              { className: "valueList" },
+              rows.map((row, i) =>
+                React.createElement(
+                  "div",
+                  { className: "valueRow", key: i },
+                  React.createElement("div", { className: "valueLabel" }, row[0]),
+                  mode === "flow"
+                    ? React.createElement(
+                        "div",
+                        { className: "valueFlow" },
+                        React.createElement("div", { className: "valueBox" }, row[1]),
+                        React.createElement("div", { className: "valueArrow" }, "→"),
+                        React.createElement("div", { className: "valueBox new" }, row[2])
+                      )
+                    : React.createElement("div", { className: "singleValue" }, row[1])
+                )
+              )
+            )
+      );
+    }
+
+    function App(){
+      const [step, setStep] = React.useState(1);
+      const [fromBiscuit, setFromBiscuit] = React.useState(null);
+      const [toBiscuit, setToBiscuit] = React.useState(null);
+      const [area, setArea] = React.useState(null);
+      const [cavannaLine, setCavannaLine] = React.useState(null);
+      const [format, setFormat] = React.useState(null);
+
+      const nextFormats = BISCUITS.find(b => b.id === toBiscuit)?.formats || [];
+
+      const resetAll = () => {
+        setStep(1);
+        setFromBiscuit(null);
+        setToBiscuit(null);
+        setArea(null);
+        setCavannaLine(null);
+        setFormat(null);
+      };
+
+      const summaryBar = React.createElement(
+        "div",
+        { className: "summaryBar" },
+        React.createElement("div", { className: "summaryNode" }, fromBiscuit ? biscuitLabel(fromBiscuit) : "Current biscuit"),
+        React.createElement("div", { className: "summaryArrow" }, "→"),
+        React.createElement("div", { className: "summaryNode active" }, toBiscuit ? biscuitLabel(toBiscuit) : "Next biscuit"),
+        area ? React.createElement("div", { className: "summaryArrow" }, "•") : null,
+        area ? React.createElement("div", { className: "summaryNode" }, area === "cavanna" ? "Cavanna" : "Robert Pack + Dozen + Dekselaar") : null,
+        format ? React.createElement("div", { className: "summaryArrow" }, "•") : null,
+        format ? React.createElement("div", { className: "summaryNode" }, format) : null
+      );
+
+      return React.createElement(
+        "div",
+        { className: "app" },
+        React.createElement(
+          "div",
+          { className: "hero" },
+          React.createElement(
+            "div",
+            { className: "heroTop" },
+            React.createElement(
+              "div",
+              { className: "brandWrap" },
+              React.createElement(
+                "div",
+                { className: "logoBox" },
+                React.createElement("img", {
+                  src: "./pally-logo.png",
+                  alt: "Pally Biscuits logo",
+                  onError: (e) => { e.currentTarget.style.display = "none"; }
+                })
+              ),
+              React.createElement(
+                "div",
+                null,
+                React.createElement("div", { className: "eyebrow" }, "Pally Biscuits"),
+                React.createElement("h1", null, "Ombouwen"),
+                React.createElement(
+                  "div",
+                  { className: "heroSub" },
+                  "Simple biscuit-first changeover app. First choose what biscuit is running now, then what biscuit comes next, then open Cavanna or the packing side."
+                )
+              )
+            ),
+            React.createElement(
+              "div",
+              { className: "statusPill" },
+              React.createElement("div", { className: "statusDot" }),
+              React.createElement("span", null, "v20 • premium industrial flow")
+            )
+          ),
+          summaryBar
+        ),
+
+        React.createElement(StepDots, { step }),
+
+        step === 1 && React.createElement(
+          "div",
+          { className: "card" },
+          React.createElement(
+            "div",
+            { className: "sectionHead" },
+            React.createElement(
+              "div",
+              null,
+              React.createElement("div", { className: "eyebrow" }, "Step 1"),
+              React.createElement("div", { className: "sectionTitle" }, "What biscuit is running now?"),
+              React.createElement("div", { className: "sectionSub" }, "Choose the biscuit that is currently running on the line.")
+            )
+          ),
+          React.createElement(
+            "div",
+            { className: "grid3" },
+            BISCUITS.map(b =>
+              React.createElement(BiscuitTile, {
+                key: b.id,
+                biscuit: b,
+                selected: fromBiscuit === b.id,
+                onClick: () => setFromBiscuit(b.id)
+              })
+            )
+          ),
+          React.createElement(
+            "div",
+            { className: "bottomBar" },
+            React.createElement(
+              "button",
+              { className: "primaryBtn", disabled: !fromBiscuit, onClick: () => setStep(2) },
+              "Continue"
+            )
+          )
+        ),
+
+        step === 2 && React.createElement(
+          "div",
+          { className: "card" },
+          React.createElement(
+            "div",
+            { className: "sectionHead" },
+            React.createElement(
+              "div",
+              null,
+              React.createElement("div", { className: "eyebrow" }, "Step 2"),
+              React.createElement("div", { className: "sectionTitle" }, "What biscuit are we changing to?"),
+              React.createElement("div", { className: "sectionSub" }, "Choose the new biscuit. This becomes the target product.")
+            ),
+            React.createElement("button", { className: "backBtn", onClick: () => setStep(1) }, "Back")
+          ),
+          React.createElement(
+            "div",
+            { className: "grid3" },
+            BISCUITS.map(b =>
+              React.createElement(BiscuitTile, {
+                key: b.id,
+                biscuit: b,
+                selected: toBiscuit === b.id,
+                onClick: () => setToBiscuit(b.id)
+              })
+            )
+          ),
+          React.createElement(
+            "div",
+            { className: "bottomBar" },
+            React.createElement("button", { className: "ghostBtn", onClick: resetAll }, "Start over"),
+            React.createElement(
+              "button",
+              { className: "primaryBtn", disabled: !toBiscuit, onClick: () => setStep(3) },
+              "Continue"
+            )
+          )
+        ),
+
+        step === 3 && React.createElement(
+          "div",
+          { className: "card" },
+          React.createElement(
+            "div",
+            { className: "sectionHead" },
+            React.createElement(
+              "div",
+              null,
+              React.createElement("div", { className: "eyebrow" }, "Step 3"),
+              React.createElement("div", { className: "sectionTitle" }, "Choose area"),
+              React.createElement("div", { className: "sectionSub" }, "Open the product side or the packing side.")
+            ),
+            React.createElement("button", { className: "backBtn", onClick: () => setStep(2) }, "Back")
+          ),
+          React.createElement(
+            "div",
+            { className: "grid2" },
+            React.createElement(
+              "button",
+              {
+                className: "tileBtn" + (area === "cavanna" ? " selected" : ""),
+                onClick: () => { setArea("cavanna"); setStep(4); }
+              },
+              React.createElement("div", { className: "tileIcon" }, "⚙️"),
+              React.createElement("div", { className: "tileTitle" }, "Cavanna"),
+              React.createElement("div", { className: "tileMeta" }, "Film • Wrapping • Sensors • Product settings")
+            ),
+            React.createElement(
+              "button",
+              {
+                className: "tileBtn" + (area === "packing" ? " selected" : ""),
+                onClick: () => { setArea("packing"); setStep(4); }
+              },
+              React.createElement("div", { className: "tileIcon" }, "📦"),
+              React.createElement("div", { className: "tileTitle" }, "Robert Pack + Dozen Opzetter + Dekselaar Opzetter"),
+              React.createElement("div", { className: "tileMeta" }, "Formats • Boxes • Packing machine values")
+            )
+          )
+        ),
+step === 4 && area === "cavanna" && React.createElement(
+          "div",
+          { className: "card" },
+          React.createElement(
+            "div",
+            { className: "sectionHead" },
+            React.createElement(
+              "div",
+              null,
+              React.createElement("div", { className: "eyebrow" }, "Step 4"),
+              React.createElement("div", { className: "sectionTitle" }, "Choose Cavanna"),
+              React.createElement("div", { className: "sectionSub" }, "Cavanna follows the biscuit choice.")
+            ),
+            React.createElement("button", { className: "backBtn", onClick: () => setStep(3) }, "Back")
+          ),
+          React.createElement(
+            "div",
+            { className: "grid2" },
+            React.createElement(
+              "button",
+              {
+                className: "tileBtn selected",
+                onClick: () => { setCavannaLine("Cavanna 9"); setStep(5); }
+              },
+              React.createElement("div", { className: "tileIcon" }, "9"),
+              React.createElement("div", { className: "tileTitle" }, "Cavanna 9"),
+              React.createElement("div", { className: "tileMeta" }, "Ready now with the values we already passed.")
+            ),
+            React.createElement(
+              "button",
+              { className: "tileBtn" },
+              React.createElement("div", { className: "tileIcon" }, "10"),
+              React.createElement("div", { className: "tileTitle" }, "Cavanna 10"),
+              React.createElement("div", { className: "tileMeta" }, "Coming later. Placeholder is ready.")
+            )
+          )
+        ),
+
+        step === 4 && area === "packing" && React.createElement(
+          "div",
+          { className: "card" },
+          React.createElement(
+            "div",
+            { className: "sectionHead" },
+            React.createElement(
+              "div",
+              null,
+              React.createElement("div", { className: "eyebrow" }, "Step 4"),
+              React.createElement("div", { className: "sectionTitle" }, "Choose target format"),
+              React.createElement(
+                "div",
+                { className: "sectionSub" },
+                "Formats shown here depend on the biscuit you selected: ",
+                toBiscuit ? biscuitLabel(toBiscuit) : "—"
+              )
+            ),
+            React.createElement("button", { className: "backBtn", onClick: () => setStep(3) }, "Back")
+          ),
+          React.createElement(
+            "div",
+            { className: "formatGrid" },
+            nextFormats.map(f =>
+              React.createElement(
+                "button",
+                {
+                  key: f,
+                  className: "formatBtn" + (format === f ? " selected" : ""),
+                  onClick: () => { setFormat(f); setStep(5); }
+                },
+                React.createElement("div", { className: "formatKicker" }, "Format"),
+                React.createElement("div", { className: "formatValue" }, f)
+              )
+            )
+          )
+        ),
+
+        step === 5 && area === "cavanna" && React.createElement(
+          "div",
+          { className: "card" },
+          React.createElement(
+            "div",
+            { className: "finalTop" },
+            React.createElement(
+              "div",
+              null,
+              React.createElement("div", { className: "eyebrow" }, "Final ombouwen"),
+              React.createElement("div", { className: "sectionTitle" }, cavannaLine || "Cavanna"),
+              React.createElement(
+                "div",
+                { className: "sectionSub" },
+                biscuitLabel(fromBiscuit), " → ", biscuitLabel(toBiscuit)
+              )
+            ),
+            React.createElement(
+              "div",
+              { className: "row" },
+              React.createElement("button", { className: "backBtn", onClick: () => setStep(4) }, "Back"),
+              React.createElement("button", { className: "ghostBtn", onClick: () => window.print() }, "Print"),
+              React.createElement("button", { className: "primaryBtn", onClick: resetAll }, "Start over")
+            )
+          ),
+          React.createElement(
+            "div",
+            { className: "row", style: { marginBottom: "14px" } },
+            React.createElement("div", { className: "pill" }, "Biscuit change"),
+            React.createElement("div", { className: "pill" }, biscuitLabel(fromBiscuit) + " → " + biscuitLabel(toBiscuit)),
+            React.createElement("div", { className: "pill" }, cavannaLine || "Cavanna 9")
+          ),
+          React.createElement(
+            "div",
+            { className: "groups" },
+            React.createElement(ValueGroup, {
+              title: "Cavanna 9 values",
+              rows: CAVANNA9[toBiscuit] || [],
+              mode: "flow"
+            }),
+            React.createElement(ValueGroup, {
+              title: "Cavanna 10",
+              rows: [],
+              soon: true
+            })
+          )
+        ),
+
+        step === 5 && area === "packing" && format && React.createElement(
+          "div",
+          { className: "card" },
+          React.createElement(
+            "div",
+            { className: "finalTop" },
+            React.createElement(
+              "div",
+              null,
+              React.createElement("div", { className: "eyebrow" }, "Final ombouwen"),
+              React.createElement("div", { className: "sectionTitle" }, "Packing side"),
+              React.createElement(
+                "div",
+                { className: "sectionSub" },
+                biscuitLabel(toBiscuit), " • format ", format
+              )
+            ),
+            React.createElement(
+              "div",
+              { className: "row" },
+              React.createElement("button", { className: "backBtn", onClick: () => setStep(4) }, "Back"),
+              React.createElement("button", { className: "ghostBtn", onClick: () => window.print() }, "Print"),
+              React.createElement("button", { className: "primaryBtn", onClick: resetAll }, "Start over")
+            )
+          ),
+          React.createElement(
+            "div",
+            { className: "row", style: { marginBottom: "14px" } },
+            React.createElement("div", { className: "pill" }, "Packing format"),
+            React.createElement("div", { className: "pill" }, format),
+            React.createElement("div", { className: "pill" }, "Robert Pack + Dozen + Dekselaar")
+          ),
+          React.createElement(
+            "div",
+            { className: "groups3" },
+            React.createElement(ValueGroup, { title: "Robert Pack", rows: ROBERTPACK[format] || [] }),
+            React.createElement(ValueGroup, { title: "Dozen Opzetter", rows: DOZEN[format] || [] }),
+            React.createElement(ValueGroup, { title: "Dekselaar Opzetter", rows: DEKSELAAR[format] || [] })
+          )
+        )
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("app")).render(React.createElement(App));
+  </script>
+</body>
+</html>
