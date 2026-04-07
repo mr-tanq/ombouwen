@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dozen Opzetter — Ombouwen</title>
+  <link rel="stylesheet" href="industrial-v4.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">ombouwen</p>
+        <h1>Dozen Opzetter</h1>
+        <p class="subtitle">Line 9 / 10 — choose current format and target format, then see only what needs to change.</p>
+      </div>
+      <button id="topBackBtn" class="btn btn-ghost hidden">Back</button>
+    </header>
+
+    <main>
+      <section id="screen-from" class="screen active">
+        <div class="panel hero-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Step 1</p>
+              <h2>Current format</h2>
+            </div>
+            <span class="badge badge-neutral">What runs now?</span>
+          </div>
+          <div id="fromOptions" class="stack"></div>
+        </div>
+      </section>
+
+      <section id="screen-to" class="screen">
+        <div class="panel hero-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Step 2</p>
+              <h2>Target format</h2>
+            </div>
+            <span class="badge badge-neutral">What will run next?</span>
+          </div>
+          <div id="toOptions" class="stack"></div>
+        </div>
+      </section>
+
+      <section id="screen-list" class="screen">
+        <div class="panel detail-panel">
+          <div class="panel-head detail-head">
+            <div>
+              <p id="detailContext" class="eyebrow">Context</p>
+              <h2>Dozen Opzetter changes</h2>
+              <p id="detailMeta" class="subtitle small-subtitle"></p>
+            </div>
+            <div class="detail-badges">
+              <span id="changeCount" class="badge badge-changed">0 changes</span>
+            </div>
+          </div>
+
+          <div class="toolbar">
+            <div class="button-row">
+              <button id="startWizardBtn" class="btn btn-primary">Start ombouwen</button>
+            </div>
+          </div>
+
+          <div class="table-head">
+            <div>Reference</div>
+            <div>Step</div>
+            <div>From</div>
+            <div>To</div>
+            <div>Status</div>
+          </div>
+          <div id="stepList" class="step-list"></div>
+        </div>
+      </section>
+
+      <section id="screen-wizard" class="screen">
+        <div class="panel wizard-panel">
+          <div class="panel-head detail-head">
+            <div>
+              <p id="wizardCounter" class="eyebrow">Step 1 / 1</p>
+              <h2 id="wizardName">Step name</h2>
+            </div>
+            <div class="detail-badges">
+              <span class="badge badge-changed">Change</span>
+            </div>
+          </div>
+
+          <div class="wizard-progress-block">
+            <div class="row-between compact-row">
+              <span class="section-tag">Dozen Opzetter</span>
+              <span id="wizardProgressText" class="small-copy">1 / 1</span>
+            </div>
+            <div class="progress-bar"><div id="wizardProgressFill" class="progress-fill"></div></div>
+          </div>
+
+          <div class="reference-card">
+            <div class="reference-label">Reference</div>
+            <div id="wizardReference" class="reference-value">NR 1</div>
+          </div>
+
+          <div class="value-grid">
+            <div class="value-card">
+              <div class="value-label">From</div>
+              <div id="wizardFrom" class="value-main">0</div>
+            </div>
+            <div class="value-card">
+              <div class="value-label">To</div>
+              <div id="wizardTo" class="value-main">0</div>
+            </div>
+          </div>
+
+          <div id="wizardInstruction" class="instruction-card">Apply the setting on the machine, then continue.</div>
+
+          <div class="wizard-actions primary-actions">
+            <button id="prevBtn" class="btn btn-ghost">Previous</button>
+            <button id="nextBtn" class="btn btn-primary">Next</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="dozen-opzetter-v1.js"></script>
+</body>
+</html>
