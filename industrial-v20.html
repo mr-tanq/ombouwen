@@ -21,12 +21,16 @@
       --green:#59d48a;
       --red:#ff8e7b;
       --shadow:0 24px 70px rgba(0,0,0,.38);
-      --radius:28px;
-      --radius-sm:20px;
     }
 
     *{box-sizing:border-box}
-    html,body{margin:0;padding:0;background:linear-gradient(180deg,var(--bg),#0e131a 40%,#0b0d12 100%);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    html,body{
+      margin:0;
+      padding:0;
+      background:linear-gradient(180deg,var(--bg),#0e131a 40%,#0b0d12 100%);
+      color:var(--text);
+      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    }
     body{min-height:100vh}
     button,select{font:inherit}
     img{max-width:100%;display:block}
@@ -96,6 +100,7 @@
     }
 
     h1,h2,h3,h4,p{margin:0}
+
     h1{
       font-size:clamp(30px,5vw,52px);
       line-height:.95;
@@ -125,7 +130,9 @@
     }
 
     .statusDot{
-      width:10px;height:10px;border-radius:50%;
+      width:10px;
+      height:10px;
+      border-radius:50%;
       background:var(--green);
       box-shadow:0 0 0 6px rgba(89,212,138,.12);
       flex:0 0 auto;
@@ -286,8 +293,12 @@
     }
 
     .tileIcon{
-      width:58px;height:58px;border-radius:18px;
-      display:flex;align-items:center;justify-content:center;
+      width:58px;
+      height:58px;
+      border-radius:18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
       background:rgba(216,180,138,.12);
       border:1px solid rgba(216,180,138,.14);
       font-size:28px;
@@ -306,31 +317,6 @@
       line-height:1.45;
       font-size:14px;
     }
-
-    .toolbar{
-      margin-top:14px;
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-
-    .chip{
-      border:none;
-      cursor:pointer;
-      border-radius:999px;
-      padding:11px 15px;
-      font-weight:800;
-      background:rgba(255,255,255,.05);
-      color:var(--muted);
-      border:1px solid var(--line);
-    }
-
-    .chip.active{
-      background:rgba(103,184,255,.14);
-      color:#dff1ff;
-      border-color:rgba(103,184,255,.28);
-    }
-
     .formatGrid{
       display:grid;
       grid-template-columns:repeat(3,1fr);
@@ -526,11 +512,12 @@
   </style>
 </head>
 <body>
-  <div id=\"app\"></div>
+  <div id="app"></div>
 
-  <script crossorigin src=\"https://unpkg.com/react@18/umd/react.development.js\"></script>
-  <script crossorigin src=\"https://unpkg.com/react-dom@18/umd/react-dom.development.js\"></script>
-<script>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+  <script>
     const BISCUITS = [
       { id: "richtea", label: "Rich Tea", formats: ["5x6", "3x6"], icon: "🍪" },
       { id: "koffiekoek", label: "Koffiekoek", formats: ["4x4", "4x5", "5x5"], icon: "🧈" },
@@ -580,7 +567,7 @@
         ["Bovengeleiding", "—", "B"],
         ["Boven geleiding achter de inlegger", "—", "B"],
         ["Geleiding naar BeckHoff", "—", "JA"],
-        ["Hoogtebewaking", "—", "75.7"],
+        ["Hoogτεbewaking", "—", "75.7"],
         ["Hoek folierollen - 7", "—", "65"],
         ["Positie folierol - 8", "—", "460"],
         ["Positie folierol - 10", "—", "380"],
@@ -651,32 +638,33 @@
         ["Induwers achter", "Rood/Wit"],
         ["Spreider hendel", "86"],
         ["Recept", "5"]
-      ],
-      "5x6": [
-        ["Doos breedte", "011.3"],
-        ["Doos hoogte", "225"],
-        ["Gripper", "Rood/Blauw"],
-        ["Invoergeleider", "OPEN"],
-        ["Race track voor", "nr.1 - 1x | nr.3 - 11x"],
-        ["Race track achter", "nr.1 - 1x | nr.2 - 11x"],
-        ["Induwers voor", "Rood/Blauw"],
-        ["Induwers achter", "Rood/Blauw"],
-        ["Spreider hendel", "140"],
-        ["Recept", "3"]
-      ],
-      "3x6": [
-        ["Doos breedte", "011.3"],
-        ["Doos hoogte", "102"],
-        ["Gripper", "Rood/Blauw"],
-        ["Invoergeleider", "OPEN"],
-        ["Race track voor", "nr.1 - 1x | nr.3 - 11x"],
-        ["Race track achter", "nr.1 - 1x | nr.2 - 11x"],
-        ["Induwers voor", "Rood/Blauw"],
-        ["Induwers achter", "Rood/Blauw"],
-        ["Spreider hendel", "140"],
-        ["Recept", "3A"]
       ]
     };
+    ROBERTPACK["5x6"] = [
+      ["Doos breedte", "011.3"],
+      ["Doos hoogte", "225"],
+      ["Gripper", "Rood/Blauw"],
+      ["Invoergeleider", "OPEN"],
+      ["Race track voor", "nr.1 - 1x | nr.3 - 11x"],
+      ["Race track achter", "nr.1 - 1x | nr.2 - 11x"],
+      ["Induwers voor", "Rood/Blauw"],
+      ["Induwers achter", "Rood/Blauw"],
+      ["Spreider hendel", "140"],
+      ["Recept", "3"]
+    ];
+
+    ROBERTPACK["3x6"] = [
+      ["Doos breedte", "011.3"],
+      ["Doos hoogte", "102"],
+      ["Gripper", "Rood/Blauw"],
+      ["Invoergeleider", "OPEN"],
+      ["Race track voor", "nr.1 - 1x | nr.3 - 11x"],
+      ["Race track achter", "nr.1 - 1x | nr.2 - 11x"],
+      ["Induwers voor", "Rood/Blauw"],
+      ["Induwers achter", "Rood/Blauw"],
+      ["Spreider hendel", "140"],
+      ["Recept", "3A"]
+    ];
 
     const DOZEN = {
       "4x4": [
@@ -772,7 +760,7 @@
       return React.createElement(
         "div",
         { className: "stepTrack" },
-        [1,2,3,4,5].map(n =>
+        [1,2,3,4,5].map((n) =>
           React.createElement("div", {
             key: n,
             className: "stepDot" + (step >= n ? " active" : "")
@@ -784,13 +772,14 @@
     function BiscuitTile({ biscuit, selected, onClick }){
       return React.createElement(
         "button",
-        { className: "tileBtn" + (selected ? " selected" : ""), onClick },
+        { className: "tileBtn" + (selected ? " selected" : ""), onClick: onClick },
         React.createElement("div", { className: "tileIcon" }, biscuit.icon),
         React.createElement("div", { className: "tileTitle" }, biscuit.label),
         React.createElement("div", { className: "tileMeta" }, "Formats: " + biscuit.formats.join(" • "))
       );
     }
-function ValueGroup({ title, rows, soon=false, mode="single" }){
+
+    function ValueGroup({ title, rows, soon=false, mode="single" }){
       return React.createElement(
         "div",
         { className: "groupCard" },
@@ -833,16 +822,16 @@ function ValueGroup({ title, rows, soon=false, mode="single" }){
       const [cavannaLine, setCavannaLine] = React.useState(null);
       const [format, setFormat] = React.useState(null);
 
-      const nextFormats = BISCUITS.find(b => b.id === toBiscuit)?.formats || [];
+      const nextFormats = BISCUITS.find((b) => b.id === toBiscuit)?.formats || [];
 
-      const resetAll = () => {
+      function resetAll(){
         setStep(1);
         setFromBiscuit(null);
         setToBiscuit(null);
         setArea(null);
         setCavannaLine(null);
         setFormat(null);
-      };
+      }
 
       const summaryBar = React.createElement(
         "div",
@@ -855,10 +844,10 @@ function ValueGroup({ title, rows, soon=false, mode="single" }){
         format ? React.createElement("div", { className: "summaryArrow" }, "•") : null,
         format ? React.createElement("div", { className: "summaryNode" }, format) : null
       );
-
       return React.createElement(
         "div",
         { className: "app" },
+
         React.createElement(
           "div",
           { className: "hero" },
@@ -874,7 +863,7 @@ function ValueGroup({ title, rows, soon=false, mode="single" }){
                 React.createElement("img", {
                   src: "./pally-logo.png",
                   alt: "Pally Biscuits logo",
-                  onError: (e) => { e.currentTarget.style.display = "none"; }
+                  onError: function(e){ e.currentTarget.style.display = "none"; }
                 })
               ),
               React.createElement(
@@ -899,9 +888,9 @@ function ValueGroup({ title, rows, soon=false, mode="single" }){
           summaryBar
         ),
 
-        React.createElement(StepDots, { step }),
+        React.createElement(StepDots, { step: step }),
 
-        step === 1 && React.createElement(
+        step === 1 ? React.createElement(
           "div",
           { className: "card" },
           React.createElement(
@@ -918,12 +907,12 @@ function ValueGroup({ title, rows, soon=false, mode="single" }){
           React.createElement(
             "div",
             { className: "grid3" },
-            BISCUITS.map(b =>
+            BISCUITS.map((b) =>
               React.createElement(BiscuitTile, {
                 key: b.id,
                 biscuit: b,
                 selected: fromBiscuit === b.id,
-                onClick: () => setFromBiscuit(b.id)
+                onClick: function(){ setFromBiscuit(b.id); }
               })
             )
           ),
@@ -932,13 +921,17 @@ function ValueGroup({ title, rows, soon=false, mode="single" }){
             { className: "bottomBar" },
             React.createElement(
               "button",
-              { className: "primaryBtn", disabled: !fromBiscuit, onClick: () => setStep(2) },
+              {
+                className: "primaryBtn",
+                disabled: !fromBiscuit,
+                onClick: function(){ setStep(2); }
+              },
               "Continue"
             )
           )
-        ),
+        ) : null,
 
-        step === 2 && React.createElement(
+        step === 2 ? React.createElement(
           "div",
           { className: "card" },
           React.createElement(
@@ -951,17 +944,21 @@ function ValueGroup({ title, rows, soon=false, mode="single" }){
               React.createElement("div", { className: "sectionTitle" }, "What biscuit are we changing to?"),
               React.createElement("div", { className: "sectionSub" }, "Choose the new biscuit. This becomes the target product.")
             ),
-            React.createElement("button", { className: "backBtn", onClick: () => setStep(1) }, "Back")
+            React.createElement(
+              "button",
+              { className: "backBtn", onClick: function(){ setStep(1); } },
+              "Back"
+            )
           ),
           React.createElement(
             "div",
             { className: "grid3" },
-            BISCUITS.map(b =>
+            BISCUITS.map((b) =>
               React.createElement(BiscuitTile, {
                 key: b.id,
                 biscuit: b,
                 selected: toBiscuit === b.id,
-                onClick: () => setToBiscuit(b.id)
+                onClick: function(){ setToBiscuit(b.id); }
               })
             )
           ),
@@ -971,13 +968,17 @@ function ValueGroup({ title, rows, soon=false, mode="single" }){
             React.createElement("button", { className: "ghostBtn", onClick: resetAll }, "Start over"),
             React.createElement(
               "button",
-              { className: "primaryBtn", disabled: !toBiscuit, onClick: () => setStep(3) },
+              {
+                className: "primaryBtn",
+                disabled: !toBiscuit,
+                onClick: function(){ setStep(3); }
+              },
               "Continue"
             )
           )
-        ),
+        ) : null,
 
-        step === 3 && React.createElement(
+        step === 3 ? React.createElement(
           "div",
           { className: "card" },
           React.createElement(
@@ -990,7 +991,11 @@ function ValueGroup({ title, rows, soon=false, mode="single" }){
               React.createElement("div", { className: "sectionTitle" }, "Choose area"),
               React.createElement("div", { className: "sectionSub" }, "Open the product side or the packing side.")
             ),
-            React.createElement("button", { className: "backBtn", onClick: () => setStep(2) }, "Back")
+            React.createElement(
+              "button",
+              { className: "backBtn", onClick: function(){ setStep(2); } },
+              "Back"
+            )
           ),
           React.createElement(
             "div",
@@ -999,7 +1004,7 @@ function ValueGroup({ title, rows, soon=false, mode="single" }){
               "button",
               {
                 className: "tileBtn" + (area === "cavanna" ? " selected" : ""),
-                onClick: () => { setArea("cavanna"); setStep(4); }
+                onClick: function(){ setArea("cavanna"); setStep(4); }
               },
               React.createElement("div", { className: "tileIcon" }, "⚙️"),
               React.createElement("div", { className: "tileTitle" }, "Cavanna"),
@@ -1009,15 +1014,16 @@ function ValueGroup({ title, rows, soon=false, mode="single" }){
               "button",
               {
                 className: "tileBtn" + (area === "packing" ? " selected" : ""),
-                onClick: () => { setArea("packing"); setStep(4); }
+                onClick: function(){ setArea("packing"); setStep(4); }
               },
               React.createElement("div", { className: "tileIcon" }, "📦"),
               React.createElement("div", { className: "tileTitle" }, "Robert Pack + Dozen Opzetter + Dekselaar Opzetter"),
               React.createElement("div", { className: "tileMeta" }, "Formats • Boxes • Packing machine values")
             )
           )
-        ),
-step === 4 && area === "cavanna" && React.createElement(
+        ) : null,
+
+        step === 4 && area === "cavanna" ? React.createElement(
           "div",
           { className: "card" },
           React.createElement(
@@ -1030,7 +1036,11 @@ step === 4 && area === "cavanna" && React.createElement(
               React.createElement("div", { className: "sectionTitle" }, "Choose Cavanna"),
               React.createElement("div", { className: "sectionSub" }, "Cavanna follows the biscuit choice.")
             ),
-            React.createElement("button", { className: "backBtn", onClick: () => setStep(3) }, "Back")
+            React.createElement(
+              "button",
+              { className: "backBtn", onClick: function(){ setStep(3); } },
+              "Back"
+            )
           ),
           React.createElement(
             "div",
@@ -1039,7 +1049,7 @@ step === 4 && area === "cavanna" && React.createElement(
               "button",
               {
                 className: "tileBtn selected",
-                onClick: () => { setCavannaLine("Cavanna 9"); setStep(5); }
+                onClick: function(){ setCavannaLine("Cavanna 9"); setStep(5); }
               },
               React.createElement("div", { className: "tileIcon" }, "9"),
               React.createElement("div", { className: "tileTitle" }, "Cavanna 9"),
@@ -1053,9 +1063,9 @@ step === 4 && area === "cavanna" && React.createElement(
               React.createElement("div", { className: "tileMeta" }, "Coming later. Placeholder is ready.")
             )
           )
-        ),
+        ) : null,
 
-        step === 4 && area === "packing" && React.createElement(
+        step === 4 && area === "packing" ? React.createElement(
           "div",
           { className: "card" },
           React.createElement(
@@ -1073,27 +1083,31 @@ step === 4 && area === "cavanna" && React.createElement(
                 toBiscuit ? biscuitLabel(toBiscuit) : "—"
               )
             ),
-            React.createElement("button", { className: "backBtn", onClick: () => setStep(3) }, "Back")
+            React.createElement(
+              "button",
+              { className: "backBtn", onClick: function(){ setStep(3); } },
+              "Back"
+            )
           ),
           React.createElement(
             "div",
             { className: "formatGrid" },
-            nextFormats.map(f =>
+            nextFormats.map((f) =>
               React.createElement(
                 "button",
                 {
                   key: f,
                   className: "formatBtn" + (format === f ? " selected" : ""),
-                  onClick: () => { setFormat(f); setStep(5); }
+                  onClick: function(){ setFormat(f); setStep(5); }
                 },
                 React.createElement("div", { className: "formatKicker" }, "Format"),
                 React.createElement("div", { className: "formatValue" }, f)
               )
             )
           )
-        ),
+        ) : null,
 
-        step === 5 && area === "cavanna" && React.createElement(
+        step === 5 && area === "cavanna" ? React.createElement(
           "div",
           { className: "card" },
           React.createElement(
@@ -1113,8 +1127,8 @@ step === 4 && area === "cavanna" && React.createElement(
             React.createElement(
               "div",
               { className: "row" },
-              React.createElement("button", { className: "backBtn", onClick: () => setStep(4) }, "Back"),
-              React.createElement("button", { className: "ghostBtn", onClick: () => window.print() }, "Print"),
+              React.createElement("button", { className: "backBtn", onClick: function(){ setStep(4); } }, "Back"),
+              React.createElement("button", { className: "ghostBtn", onClick: function(){ window.print(); } }, "Print"),
               React.createElement("button", { className: "primaryBtn", onClick: resetAll }, "Start over")
             )
           ),
@@ -1139,9 +1153,9 @@ step === 4 && area === "cavanna" && React.createElement(
               soon: true
             })
           )
-        ),
+        ) : null,
 
-        step === 5 && area === "packing" && format && React.createElement(
+        step === 5 && area === "packing" && format ? React.createElement(
           "div",
           { className: "card" },
           React.createElement(
@@ -1161,8 +1175,8 @@ step === 4 && area === "cavanna" && React.createElement(
             React.createElement(
               "div",
               { className: "row" },
-              React.createElement("button", { className: "backBtn", onClick: () => setStep(4) }, "Back"),
-              React.createElement("button", { className: "ghostBtn", onClick: () => window.print() }, "Print"),
+              React.createElement("button", { className: "backBtn", onClick: function(){ setStep(4); } }, "Back"),
+              React.createElement("button", { className: "ghostBtn", onClick: function(){ window.print(); } }, "Print"),
               React.createElement("button", { className: "primaryBtn", onClick: resetAll }, "Start over")
             )
           ),
@@ -1180,7 +1194,7 @@ step === 4 && area === "cavanna" && React.createElement(
             React.createElement(ValueGroup, { title: "Dozen Opzetter", rows: DOZEN[format] || [] }),
             React.createElement(ValueGroup, { title: "Dekselaar Opzetter", rows: DEKSELAAR[format] || [] })
           )
-        )
+        ) : null
       );
     }
 
