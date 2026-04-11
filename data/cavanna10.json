@@ -1,1 +1,20 @@
-
+{
+  "meta": {
+    "machine": "Cavanna 10",
+    "version": "1.0.0",
+    "latestRevisionDate": "2026-04-11",
+    "notes": "External dataset for Cavanna line 10.",
+    "versionHistory": [
+      {
+        "date": "2026-04-11",
+        "version": "1.0.0",
+        "note": "Initial dataset"
+      }
+    ]
+  },
+  "values": {
+    "koffiekoek": {},
+    "theekokos": {},
+    "richtea": {}
+  }
+}
