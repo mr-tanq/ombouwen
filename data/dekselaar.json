@@ -1,23 +1,124 @@
-
 {
   "meta": {
     "machine": "Dekselaar Opzetter",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "latestRevisionDate": "2026-04-11",
-    "notes": "External dataset for Dekselaar Opzetter.",
+    "notes": "Full Dekselaar Opzetter dataset based on the latest sheet/photo. Values are stored as strings exactly as written on the list.",
     "versionHistory": [
       {
         "date": "2026-04-11",
         "version": "1.0.0",
-        "note": "Initial dataset"
+        "note": "Initial external dataset."
+      },
+      {
+        "date": "2026-04-11",
+        "version": "1.1.0",
+        "note": "Filled full visible Dekselaar Opzetter values for all formats."
       }
     ]
   },
   "values": {
-    "4x4": {},
-    "4x5": {},
-    "5x5": {},
-    "5x6": {},
-    "3x6": {}
+    "4x4": {
+      "2 Magazijn breedte links": "0425,4",
+      "4 Zuigerbalk": "85",
+      "5 Zuigerbalk": "352",
+      "6 Transportbalk": "260",
+      "8 Planobreedte": "421,5",
+      "11 Breedte vouwers": "312,2",
+      "12A Diepte vouwer": "242,1",
+      "12B Diepte vouwer": "242,1",
+      "13 Geleiding invoer": "B",
+      "14 Transport band": "0239,7",
+      "15 Geleiding uitvoer": "B",
+      "16 Zijgeleider kartontransport": "NEE",
+      "17 Zijgeleider kartontransport": "NEE",
+      "18 Lijmkop houder": "150",
+      "19 Formaat": "****"
+    },
+    "4x5": {
+      "2 Magazijn breedte links": "0425,4",
+      "4 Zuigerbalk": "85",
+      "5 Zuigerbalk": "352",
+      "6 Transportbalk": "260",
+      "8 Planobreedte": "421,5",
+      "11 Breedte vouwers": "312,2",
+      "12A Diepte vouwer": "242,1",
+      "12B Diepte vouwer": "242,1",
+      "13 Geleiding invoer": "B",
+      "14 Transport band": "0239,7",
+      "15 Geleiding uitvoer": "B",
+      "16 Zijgeleider kartontransport": "NEE",
+      "17 Zijgeleider kartontransport": "NEE",
+      "18 Lijmkop houder": "150",
+      "19 Formaat": "4"
+    },
+    "5x5": {
+      "2 Magazijn breedte links": "301",
+      "4 Zuigerbalk": "10",
+      "5 Zuigerbalk": "44",
+      "6 Transportbalk": "26",
+      "8 Planobreedte": "495,5",
+      "11 Breedte vouwers": "395",
+      "12A Diepte vouwer": "268",
+      "12B Diepte vouwer": "242",
+      "13 Geleiding invoer": "B",
+      "14 Transport band": "275",
+      "15 Geleiding uitvoer": "B",
+      "16 Zijgeleider kartontransport": "NEE",
+      "17 Zijgeleider kartontransport": "NEE",
+      "18 Lijmkop houder": "150",
+      "19 Formaat": "5"
+    },
+    "theekokos": {
+      "2 Magazijn breedte links": "0417,8",
+      "4 Zuigerbalk": "08,5",
+      "5 Zuigerbalk": "35,6",
+      "6 Transportbalk": "260",
+      "8 Planobreedte": "0410,5",
+      "11 Breedte vouwers": "311",
+      "12A Diepte vouwer": "242",
+      "12B Diepte vouwer": "217",
+      "13 Geleiding invoer": "B",
+      "14 Transport band": "239",
+      "15 Geleiding uitvoer": "B",
+      "16 Zijgeleider kartontransport": "NEE",
+      "17 Zijgeleider kartontransport": "NEE",
+      "18 Lijmkop houder": "150,0",
+      "19 Formaat": "1"
+    },
+    "5x6": {
+      "2 Magazijn breedte links": "510,0",
+      "4 Zuigerbalk": "11,0",
+      "5 Zuigerbalk": "36,0",
+      "6 Transportbalk": "23,0",
+      "8 Planobreedte": "507,0",
+      "11 Breedte vouwers": "395,00",
+      "12A Diepte vouwer": "258,3",
+      "12B Diepte vouwer": "251,0",
+      "13 Geleiding invoer": "Β",
+      "14 Transport band": "260",
+      "15 Geleiding uitvoer": "B",
+      "16 Zijgeleider kartontransport": "JA",
+      "17 Zijgeleider kartontransport": "JA",
+      "18 Lijmkop houder": "150",
+      "19 Formaat": "3"
+    },
+    "3x6": {
+      "2 Magazijn breedte links": "0502,0",
+      "4 Zuigerbalk": "110",
+      "5 Zuigerbalk": "360",
+      "6 Transportbalk": "230",
+      "8 Planobreedte": "505",
+      "11 Breedte vouwers": "395",
+      "12A Diepte vouwer": "257,3",
+      "12B Diepte vouwer": "251,1",
+      "13 Geleiding invoer": "B",
+      "14 Transport band": "255",
+      "15 Geleiding uitvoer": "B",
+      "16 Zijgeleider kartontransport": "NEE",
+      "17 Zijgeleider kartontransport": "NEE",
+      "18 Lijmkop houder": "150",
+      "19 Formaat": "3A"
+    }
   }
 }
