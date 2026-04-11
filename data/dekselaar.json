@@ -1,1 +1,23 @@
 
+{
+  "meta": {
+    "machine": "Dekselaar Opzetter",
+    "version": "1.0.0",
+    "latestRevisionDate": "2026-04-11",
+    "notes": "External dataset for Dekselaar Opzetter.",
+    "versionHistory": [
+      {
+        "date": "2026-04-11",
+        "version": "1.0.0",
+        "note": "Initial dataset"
+      }
+    ]
+  },
+  "values": {
+    "4x4": {},
+    "4x5": {},
+    "5x5": {},
+    "5x6": {},
+    "3x6": {}
+  }
+}
