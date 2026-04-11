@@ -1,1 +1,32 @@
 
+{
+  "meta": {
+    "machine": "Robert Pack",
+    "version": "1.0.0",
+    "latestRevisionDate": "2026-04-11",
+    "notes": "Supports line9 and line10.",
+    "versionHistory": [
+      {
+        "date": "2026-04-11",
+        "version": "1.0.0",
+        "note": "Initial dataset"
+      }
+    ]
+  },
+  "values": {
+    "line9": {
+      "4x4": {},
+      "4x5": {},
+      "5x5": {},
+      "5x6": {},
+      "3x6": {}
+    },
+    "line10": {
+      "4x4": {},
+      "4x5": {},
+      "5x5": {},
+      "5x6": {},
+      "3x6": {}
+    }
+  }
+}
