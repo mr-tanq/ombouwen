@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pally Ombouwen v25</title>
+  <style>
+    :root{
+      --bg:#0b0d12;
+      --bg2:#11161d;
+      --card:#171c24;
+      --line:rgba(255,255,255,.08);
+      --lineGold:rgba(216,180,138,.22);
+      --text:#f5f7fb;
+      --muted:rgba(255,255,255,.60);
+      --gold:#d8b48a;
+      --blue:#67b8ff;
+      --green:#59d48a;
+      --shadow:0 24px 70px rgba(0,0,0,.38);
+    }
+
+    *{box-sizing:border-box}
+    html,body{
+      margin:0;
+      padding:0;
+      background:linear-gradient(180deg,#0b0d12,#0f141b 40%,#0b0d12 100%);
+      color:var(--text);
+      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    }
+    body{min-height:100vh}
+    button{font:inherit}
+    img{max-width:100%;display:block}
+
+    .app{max-width:1120px;margin:0 auto;padding:18px 14px 42px}
+
+    .hero{
+      border:1px solid var(--lineGold);
+      background:
+        radial-gradient(circle at top right, rgba(216,180,138,.14), transparent 28%),
+        radial-gradient(circle at top left, rgba(103,184,255,.07), transparent 26%),
+        linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+      border-radius:34px;
+      box-shadow:var(--shadow);
+      padding:22px;
+      margin-bottom:16px;
+      overflow:hidden;
+    }
+
+    .heroTop{display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+    .brandWrap{display:flex;gap:16px;align-items:center;min-width:0}
+    .logoBox{width:84px;height:84px;border-radius:22px;background:#0b0d12;border:1px solid rgba(216,180,138,.16);padding:10px;display:flex;align-items:center;justify-content:center;overflow:hidden;flex:0 0 auto}
+    .eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.22em;color:rgba(216,180,138,.76);font-weight:800;margin-bottom:6px}
+    h1,h2,h3,h4,p{margin:0}
+    h1{font-size:clamp(30px,5vw,50px);line-height:.95;letter-spacing:-.05em;font-weight:900}
+    .heroSub{margin-top:10px;max-width:760px;color:var(--muted);line-height:1.5;font-size:15px}
+    .statusPill{border:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.18);border-radius:999px;padding:12px 16px;display:flex;gap:10px;align-items:center;color:var(--muted);font-size:14px;white-space:nowrap}
+    .statusDot{width:10px;height:10px;border-radius:50%;background:var(--green);box-shadow:0 0 0 6px rgba(89,212,138,.12);flex:0 0 auto}
+
+    .summaryBar{margin-top:18px;border:1px solid var(--line);background:rgba(255,255,255,.03);border-radius:22px;padding:12px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .summaryNode,.summaryArrow{border-radius:16px;padding:10px 12px;font-weight:800;font-size:13px}
+    .summaryNode{background:#0f1319;border:1px solid rgba(255,255,255,.06)}
+    .summaryNode.active{background:var(--gold);color:#111;border-color:transparent}
+    .summaryArrow{color:rgba(255,255,255,.34);padding-left:2px;padding-right:2px}
+
+    .stepTrack{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:18px 0 16px}
+    .stepDot{height:8px;border-radius:999px;background:rgba(255,255,255,.08)}
+    .stepDot.active{background:linear-gradient(90deg,var(--gold),#f1d4b1)}
+
+    .card{background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));border:1px solid var(--line);border-radius:30px;box-shadow:var(--shadow);padding:18px}
+    .sectionHead{display:flex;gap:14px;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;margin-bottom:14px}
+    .sectionTitle{font-size:clamp(26px,4vw,38px);font-weight:900;letter-spacing:-.04em}
+    .sectionSub{margin-top:8px;color:var(--muted);max-width:760px;line-height:1.5;font-size:15px}
+    .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+    .grid4{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+
+    .setupGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+    .setupPanel{border-radius:26px;border:1px solid var(--line);background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));padding:16px}
+    .setupTitle{font-size:24px;font-weight:900;letter-spacing:-.03em}
+    .setupSub{margin-top:6px;color:var(--muted);font-size:14px}
+
+    .chipRow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .chipLabel{margin-top:14px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:rgba(216,180,138,.78);font-weight:800}
+    .chip,.backBtn,.ghostBtn,.primaryBtn,.toggleBtn,.menuBtn{border:none;cursor:pointer;transition:.18s ease}
+    .chip,.backBtn,.ghostBtn,.toggleBtn{background:rgba(255,255,255,.04);color:var(--text);border:1px solid var(--line);border-radius:999px;padding:11px 14px;font-weight:700}
+    .chip.active,.toggleBtn.active{background:rgba(103,184,255,.14);color:#dff1ff;border-color:rgba(103,184,255,.28)}
+    .primaryBtn{background:linear-gradient(180deg,#efd2b2,var(--gold));color:#111;border-radius:999px;padding:14px 20px;font-weight:900;box-shadow:0 14px 32px rgba(216,180,138,.22)}
+    .primaryBtn:disabled{opacity:.45;cursor:not-allowed;box-shadow:none}
+
+    .menuBtn{text-align:left;border-radius:28px;border:1px solid var(--line);background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));color:var(--text);padding:22px 18px;min-height:150px}
+    .menuBtn:hover{transform:translateY(-1px);border-color:rgba(216,180,138,.25)}
+    .tileIcon{width:58px;height:58px;border-radius:18px;display:flex;align-items:center;justify-content:center;background:rgba(216,180,138,.12);border:1px solid rgba(216,180,138,.14);font-size:28px;margin-bottom:16px}
+    .tileTitle{font-size:24px;font-weight:900;letter-spacing:-.03em}
+    .tileMeta{margin-top:10px;color:var(--muted);line-height:1.45;font-size:14px}
+
+    .pill{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:9px 12px;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--muted)}
+    .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+    .miniMenu{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:14px}
+    .listPanel{margin-top:14px;border-radius:24px;border:1px solid var(--line);background:rgba(0,0,0,.16);padding:14px}
+
+    .valueList{display:grid;gap:10px}
+    .valueRow{border-radius:20px;border:1px solid rgba(255,255,255,.06);background:rgba(0,0,0,.18);padding:14px}
+    .valueLabel{font-size:13px;color:var(--muted);line-height:1.35}
+    .valueFlow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:10px}
+    .valueBox{border-radius:14px;padding:10px 12px;font-weight:800;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.06)}
+    .valueBox.new{background:rgba(103,184,255,.12);color:#cfe8ff;border-color:rgba(103,184,255,.22)}
+    .valueArrow{color:rgba(255,255,255,.35);font-weight:900}
+    .emptyNote{color:var(--muted);padding:18px;border:1px dashed rgba(255,255,255,.1);border-radius:20px;background:rgba(0,0,0,.12)}
+
+    .stepPlayer{margin-top:14px;border-radius:28px;border:1px solid rgba(103,184,255,.24);background:linear-gradient(180deg, rgba(103,184,255,.08), rgba(103,184,255,.04));padding:16px}
+    .progressText{color:var(--muted);font-size:13px;margin-bottom:10px}
+    .progressBar{height:8px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;margin-bottom:14px}
+    .progressFill{height:100%;background:linear-gradient(90deg,var(--blue),#a5d4ff);border-radius:999px}
+    .stepPlayerCard{border-radius:22px;background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.06);padding:16px}
+    .stepPlayerLabel{font-size:14px;color:var(--muted);margin-bottom:12px}
+    .playerControls{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+
+    .bottomBar{position:sticky;bottom:10px;margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;background:rgba(11,13,18,.72);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid var(--line);border-radius:24px;padding:12px}
+
+    @media (max-width:900px){
+      .setupGrid,.grid2,.grid4,.miniMenu{grid-template-columns:1fr}
+      .heroTop{align-items:flex-start}
+      .logoBox{width:72px;height:72px}
+      .summaryBar{padding:12px}
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+  <script>
+    const BISCUITS = [
+      { id: "richtea", label: "Rich Tea", formats: ["5x6", "3x6"], icon: "🍪" },
+      { id: "koffiekoek", label: "Koffiekoek", formats: ["4x4", "4x5", "5x5"], icon: "🧈" },
+      { id: "theekokos", label: "Thee/Kokos", formats: ["5x5"], icon: "🥥" }
+    ];
+
+    const CAVANNA_9 = {
+      koffiekoek: {
+        "2 Fotocel baanbreedte koek lijn 9": "-",
+        "3 Luchtverdeler": "3B",
+        "4 Stekker luchtverdeler": "4B",
+        "5 Luchtslang": "5B",
+        "6 Druk luchtverdeler": "1,5",
+        "8 Geleiders afstelling": "Rood/Bruin",
+        "9 Glijgoot groot": "Rood/Bruin",
+        "10 Glijgoot klein": "Rood/Bruin",
+        "11 Recept Banen": "4",
+        "15 Trilgoten voor inlegger": "Rood/Bruin",
+        "16 Inlegger bakken": "Geheel ingeschoven / geheel uitschuiven",
+        "18 Ketting pennen": "1ste gat",
+        "19 Product taster": "B",
+        "20 Bovengeleiding": "A",
+        "20A Boven geleiding achter de inlegger": "A",
+        "23 Geleiding naar BeckHoff": "NEE",
+        "26 Hoogtebewaking": "30.9",
+        "30 Hoek folierollen - 7": "55",
+        "31 Positie folierol - 8": "460",
+        "32 Positie folierol - 10": "380",
+        "44 Hoogte beitel": "48",
+        "56 Recept": "4",
+        "58 Recept Checkweger": "34"
+      },
+      theekokos: {
+        "2 Fotocel baanbreedte koek lijn 9": "005.4",
+        "3 Luchtverdeler": "3A",
+        "4 Stekker luchtverdeler": "4A",
+        "5 Luchtslang": "1,5",
+        "6 Druk luchtverdeler": "Rood/Wit",
+        "8 Geleiders afstelling": "Rood/Wit",
+        "9 Glijgoot groot": "Rood/Wit",
+        "10 Glijgoot klein": "1 Thee / 5 Kokos",
+        "11 Recept Banen": "Rood/Wit",
+        "15 Trilgoten voor inlegger": "Geheel ingeschoven / geheel uitschuiven 10x",
+        "16 Inlegger bakken": "Geleideplaten monteren 10x",
+        "18 Ketting pennen": "1ste gat",
+        "19 Product taster": "A",
+        "20 Bovengeleiding": "B",
+        "20A Boven geleiding achter de inlegger": "B",
+        "23 Geleiding naar BeckHoff": "JA",
+        "26 Hoogtebewaking": "75.7",
+        "30 Hoek folierollen - 7": "65",
+        "31 Positie folierol - 8": "460",
+        "32 Positie folierol - 10": "380",
+        "44 Hoogte beitel": "57",
+        "56 Recept": "1 Thee / 5 kokos",
+        "58 Recept Checkweger": "35 / 98 food aid"
+      },
+      richtea: {
+        "2 Fotocel baanbreedte koek lijn 9": "153.4",
+        "3 Luchtverdeler": "3A",
+        "4 Stekker luchtverdeler": "4A",
+        "5 Luchtslang": "5A",
+        "6 Druk luchtverdeler": "1,5",
+        "8 Geleiders afstelling": "Rood/Blauw",
+        "9 Glijgoot groot": "Rood/Blauw",
+        "10 Glijgoot klein": "Rood/Blauw",
+        "11 Recept Banen": "3",
+        "15 Trilgoten voor inlegger": "Rood/Wit",
+        "16 Inlegger bakken": "Tot merkstreep uitschuiven 9x",
+        "18 Ketting pennen": "4de gat",
+        "19 Product taster": "A",
+        "20 Bovengeleiding": "B",
+        "20A Boven geleiding achter de inlegger": "B",
+        "23 Geleiding naar BeckHoff": "JA",
+        "26 Hoogtebewaking": "181.3",
+        "30 Hoek folierollen - 7": "65",
+        "31 Positie folierol - 8": "460",
+        "32 Positie folierol - 10": "374",
+        "44 Hoogte beitel": "61",
+        "56 Recept": "3",
+        "58 Recept Checkweger": "36"
+      }
+    };
+
+    const CAVANNA_10 = {
+      koffiekoek: {
+        "2 Fotocel baanbreedte koek lijn 10": "—",
+        "3 Luchtverdeler": "3B",
+        "4 Stekker luchtverdeler": "4B",
+        "5 Luchtslang": "5B",
+        "6 Druk luchtverdeler": "1,5",
+        "8 Geleiders afstelling": "Grijs",
+        "9 Glijgoot groot": "Grijs",
+        "10 Glijgoot klein": "Grijs",
+        "11 Recept Banen": "4",
+        "15 Trilgoten voor inlegger": "Grijs",
+        "16 Inlegger bakken": "Geheel ingeschoven",
+        "18 Ketting pennen": "1ste gat",
+        "19 Product taster": "B",
+        "20 Bovengeleiding": "A",
+        "20A Boven geleiding achter de inlegger": "A",
+        "23 Geleiding naar BeckHoff": "NEE",
+        "26 Hoogtebewaking": "935.2",
+        "29L Folierolhouder links": "25",
+        "29R Folierolhouder rechts": "25",
+        "30 Hoek folierollen - 7": "54",
+        "31 Positie folierol - 8": "460",
+        "32 Positie folierol - 10": "380",
+        "33 Foliegeleider": "Grijs",
+        "34 Breedtepositie foliecel spotdetectie": "67",
+        "38 Hoogte sensor invoerketting": "17",
+        "39 Geleide plaat": "Grijs",
+        "44 Hoogte beitel": "56",
+        "46 Positie intikkers BZ": "80",
+        "47 Positie intikkers NBZ": "72",
+        "48 Hoogte borstel": "60",
+        "52 Afstelling trekrollen": "016.0",
+        "53 Zijketting afstelling inloop": "029.9 / Wit",
+        "54 Zijketting afstelling uit loop": "008.5 / Wit",
+        "55 Lucht druk": "3.5",
+        "56 Recept": "4",
+        "58 Recept Checkweger": "34"
+      },
+      theekokos: {
+        "2 Fotocel baanbreedte koek lijn 10": "005.9",
+        "3 Luchtverdeler": "3A",
+        "4 Stekker luchtverdeler": "4A",
+        "5 Luchtslang": "5A",
+        "6 Druk luchtverdeler": "1,5",
+        "8 Geleiders afstelling": "Grijs",
+        "9 Glijgoot groot": "Grijs",
+        "10 Glijgoot klein": "Grijs",
+        "11 Recept Banen": "1 Thee / 5 Kokos",
+        "15 Trilgoten voor inlegger": "Grijs",
+        "16 Inlegger bakken": "Geheel ingeschoven / Geleideplaten monteren 10x",
+        "18 Ketting pennen": "1ste gat",
+        "19 Product taster": "A",
+        "20 Bovengeleiding": "B",
+        "20A Boven geleiding achter de inlegger": "B",
+        "23 Geleiding naar BeckHoff": "JA",
+        "26 Hoogtebewaking": "113",
+        "29L Folierolhouder links": "28",
+        "29R Folierolhouder rechts": "28",
+        "30 Hoek folierollen - 7": "65",
+        "31 Positie folierol - 8": "460",
+        "32 Positie folierol - 10": "360",
+        "33 Foliegeleider": "Grijs / Wit",
+        "34 Breedtepositie foliecel spotdetectie": "47",
+        "38 Hoogte sensor invoerketting": "20",
+        "39 Geleide plaat": "Grijs / Wit",
+        "44 Hoogte beitel": "57",
+        "46 Positie intikkers BZ": "80",
+        "47 Positie intikkers NBZ": "72",
+        "48 Hoogte borstel": "81",
+        "52 Afstelling trekrollen": "8.8",
+        "53 Zijketting afstelling inloop": "021.0 / Zwart",
+        "54 Zijketting afstelling uit loop": "008.5 / Zwart",
+        "55 Lucht druk": "3.5",
+        "56 Recept": "1 Thee / 5 kokos",
+        "58 Recept Checkweger": "35 / 98 food aid"
+      },
+      richtea: {
+        "2 Fotocel baanbreedte koek lijn 10": "141.3",
+        "3 Luchtverdeler": "3A",
+        "4 Stekker luchtverdeler": "4A",
+        "5 Luchtslang": "5A",
+        "6 Druk luchtverdeler": "1,5",
+        "8 Geleiders afstelling": "Grijs",
+        "9 Glijgoot groot": "Grijs",
+        "10 Glijgoot klein": "Grijs",
+        "11 Recept Banen": "3",
+        "15 Trilgoten voor inlegger": "Wit",
+        "16 Inlegger bakken": "Tot merkstreep uitschuiven 10x",
+        "18 Ketting pennen": "4de gat",
+        "19 Product taster": "A",
+        "20 Bovengeleiding": "B",
+        "20A Boven geleiding achter de inlegger": "B",
+        "23 Geleiding naar BeckHoff": "JA",
+        "26 Hoogtebewaking": "120",
+        "29L Folierolhouder links": "29",
+        "29R Folierolhouder rechts": "29",
+        "30 Hoek folierollen - 7": "65",
+        "31 Positie folierol - 8": "460",
+        "32 Positie folierol - 10": "360",
+        "33 Foliegeleider": "Grijs / Blauw",
+        "34 Breedtepositie foliecel spotdetectie": "74",
+        "38 Hoogte sensor invoerketting": "15",
+        "39 Geleide plaat": "Grijs / Blauw",
+        "44 Hoogte beitel": "59",
+        "46 Positie intikkers BZ": "80",
+        "47 Positie intikkers NBZ": "72",
+        "52 Afstelling trekrollen": "009.7",
+        "53 Zijketting afstelling inloop": "Groen",
+        "54 Zijketting afstelling uit loop": "Groen",
+        "55 Lucht druk": "3.5",
+        "56 Recept": "3",
+        "58 Recept Checkweger": "36"
+      }
+    };
+
+    const ROBERTPACK = {
+      "4x4": {
+        "Doos breedte": "007.9",
+        "Doos hoogte": "40",
+        "Gripper": "Rood/Wit",
+        "Invoergeleider": "DICHT",
+        "Race track voor": "nr.4 - 1x | nr.5 - 6x | nr.7 - 1x",
+        "Race track achter": "nr.8 - 1x | nr.6 - 6x | nr.9 - 1x",
+        "Induwers voor": "Rood/Wit",
+        "Induwers achter": "Rood/Wit",
+        "Spreider hendel": "70",
+        "Recept": "4444"
+      },
+      "4x5": {
+        "Doos breedte": "011.0",
+        "Doos hoogte": "80",
+        "Gripper": "Rood/Wit",
+        "Invoergeleider": "DICHT",
+        "Race track voor": "nr.4 - 1x | nr.5 - 6x | nr.7 - 1x",
+        "Race track achter": "nr.8 - 1x | nr.6 - 6x | nr.9 - 1x",
+        "Induwers voor": "Rood/Wit",
+        "Induwers achter": "Rood/Wit",
+        "Spreider hendel": "70",
+        "Recept": "4"
+      },
+      "5x5": {
+        "Doos breedte": "011.1",
+        "Doos hoogte": "80",
+        "Gripper": "Rood/Wit",
+        "Invoergeleider": "DICHT",
+        "Race track voor": "nr.4 - 1x | nr.5 - 6x | nr.7 - 1x",
+        "Race track achter": "nr.8 - 1x | nr.6 - 6x | nr.9 - 1x",
+        "Induwers voor": "Rood/Wit",
+        "Induwers achter": "Rood/Wit",
+        "Spreider hendel": "86",
+        "Recept": "5"
+      },
+      "5x6": {
+        "Doos breedte": "011.3",
+        "Doos hoogte": "225",
+        "Gripper": "Rood/Blauw",
+        "Invoergeleider": "OPEN",
+        "Race track voor": "nr.1 - 1x | nr.3 - 11x",
+        "Race track achter": "nr.1 - 1x | nr.2 - 11x",
+        "Induwers voor": "Rood/Blauw",
+        "Induwers achter": "Rood/Blauw",
+        "Spreider hendel": "140",
+        "Recept": "3"
+      },
+      "3x6": {
+        "Doos breedte": "011.3",
+        "Doos hoogte": "102",
+        "Gripper": "Rood/Blauw",
+        "Invoergeleider": "OPEN",
+        "Race track voor": "nr.1 - 1x | nr.3 - 11x",
+        "Race track achter": "nr.1 - 1x | nr.2 - 11x",
+        "Induwers voor": "Rood/Blauw",
+        "Induwers achter": "Rood/Blauw",
+        "Spreider hendel": "140",
+        "Recept": "3A"
+      }
+    };
+
+    const DOZEN = {
+      "4x4": {
+        "1 Hoogte": "275",
+        "2 Verstelbare balk": "532.5",
+        "3 Veiligheidsschijf": "133",
+        "14 Breedte": "243",
+        "17 Grijper": "127",
+        "19 Formaat": "40",
+        "20 Printer hoogte": "75"
+      },
+      "4x5": {
+        "1 Hoogte": "286.5",
+        "2 Verstelbare balk": "544",
+        "3 Veiligheidsschijf": "155",
+        "14 Breedte": "249.5",
+        "17 Grijper": "150",
+        "19 Formaat": "4",
+        "20 Printer hoogte": "75"
+      },
+      "5x5": {
+        "1 Hoogte": "291",
+        "2 Verstelbare balk": "653",
+        "3 Veiligheidsschijf": "175",
+        "14 Breedte": "290",
+        "17 Grijper": "147.5",
+        "19 Formaat": "5",
+        "20 Printer hoogte": "99"
+      },
+      "5x6": {
+        "1 Hoogte": "263",
+        "2 Verstelbare balk": "629",
+        "3 Veiligheidsschijf": "315",
+        "14 Breedte": "264",
+        "17 Grijper": "310",
+        "19 Formaat": "3",
+        "20 Printer hoogte": "180"
+      },
+      "3x6": {
+        "1 Hoogte": "263",
+        "2 Verstelbare balk": "628",
+        "3 Veiligheidsschijf": "200",
+        "14 Breedte": "264",
+        "17 Grijper": "185",
+        "19 Formaat": "3A",
+        "20 Printer hoogte": "136"
+      }
+    };
+
+    const DEKSELAAR = {
+      "4x4": {
+        "2 Magazijn breedte links": "425.5",
+        "4 Zuigerbalk": "85",
+        "8 Planobreedte": "421.5",
+        "18 Lijmkop houder": "150",
+        "19 Formaat": "*****"
+      },
+      "4x5": {
+        "2 Magazijn breedte links": "425.5",
+        "4 Zuigerbalk": "85",
+        "8 Planobreedte": "421.5",
+        "18 Lijmkop houder": "150",
+        "19 Formaat": "4"
+      },
+      "5x5": {
+        "2 Magazijn breedte links": "301",
+        "4 Zuigerbalk": "10",
+        "8 Planobreedte": "495.5",
+        "18 Lijmkop houder": "150",
+        "19 Formaat": "5"
+      },
+      "5x6": {
+        "2 Magazijn breedte links": "510",
+        "4 Zuigerbalk": "11",
+        "8 Planobreedte": "507",
+        "18 Lijmkop houder": "150",
+        "19 Formaat": "3"
+      },
+      "3x6": {
+        "2 Magazijn breedte links": "502",
+        "4 Zuigerbalk": "110",
+        "8 Planobreedte": "505",
+        "18 Lijmkop houder": "150",
+        "19 Formaat": "3A"
+      }
+    };
+
+    function biscuitLabel(id){ return BISCUITS.find(b => b.id === id)?.label || ""; }
+    function formatsForBiscuit(id){ return BISCUITS.find(b => b.id === id)?.formats || []; }
+    function buildFlowRows(fromObj, toObj){
+      const keys = Array.from(new Set([...(Object.keys(fromObj||{})), ...(Object.keys(toObj||{}))]));
+      return keys.map(key => [key, fromObj?.[key] ?? "—", toObj?.[key] ?? "—"]);
+    }
+    function filterRows(rows, onlyChanges){ return onlyChanges ? rows.filter(r => r[1] !== r[2]) : rows; }
+
+    function StepDots({ stage }){
+      return React.createElement("div", { className: "stepTrack" },
+        [1,2].map(n => React.createElement("div", { key:n, className: "stepDot" + (stage >= n ? " active" : "") }))
+      );
+    }
+
+    function BiscuitChipGroup({ value, onChange }){
+      return React.createElement("div", { className: "chipRow" },
+        BISCUITS.map(b => React.createElement("button", {
+          key: b.id,
+          className: "chip" + (value === b.id ? " active" : ""),
+          onClick: () => onChange(b.id)
+        }, b.label))
+      );
+    }
+
+    function FormatChipGroup({ biscuitId, value, onChange }){
+      const formats = formatsForBiscuit(biscuitId);
+      return React.createElement("div", { className: "chipRow" },
+        formats.map(f => React.createElement("button", {
+          key: f,
+          className: "chip" + (value === f ? " active" : ""),
+          onClick: () => onChange(f)
+        }, f))
+      );
+    }
+
+    function ValueList({ rows }){
+      if (!rows.length) return React.createElement("div", { className: "emptyNote" }, "No rows to show.");
+      return React.createElement("div", { className: "valueList" },
+        rows.map((row, i) => React.createElement("div", { className: "valueRow", key: i },
+          React.createElement("div", { className: "valueLabel" }, row[0]),
+          React.createElement("div", { className: "valueFlow" },
+            React.createElement("div", { className: "valueBox" }, row[1]),
+            React.createElement("div", { className: "valueArrow" }, "→"),
+            React.createElement("div", { className: "valueBox new" }, row[2])
+          )
+        ))
+      );
+    }
+
+    function StepPlayer({ rows, index, setIndex, onClose }){
+      const total = rows.length;
+      const current = rows[index];
+      if (!total || !current) return React.createElement("div", { className: "emptyNote" }, "No steps available.");
+      const progress = ((index + 1) / total) * 100;
+      return React.createElement("div", { className: "stepPlayer" },
+        React.createElement("div", { className: "progressText" }, "Step " + (index + 1) + " of " + total),
+        React.createElement("div", { className: "progressBar" },
+          React.createElement("div", { className: "progressFill", style: { width: progress + "%" } })
+        ),
+        React.createElement("div", { className: "stepPlayerCard" },
+          React.createElement("div", { className: "stepPlayerLabel" }, current[0]),
+          React.createElement("div", { className: "valueFlow" },
+            React.createElement("div", { className: "valueBox" }, current[1]),
+            React.createElement("div", { className: "valueArrow" }, "→"),
+            React.createElement("div", { className: "valueBox new" }, current[2])
+          ),
+          React.createElement("div", { className: "playerControls" },
+            React.createElement("button", { className: "backBtn", disabled: index === 0, onClick: () => index > 0 && setIndex(index - 1) }, "Previous"),
+            React.createElement("button", { className: "primaryBtn", onClick: () => index < total - 1 && setIndex(index + 1) }, index < total - 1 ? "Next" : "Done"),
+            React.createElement("button", { className: "ghostBtn", onClick: onClose }, "Close")
+          )
+        )
+      );
+    }
+
+    function SectionDetail({ title, rows, extraToolbar, onBack, onStartOver }){
+      const [viewMode, setViewMode] = React.useState(null);
+      const [onlyChanges, setOnlyChanges] = React.useState(true);
+      const [stepIndex, setStepIndex] = React.useState(0);
+      const visibleRows = filterRows(rows, onlyChanges);
+
+      return React.createElement("div", { className: "card" },
+        React.createElement("div", { className: "sectionHead" },
+          React.createElement("div", null,
+            React.createElement("div", { className: "eyebrow" }, "Section"),
+            React.createElement("div", { className: "sectionTitle" }, title),
+            React.createElement("div", { className: "sectionSub" }, "Choose Start Ombouw or Show List.")
+          ),
+          React.createElement("div", { className: "row" },
+            React.createElement("button", { className: "backBtn", onClick: onBack }, "Back"),
+            React.createElement("button", { className: "ghostBtn", onClick: onStartOver }, "Start over")
+          )
+        ),
+        extraToolbar,
+        React.createElement("div", { className: "miniMenu" },
+          React.createElement("button", { className: "menuBtn" + (viewMode === "start" ? " selected" : ""), onClick: () => { setViewMode("start"); setStepIndex(0); } },
+            React.createElement("div", { className: "tileIcon" }, "▶️"),
+            React.createElement("div", { className: "tileTitle" }, "Start Ombouw"),
+            React.createElement("div", { className: "tileMeta" }, "Step by step. One change at a time.")
+          ),
+          React.createElement("button", { className: "menuBtn" + (viewMode === "list" ? " selected" : ""), onClick: () => setViewMode("list") },
+            React.createElement("div", { className: "tileIcon" }, "📋"),
+            React.createElement("div", { className: "tileTitle" }, "Show List"),
+            React.createElement("div", { className: "tileMeta" }, "Open the list and compare old → new values.")
+          )
+        ),
+        viewMode ? React.createElement("div", { className: "toolbar", style: { marginTop: "14px" } },
+          React.createElement("button", { className: "toggleBtn" + (!onlyChanges ? " active" : ""), onClick: () => { setOnlyChanges(false); setStepIndex(0); } }, "Show all"),
+          React.createElement("button", { className: "toggleBtn" + (onlyChanges ? " active" : ""), onClick: () => { setOnlyChanges(true); setStepIndex(0); } }, "Only changes")
+        ) : null,
+        viewMode === "start" ? React.createElement(StepPlayer, { rows: visibleRows, index: stepIndex, setIndex: setStepIndex, onClose: () => setViewMode(null) }) : null,
+        viewMode === "list" ? React.createElement("div", { className: "listPanel" }, React.createElement(ValueList, { rows: visibleRows })) : null
+      );
+    }
+
+    function App(){
+      const [stage, setStage] = React.useState(1);
+      const [fromBiscuit, setFromBiscuit] = React.useState(null);
+      const [fromFormat, setFromFormat] = React.useState(null);
+      const [toBiscuit, setToBiscuit] = React.useState(null);
+      const [toFormat, setToFormat] = React.useState(null);
+      const [section, setSection] = React.useState(null);
+      const [cavannaLine, setCavannaLine] = React.useState("9");
+
+      function resetAll(){
+        setStage(1);
+        setFromBiscuit(null);
+        setFromFormat(null);
+        setToBiscuit(null);
+        setToFormat(null);
+        setSection(null);
+        setCavannaLine("9");
+      }
+
+      const cavannaSource = cavannaLine === "10" ? CAVANNA_10 : CAVANNA_9;
+      const cavannaRows = buildFlowRows(cavannaSource[fromBiscuit] || {}, cavannaSource[toBiscuit] || {});
+      const robertRows = buildFlowRows(ROBERTPACK[fromFormat] || {}, ROBERTPACK[toFormat] || {});
+      const dozenRows = buildFlowRows(DOZEN[fromFormat] || {}, DOZEN[toFormat] || {});
+      const dekselaarRows = buildFlowRows(DEKSELAAR[fromFormat] || {}, DEKSELAAR[toFormat] || {});
+
+      const canContinueSetup = fromBiscuit && fromFormat && toBiscuit && toFormat;
+
+      const summaryBar = React.createElement("div", { className: "summaryBar" },
+        React.createElement("div", { className: "summaryNode" }, fromBiscuit ? biscuitLabel(fromBiscuit) : "Van product"),
+        fromFormat ? React.createElement("div", { className: "summaryNode" }, fromFormat) : null,
+        React.createElement("div", { className: "summaryArrow" }, "→"),
+        React.createElement("div", { className: "summaryNode active" }, toBiscuit ? biscuitLabel(toBiscuit) : "Naar product"),
+        toFormat ? React.createElement("div", { className: "summaryNode active" }, toFormat) : null,
+        section ? React.createElement("div", { className: "summaryArrow" }, "•") : null,
+        section ? React.createElement("div", { className: "summaryNode" }, section === "cavanna" ? ("Cavanna " + cavannaLine) : section === "robertpack" ? "Robert Pack" : section === "dozen" ? "Dozen Opzetter" : "Dekselaar Opzetter") : null
+      );
+
+      return React.createElement("div", { className: "app" },
+        React.createElement("div", { className: "hero" },
+          React.createElement("div", { className: "heroTop" },
+            React.createElement("div", { className: "brandWrap" },
+              React.createElement("div", { className: "logoBox" },
+                React.createElement("img", { src: "./pally-logo.png", alt: "Pally Biscuits logo", onError: (e) => { e.currentTarget.style.display = "none"; } })
+              ),
+              React.createElement("div", null,
+                React.createElement("div", { className: "eyebrow" }, "Pally Biscuits"),
+                React.createElement("h1", null, "Ombouwen"),
+                React.createElement("div", { className: "heroSub" }, "v25 compact Van / Naar setup, numbered labels where available, and simple section workflow.")
+              )
+            ),
+            React.createElement("div", { className: "statusPill" },
+              React.createElement("div", { className: "statusDot" }),
+              React.createElement("span", null, "v25 • compact setup")
+            )
+          ),
+          summaryBar
+        ),
+
+        React.createElement(StepDots, { stage }),
+
+        stage === 1 && !section ? React.createElement("div", { className: "card" },
+          React.createElement("div", { className: "sectionHead" },
+            React.createElement("div", null,
+              React.createElement("div", { className: "eyebrow" }, "Setup"),
+              React.createElement("div", { className: "sectionTitle" }, "Van → Naar"),
+              React.createElement("div", { className: "sectionSub" }, "Select from which product and format you come, and to which product and format you go.")
+            )
+          ),
+
+          React.createElement("div", { className: "setupGrid" },
+            React.createElement("div", { className: "setupPanel" },
+              React.createElement("div", { className: "setupTitle" }, "Van"),
+              React.createElement("div", { className: "setupSub" }, "Vorige product en formaat"),
+              React.createElement("div", { className: "chipLabel" }, "Product"),
+              React.createElement(BiscuitChipGroup, { value: fromBiscuit, onChange: (id) => { setFromBiscuit(id); setFromFormat(null); } }),
+              fromBiscuit ? React.createElement(React.Fragment, null,
+                React.createElement("div", { className: "chipLabel" }, "Formaat"),
+                React.createElement(FormatChipGroup, { biscuitId: fromBiscuit, value: fromFormat, onChange: setFromFormat })
+              ) : null
+            ),
+            React.createElement("div", { className: "setupPanel" },
+              React.createElement("div", { className: "setupTitle" }, "Naar"),
+              React.createElement("div", { className: "setupSub" }, "Nieuw product en formaat"),
+              React.createElement("div", { className: "chipLabel" }, "Product"),
+              React.createElement(BiscuitChipGroup, { value: toBiscuit, onChange: (id) => { setToBiscuit(id); setToFormat(null); } }),
+              toBiscuit ? React.createElement(React.Fragment, null,
+                React.createElement("div", { className: "chipLabel" }, "Formaat"),
+                React.createElement(FormatChipGroup, { biscuitId: toBiscuit, value: toFormat, onChange: setToFormat })
+              ) : null
+            )
+          ),
+
+          React.createElement("div", { className: "bottomBar" },
+            React.createElement("button", { className: "ghostBtn", onClick: resetAll }, "Reset"),
+            React.createElement("button", { className: "primaryBtn", disabled: !canContinueSetup, onClick: () => setStage(2) }, "Verder naar secties")
+          )
+        ) : null,
+
+        stage === 2 && !section ? React.createElement("div", { className: "card" },
+          React.createElement("div", { className: "sectionHead" },
+            React.createElement("div", null,
+              React.createElement("div", { className: "eyebrow" }, "Sections"),
+              React.createElement("div", { className: "sectionTitle" }, "Choose section"),
+              React.createElement("div", { className: "sectionSub" }, "Open the exact machine section you want to work on.")
+            ),
+            React.createElement("button", { className: "backBtn", onClick: () => setStage(1) }, "Back")
+          ),
+          React.createElement("div", { className: "grid4" },
+            React.createElement("button", { className: "menuBtn", onClick: () => setSection("cavanna") },
+              React.createElement("div", { className: "tileIcon" }, "⚙️"),
+              React.createElement("div", { className: "tileTitle" }, "Cavanna"),
+              React.createElement("div", { className: "tileMeta" }, "Choose line 9 or 10, then Start Ombouw or Show List.")
+            ),
+            React.createElement("button", { className: "menuBtn", onClick: () => setSection("robertpack") },
+              React.createElement("div", { className: "tileIcon" }, "📦"),
+              React.createElement("div", { className: "tileTitle" }, "Robert Pack"),
+              React.createElement("div", { className: "tileMeta" }, "Start Ombouw or Show List.")
+            ),
+            React.createElement("button", { className: "menuBtn", onClick: () => setSection("dozen") },
+              React.createElement("div", { className: "tileIcon" }, "🔧"),
+              React.createElement("div", { className: "tileTitle" }, "Dozen Opzetter"),
+              React.createElement("div", { className: "tileMeta" }, "Start Ombouw or Show List.")
+            ),
+            React.createElement("button", { className: "menuBtn", onClick: () => setSection("dekselaar") },
+              React.createElement("div", { className: "tileIcon" }, "🧰"),
+              React.createElement("div", { className: "tileTitle" }, "Dekselaar Opzetter"),
+              React.createElement("div", { className: "tileMeta" }, "Start Ombouw or Show List.")
+            )
+          )
+        ) : null,
+
+        stage === 2 && section === "cavanna" ? React.createElement(SectionDetail, {
+          title: "Cavanna",
+          rows: cavannaRows,
+          onBack: () => setSection(null),
+          onStartOver: resetAll,
+          extraToolbar: React.createElement("div", { className: "toolbar" },
+            React.createElement("button", { className: "toggleBtn" + (cavannaLine === "9" ? " active" : ""), onClick: () => setCavannaLine("9") }, "Cavanna 9"),
+            React.createElement("button", { className: "toggleBtn" + (cavannaLine === "10" ? " active" : ""), onClick: () => setCavannaLine("10") }, "Cavanna 10"),
+            React.createElement("div", { className: "pill" }, biscuitLabel(fromBiscuit) + " " + fromFormat),
+            React.createElement("div", { className: "pill" }, biscuitLabel(toBiscuit) + " " + toFormat)
+          )
+        }) : null,
+
+        stage === 2 && section === "robertpack" ? React.createElement(SectionDetail, {
+          title: "Robert Pack",
+          rows: robertRows,
+          onBack: () => setSection(null),
+          onStartOver: resetAll,
+          extraToolbar: React.createElement("div", { className: "toolbar" },
+            React.createElement("div", { className: "pill" }, fromFormat),
+            React.createElement("div", { className: "pill" }, toFormat),
+            React.createElement("div", { className: "pill" }, "Numbers still need full source mapping")
+          )
+        }) : null,
+
+        stage === 2 && section === "dozen" ? React.createElement(SectionDetail, {
+          title: "Dozen Opzetter",
+          rows: dozenRows,
+          onBack: () => setSection(null),
+          onStartOver: resetAll,
+          extraToolbar: React.createElement("div", { className: "toolbar" },
+            React.createElement("div", { className: "pill" }, fromFormat),
+            React.createElement("div", { className: "pill" }, toFormat)
+          )
+        }) : null,
+
+        stage === 2 && section === "dekselaar" ? React.createElement(SectionDetail, {
+          title: "Dekselaar Opzetter",
+          rows: dekselaarRows,
+          onBack: () => setSection(null),
+          onStartOver: resetAll,
+          extraToolbar: React.createElement("div", { className: "toolbar" },
+            React.createElement("div", { className: "pill" }, fromFormat),
+            React.createElement("div", { className: "pill" }, toFormat)
+          )
+        }) : null
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("app")).render(React.createElement(App));
+  </script>
+</body>
+</html>
