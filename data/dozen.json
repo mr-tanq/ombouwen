@@ -19,7 +19,7 @@
   },
   "values": {
     "4x4": {
-      "1 Hoogte": "275,1",
+      "1 Hoogte": "275",
       "2 Verstelbare balk": "532,5",
       "3 Veiligheidsschijf": "133",
       "4 Karton neerdrukker": "132",
@@ -30,7 +30,7 @@
       "11 Zuiger": "241",
       "12A Zuiger voor": "310",
       "12B Zuiger achter": "313",
-      "13 Achterste binnenklepinslager": "0310,0",
+      "13 Achterste binnenklepinslager": "310",
       "14 Breedte": "242,8",
       "15A Meenemer links": "310",
       "15B Meenemer rechts": "310",
