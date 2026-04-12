@@ -492,6 +492,40 @@
 
     .colorDot.wit{border-color:rgba(255,255,255,.35)}
     .colorDot.grijs{border-color:rgba(255,255,255,.22)}
+.lineBadge,
+.productBadge{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 14px;
+  border-radius:999px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  font-weight:800;
+  font-size:13px;
+}
+
+.productBadge{
+  background:rgba(255,255,255,.05);
+}
+
+.lineSelector{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+.lineToggle{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.chipInner{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
 
     .sectionStrip{
       display:flex;
@@ -903,10 +937,10 @@ function renderStepPlayer(rows){
           </div>
 
           <div class="summaryBar">
-            <div class="summaryNode">${state.fromBiscuit?escapeHtml(biscuitLabel(state.fromBiscuit)):'Van'}</div>
+<div class="summaryNode">${state.fromBiscuit?renderProductBadge(state.fromBiscuit):'Van'}</div>
             ${state.fromFormat?`<div class="summaryNode">${escapeHtml(state.fromFormat)}</div>`:''}
             <div class="summaryArrow">→</div>
-            <div class="summaryNode active">${state.toBiscuit?escapeHtml(biscuitLabel(state.toBiscuit)):'Naar'}</div>
+<div class="summaryNode active">${state.toBiscuit?renderProductBadge(state.toBiscuit):'Naar'}</div>
             ${state.toFormat?`<div class="summaryNode active">${escapeHtml(state.toFormat)}</div>`:''}
             ${state.section?`<div class="summaryArrow">•</div><div class="summaryNode">${state.section==='cavanna'?'Cavanna '+state.cavannaLine:state.section==='robertpack'?'Robert Pack '+state.robertpackLine:state.section==='dozen'?'Dozen Opzetter':'Dekselaar Opzetter'}</div>`:''}
           </div>
@@ -1005,20 +1039,36 @@ ${renderChipGroup(
 
             <div class="toolbar">
               ${state.section==='cavanna'?`
-                <button class="toggleBtn ${state.cavannaLine==='9'?'active':''}" data-action="cav-line" data-value="9">Cavanna 9</button>
-                <button class="toggleBtn ${state.cavannaLine==='10'?'active':''}" data-action="cav-line" data-value="10">Cavanna 10</button>
+<button class="toggleBtn lineToggle ${state.cavannaLine==='9'?'active':''}" data-action="cav-line" data-value="9">
+  ${renderColorDot('rood')}<span>Cavanna 9</span>
+</button>
+<button class="toggleBtn lineToggle ${state.cavannaLine==='10'?'active':''}" data-action="cav-line" data-value="10">
+  ${renderColorDot('grijs')}<span>Cavanna 10</span>
+</button>
               `:''}
 
               ${state.section==='robertpack'?`
-                <button class="toggleBtn ${state.robertpackLine==='9'?'active':''}" data-action="rp-line" data-value="9">Robert Pack 9</button>
-                <button class="toggleBtn ${state.robertpackLine==='10'?'active':''}" data-action="rp-line" data-value="10">Robert Pack 10</button>
+<button class="toggleBtn lineToggle ${state.robertpackLine==='9'?'active':''}" data-action="rp-line" data-value="9">
+  ${renderColorDot('rood')}<span>Robert Pack 9</span>
+</button>
+<button class="toggleBtn lineToggle ${state.robertpackLine==='10'?'active':''}" data-action="rp-line" data-value="10">
+  ${renderColorDot('grijs')}<span>Robert Pack 10</span>
+</button>
               `:''}
             </div>
 
             <div class="sectionStrip">
               <div class="row">
-                <div class="pill">${escapeHtml(biscuitLabel(state.fromBiscuit))} ${escapeHtml(state.fromFormat||'')}</div>
-                <div class="pill">${escapeHtml(biscuitLabel(state.toBiscuit))} ${escapeHtml(state.toFormat||'')}</div>
+<div class="pill">
+  ${renderColorDot(getBiscuitMeta(state.fromBiscuit)?.color)}
+  ${escapeHtml(biscuitLabel(state.fromBiscuit))}
+  ${escapeHtml(state.fromFormat||'')}
+</div>
+<div class="pill">
+  ${renderColorDot(getBiscuitMeta(state.toBiscuit)?.color)}
+  ${escapeHtml(biscuitLabel(state.toBiscuit))}
+  ${escapeHtml(state.toFormat||'')}
+</div>
               </div>
 
               <div class="sectionTools">
