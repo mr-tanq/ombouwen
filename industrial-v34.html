@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pally Ombouwen</title>
+  <style>
+    :root{
+      --bg:#0b0d12;
+      --card:#171c24;
+      --line:rgba(255,255,255,.08);
+      --lineGold:rgba(216,180,138,.22);
+      --text:#f5f7fb;
+      --muted:rgba(255,255,255,.60);
+      --gold:#d8b48a;
+      --blue:#67b8ff;
+      --green:#59d48a;
+      --shadow:0 24px 70px rgba(0,0,0,.38)
+    }
+
+    *{box-sizing:border-box}
+    html,body{
+      margin:0;
+      padding:0;
+      background:linear-gradient(180deg,#0b0d12,#0f141b 40%,#0b0d12 100%);
+      color:var(--text);
+      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
+    }
+    body{min-height:100vh}
+    button{font:inherit}
+    img{max-width:100%;display:block}
+
+    .app{
+      max-width:1120px;
+      margin:0 auto;
+      padding:18px 14px 42px
+    }
+
+    .hero{
+      border:1px solid var(--lineGold);
+      background:
+        radial-gradient(circle at top right, rgba(216,180,138,.14), transparent 28%),
+        radial-gradient(circle at top left, rgba(103,184,255,.07), transparent 26%),
+        linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+      border-radius:34px;
+      box-shadow:var(--shadow);
+      padding:22px;
+      margin-bottom:16px;
+      overflow:hidden
+    }
+
+    .heroTop{
+      display:flex;
+      gap:16px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap
+    }
+
+    .brandWrap{
+      display:flex;
+      gap:16px;
+      align-items:center;
+      min-width:0
+    }
+
+    .logoBox{
+      width:84px;
+      height:84px;
+      border-radius:22px;
+      background:#0b0d12;
+      border:1px solid rgba(216,180,138,.16);
+      padding:10px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      flex:0 0 auto
+    }
+
+    .eyebrow{
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.22em;
+      color:rgba(216,180,138,.76);
+      font-weight:800;
+      margin-bottom:6px
+    }
+
+    h1,h2,h3,h4,p{margin:0}
+
+    h1{
+      font-size:clamp(30px,5vw,50px);
+      line-height:.95;
+      letter-spacing:-.05em;
+      font-weight:900
+    }
+
+    .statusPill,.pill{
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(0,0,0,.18);
+      border-radius:999px;
+      padding:10px 14px;
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      color:var(--muted);
+      font-size:12px;
+      white-space:nowrap;
+      font-weight:800;
+      letter-spacing:.08em;
+      text-transform:uppercase
+    }
+
+    .summaryBar{
+      margin-top:18px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      border-radius:22px;
+      padding:12px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center
+    }
+
+    .summaryNode,.summaryArrow{
+      border-radius:16px;
+      padding:10px 12px;
+      font-weight:800;
+      font-size:13px
+    }
+
+    .summaryNode{
+      background:#0f1319;
+      border:1px solid rgba(255,255,255,.06)
+    }
+
+    .summaryNode.active{
+      background:var(--gold);
+      color:#111;
+      border-color:transparent
+    }
+
+    .summaryArrow{
+      color:rgba(255,255,255,.34);
+      padding-left:2px;
+      padding-right:2px
+    }
+
+    .stepTrack{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:8px;
+      margin:18px 0 16px
+    }
+
+    .stepDot{
+      height:8px;
+      border-radius:999px;
+      background:rgba(255,255,255,.08)
+    }
+
+    .stepDot.active{
+      background:linear-gradient(90deg,var(--gold),#f1d4b1)
+    }
+
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border:1px solid var(--line);
+      border-radius:30px;
+      box-shadow:var(--shadow);
+      padding:18px
+    }
+
+    .sectionHead{
+      display:flex;
+      gap:14px;
+      justify-content:space-between;
+      align-items:flex-end;
+      flex-wrap:wrap;
+      margin-bottom:14px
+    }
+
+    .sectionTitle{
+      font-size:clamp(26px,4vw,38px);
+      font-weight:900;
+      letter-spacing:-.04em
+    }
+
+    .row{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap
+    }
+
+    .grid2,.setupGrid{
+      display:grid;
+      gap:14px;
+      grid-template-columns:repeat(2,1fr)
+    }
+
+    .setupPanel{
+      border-radius:26px;
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      padding:16px
+    }
+
+    .setupTitle{
+      font-size:24px;
+      font-weight:900;
+      letter-spacing:-.03em
+    }
+
+    .chipRow{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:12px
+    }
+
+    .chipLabel{
+      margin-top:14px;
+      font-size:12px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      color:rgba(216,180,138,.78);
+      font-weight:800
+    }
+
+    .chip,.backBtn,.ghostBtn,.primaryBtn,.toggleBtn,.menuBtn,.iconAction{
+      border:none;
+      cursor:pointer;
+      transition:.18s ease
+    }
+
+    .chip,.backBtn,.ghostBtn,.toggleBtn{
+      background:rgba(255,255,255,.04);
+      color:var(--text);
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:11px 14px;
+      font-weight:700
+    }
+
+    .chip.active,.toggleBtn.active{
+      background:rgba(103,184,255,.14);
+      color:#dff1ff;
+      border-color:rgba(103,184,255,.28)
+    }
+
+    .primaryBtn{
+      background:linear-gradient(180deg,#efd2b2,var(--gold));
+      color:#111;
+      border-radius:999px;
+      padding:14px 20px;
+      font-weight:900;
+      box-shadow:0 14px 32px rgba(216,180,138,.22)
+    }
+
+    .primaryBtn:disabled{
+      opacity:.45;
+      cursor:not-allowed;
+      box-shadow:none
+    }
+
+    .menuBtn{
+      text-align:left;
+      border-radius:28px;
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      color:var(--text);
+      padding:22px 18px;
+      min-height:150px
+    }
+
+    .menuBtn:hover,.iconAction:hover{
+      transform:translateY(-1px);
+      border-color:rgba(216,180,138,.25)
+    }
+
+    .tileIcon{
+      width:58px;
+      height:58px;
+      border-radius:18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:rgba(216,180,138,.12);
+      border:1px solid rgba(216,180,138,.14);
+      font-size:28px;
+      margin-bottom:16px
+    }
+
+    .tileTitle{
+      font-size:24px;
+      font-weight:900;
+      letter-spacing:-.03em
+    }
+
+    .toolbar{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:14px
+    }
+
+    .listPanel{
+      margin-top:14px;
+      border-radius:24px;
+      border:1px solid var(--line);
+      background:rgba(0,0,0,.16);
+      padding:14px
+    }
+
+    .valueList{
+      display:grid;
+      gap:10px
+    }
+
+    .valueRow{
+      border-radius:20px;
+      border:1px solid rgba(255,255,255,.06);
+      background:rgba(0,0,0,.18);
+      padding:14px
+    }
+
+    .valueLabel{
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.35
+    }
+
+    .valueFlow{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+      margin-top:10px
+    }
+
+    .valueBox{
+      border-radius:14px;
+      padding:10px 12px;
+      font-weight:800;
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.06);
+      min-height:44px;
+      display:flex;
+      align-items:center
+    }
+
+    .valueBox.new{
+      background:rgba(103,184,255,.12);
+      color:#cfe8ff;
+      border-color:rgba(103,184,255,.22)
+    }
+
+    .valueArrow{
+      color:rgba(255,255,255,.35);
+      font-weight:900
+    }
+
+    .emptyNote{
+      color:var(--muted);
+      padding:18px;
+      border:1px dashed rgba(255,255,255,.1);
+      border-radius:20px;
+      background:rgba(0,0,0,.12)
+    }
+
+    .stepPlayer{
+      margin-top:16px;
+      border-radius:30px;
+      border:1px solid rgba(103,184,255,.28);
+      background:linear-gradient(180deg, rgba(103,184,255,.11), rgba(103,184,255,.05));
+      padding:18px
+    }
+
+    .progressText{
+      color:var(--muted);
+      font-size:20px;
+      margin-bottom:12px;
+      font-weight:800
+    }
+
+    .progressBar{
+      height:10px;
+      border-radius:999px;
+      background:rgba(255,255,255,.08);
+      overflow:hidden;
+      margin-bottom:18px
+    }
+
+    .progressFill{
+      height:100%;
+      background:linear-gradient(90deg,var(--blue),#a5d4ff);
+      border-radius:999px
+    }
+
+    .stepPlayerCard{
+      border-radius:26px;
+      background:rgba(0,0,0,.22);
+      border:1px solid rgba(255,255,255,.08);
+      padding:22px
+    }
+
+    .stepPlayerLabel{
+      font-size:32px;
+      line-height:1.05;
+      font-weight:900;
+      color:#fff;
+      margin-bottom:18px;
+      letter-spacing:-.03em
+    }
+.playerValueFlow{
+      display:flex;
+      gap:16px;
+      align-items:center;
+      flex-wrap:wrap;
+      margin-top:4px;
+      margin-bottom:18px
+    }
+
+    .playerValueBox{
+      border-radius:18px;
+      padding:16px 20px;
+      font-weight:900;
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.08);
+      min-width:110px;
+      min-height:72px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:24px
+    }
+
+    .playerValueBox.new{
+      background:rgba(103,184,255,.12);
+      color:#d6ebff;
+      border-color:rgba(103,184,255,.28)
+    }
+
+    .playerArrow{
+      font-size:28px;
+      color:rgba(255,255,255,.4);
+      font-weight:900
+    }
+
+    .playerControls{
+      display:flex;
+      gap:12px;
+      margin-top:10px;
+      flex-wrap:wrap
+    }
+
+    .loading{
+      padding:20px;
+      color:var(--muted)
+    }
+
+    .richValue{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      flex-wrap:wrap
+    }
+
+    .richText{
+      font-weight:800;
+      color:inherit
+    }
+
+    .colorDots{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      flex-wrap:wrap
+    }
+
+    .colorDot{
+      width:18px;
+      height:18px;
+      border-radius:999px;
+      border:2px solid rgba(255,255,255,.14);
+      display:inline-block;
+      box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)
+    }
+
+    .colorDot.wit{border-color:rgba(255,255,255,.35)}
+    .colorDot.grijs{border-color:rgba(255,255,255,.22)}
+
+    .sectionStrip{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:16px
+    }
+
+    .sectionTools{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap:wrap
+    }
+
+    .iconAction{
+      width:78px;
+      height:78px;
+      border-radius:22px;
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:34px;
+      color:#fff;
+      box-shadow:var(--shadow)
+    }
+
+    .iconAction.active{
+      border-color:rgba(216,180,138,.42);
+      box-shadow:0 0 0 1px rgba(216,180,138,.12) inset, var(--shadow)
+    }
+
+    @media (max-width:900px){
+      .setupGrid,.grid2{grid-template-columns:1fr}
+      .heroTop,.sectionStrip{align-items:flex-start}
+      .logoBox{width:72px;height:72px}
+      .summaryBar{padding:12px}
+      .stepPlayerLabel{font-size:26px}
+      .playerValueBox{font-size:22px;min-width:96px;min-height:68px}
+    }
+  </style>
+</head>
+<body>
+  <div class="app" id="app"></div>
+  <script>
+    const BISCUITS=[
+      {id:'richtea',label:'Rich Tea',formats:['5x6','3x6'],icon:'🍪'},
+      {id:'koffiekoek',label:'Koffiekoek',formats:['4x4','4x5','5x5'],icon:'🧈'},
+      {id:'theekokos',label:'Thee/Kokos',formats:['5x5'],icon:'🥥'}
+    ];
+
+    const FILES={
+      cavanna9:'./data/cavanna9.json',
+      cavanna10:'./data/cavanna10.json',
+      robertpack:'./data/robertpack.json',
+      dozen:'./data/dozen.json',
+      dekselaar:'./data/dekselaar.json'
+    };
+
+    const state={
+      loading:true,
+      error:'',
+      data:null,
+      stage:1,
+      fromBiscuit:null,
+      fromFormat:null,
+      toBiscuit:null,
+      toFormat:null,
+      section:null,
+      cavannaLine:'9',
+      robertpackLine:'9',
+      viewMode:null,
+      onlyChanges:true,
+      stepIndex:0
+    };
+
+    const COLOR_MAP={
+      rood:'#ff1f1f',
+      grijs:'#8a8f98',
+      bruin:'#7a4a21',
+      wit:'#ffffff',
+      blauw:'#14aaf5',
+      zwart:'#111111',
+      groen:'#8bcf4a'
+    };
+
+    function biscuitLabel(id){
+      return BISCUITS.find(b=>b.id===id)?.label||''
+    }
+
+    function formatsForBiscuit(id){
+      return BISCUITS.find(b=>b.id===id)?.formats||[]
+    }
+
+    function buildFlowRows(fromObj,toObj){
+      const keys=Array.from(new Set([...(Object.keys(fromObj||{})),...(Object.keys(toObj||{}))]));
+      return keys.map(key=>[key,fromObj?.[key]??'—',toObj?.[key]??'—'])
+    }
+
+    function escapeHtml(v){
+      return String(v??'')
+        .replace(/&/g,'&amp;')
+        .replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;')
+        .replace(/"/g,'&quot;')
+        .replace(/'/g,'&#39;')
+    }
+
+    function cleanNumberToken(token){
+      let s=String(token).trim();
+      if(!s) return s;
+      if(!/^[-+]?\d+[\.,]?\d*$/.test(s)) return s;
+
+      const hasComma=s.includes(',');
+      const hasDot=s.includes('.');
+      const sep=hasComma?',':(hasDot?'.':'');
+      let parts=sep?s.split(sep):[s];
+      let intPart=parts[0].replace(/^0+(\d)/,'$1');
+
+      if(intPart==='') intPart='0';
+      if(parts.length===1) return intPart;
+
+      let decPart=parts[1].replace(/0+$/,'');
+      if(decPart==='') return intPart;
+
+      return intPart+','+decPart;
+    }
+
+    function normalizeDisplayValue(value){
+      return String(value??'')
+        .replace(/\u0392/g,'B')
+        .split('/')
+        .map(part=>cleanNumberToken(part.trim()))
+        .join(' / ');
+    }
+
+    function normalizeCompareValue(value){
+      return normalizeDisplayValue(value).toLowerCase().replace(/\s+/g,' ').trim();
+    }
+
+    function filterRows(rows,onlyChanges){
+      return onlyChanges
+        ? rows.filter(r=>normalizeCompareValue(r[1])!==normalizeCompareValue(r[2]))
+        : rows
+    }
+
+    function isColorToken(token){
+      return Object.prototype.hasOwnProperty.call(COLOR_MAP,String(token).trim().toLowerCase())
+    }
+
+    function renderColorDot(token){
+      const name=String(token).trim().toLowerCase();
+      const color=COLOR_MAP[name];
+      if(!color) return '';
+      return `<span class="colorDot ${name}" style="background:${color}"></span>`;
+    }
+
+    function renderRichValue(value){
+      const normalized=normalizeDisplayValue(value);
+      const parts=normalized.split('/').map(p=>p.trim()).filter(Boolean);
+
+      if(parts.length && parts.every(isColorToken)){
+        return `<span class="richValue"><span class="colorDots">${parts.map(renderColorDot).join('')}</span></span>`;
+      }
+
+      const htmlParts=parts.map(part =>
+        isColorToken(part)
+          ? renderColorDot(part)
+          : `<span class="richText">${escapeHtml(part)}</span>`
+      );
+
+      return `<span class="richValue">${htmlParts.join('<span class="richText">/</span>')}</span>`;
+    }
+
+    async function loadData(){
+      try{
+        const entries=await Promise.all(
+          Object.entries(FILES).map(async([key,path])=>{
+            const res=await fetch(path,{cache:'no-store'});
+            if(!res.ok) throw new Error('Failed to load '+path);
+            return [key, await res.json()];
+          })
+        );
+        state.data=Object.fromEntries(entries);
+      }catch(err){
+        state.error=err.message||'Failed to load external data files.';
+      }finally{
+        state.loading=false;
+        render();
+      }
+    }
+function setState(patch){
+      Object.assign(state,patch);
+      render();
+    }
+
+    function resetAll(){
+      Object.assign(state,{
+        stage:1,
+        fromBiscuit:null,
+        fromFormat:null,
+        toBiscuit:null,
+        toFormat:null,
+        section:null,
+        cavannaLine:'9',
+        robertpackLine:'9',
+        viewMode:null,
+        onlyChanges:true,
+        stepIndex:0
+      });
+      render();
+    }
+
+    function getRobertPackValuesForFormat(format,col){
+      const values=state.data?.robertpack?.values||{};
+      const bucket=values?.[format]||{};
+      return bucket?.[col]||{};
+    }
+
+    function getRows(){
+      if(!state.data) return [];
+
+      if(state.section==='cavanna'){
+        const source=state.cavannaLine==='10' ? state.data.cavanna10 : state.data.cavanna9;
+        return buildFlowRows(
+          source?.values?.[state.fromFormat]||{},
+          source?.values?.[state.toFormat]||{}
+        );
+      }
+
+      if(state.section==='robertpack'){
+        const fromValues=getRobertPackValuesForFormat(state.fromFormat,state.robertpackLine);
+        const toValues=getRobertPackValuesForFormat(state.toFormat,state.robertpackLine);
+        return buildFlowRows(fromValues,toValues);
+      }
+
+      if(state.section==='dozen'){
+        return buildFlowRows(
+          state.data.dozen?.values?.[state.fromFormat]||{},
+          state.data.dozen?.values?.[state.toFormat]||{}
+        );
+      }
+
+      if(state.section==='dekselaar'){
+        return buildFlowRows(
+          state.data.dekselaar?.values?.[state.fromFormat]||{},
+          state.data.dekselaar?.values?.[state.toFormat]||{}
+        );
+      }
+
+      return [];
+    }
+
+    function renderChipGroup(items,value,onClick,formatter=x=>x){
+      return `<div class="chipRow">${
+        items.map(item=>`<button class="chip ${value===item?'active':''}" data-action="${onClick}" data-value="${item}">${formatter(item)}</button>`).join('')
+      }</div>`;
+    }
+
+    function renderValueList(rows){
+      if(!rows.length) return `<div class="emptyNote">No rows to show.</div>`;
+
+      return `<div class="valueList">${
+        rows.map(r=>`
+          <div class="valueRow">
+            <div class="valueLabel">${escapeHtml(r[0])}</div>
+            <div class="valueFlow">
+              <div class="valueBox">${renderRichValue(r[1])}</div>
+              <div class="valueArrow">→</div>
+              <div class="valueBox new">${renderRichValue(r[2])}</div>
+            </div>
+          </div>
+        `).join('')
+      }</div>`;
+    }
+
+    function renderStepPlayer(rows){
+      const total=rows.length;
+      const current=rows[state.stepIndex];
+
+      if(!total||!current) return `<div class="emptyNote">No steps available.</div>`;
+
+      const progress=((state.stepIndex+1)/total)*100;
+
+      return `
+        <div class="stepPlayer">
+          <div class="progressText">Step ${state.stepIndex+1} of ${total}</div>
+          <div class="progressBar">
+            <div class="progressFill" style="width:${progress}%"></div>
+          </div>
+          <div class="stepPlayerCard">
+            <div class="stepPlayerLabel">${escapeHtml(current[0])}</div>
+            <div class="playerValueFlow">
+              <div class="playerValueBox">${renderRichValue(current[1])}</div>
+              <div class="playerArrow">→</div>
+              <div class="playerValueBox new">${renderRichValue(current[2])}</div>
+            </div>
+            <div class="playerControls">
+              <button class="backBtn" data-action="prev-step" ${state.stepIndex===0?'disabled':''}>Previous</button>
+              <button class="primaryBtn" data-action="next-step">${state.stepIndex<total-1?'Next':'Done'}</button>
+              <button class="ghostBtn" data-action="close-view">Close</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function render(){
+      const app=document.getElementById('app');
+
+      if(state.loading){
+        app.innerHTML=`<div class="card"><div class="loading">Loading...</div></div>`;
+        return;
+      }
+
+      if(state.error){
+        app.innerHTML=`<div class="card"><div class="loading">${escapeHtml(state.error)}</div></div>`;
+        return;
+      }
+
+      const canContinueSetup=state.fromBiscuit&&state.fromFormat&&state.toBiscuit&&state.toFormat;
+      const rows=getRows();
+      const visibleRows=filterRows(rows,state.onlyChanges);
+
+      app.innerHTML=`
+        <div class="hero">
+          <div class="heroTop">
+            <div class="brandWrap">
+              <div class="logoBox">
+                <img src="./pally-logo.png" alt="Pally logo" onerror="this.style.display='none'">
+              </div>
+              <div>
+                <div class="eyebrow">Pally Biscuits</div>
+                <h1>Ombouwen</h1>
+              </div>
+            </div>
+          </div>
+
+          <div class="summaryBar">
+            <div class="summaryNode">${state.fromBiscuit?escapeHtml(biscuitLabel(state.fromBiscuit)):'Van'}</div>
+            ${state.fromFormat?`<div class="summaryNode">${escapeHtml(state.fromFormat)}</div>`:''}
+            <div class="summaryArrow">→</div>
+            <div class="summaryNode active">${state.toBiscuit?escapeHtml(biscuitLabel(state.toBiscuit)):'Naar'}</div>
+            ${state.toFormat?`<div class="summaryNode active">${escapeHtml(state.toFormat)}</div>`:''}
+            ${state.section?`<div class="summaryArrow">•</div><div class="summaryNode">${state.section==='cavanna'?'Cavanna '+state.cavannaLine:state.section==='robertpack'?'Robert Pack '+state.robertpackLine:state.section==='dozen'?'Dozen Opzetter':'Dekselaar Opzetter'}</div>`:''}
+          </div>
+        </div>
+
+        <div class="stepTrack">
+          <div class="stepDot ${state.stage>=1?'active':''}"></div>
+          <div class="stepDot ${state.stage>=2?'active':''}"></div>
+        </div>
+
+        ${state.stage===1&&!state.section?`
+          <div class="card">
+            <div class="sectionHead">
+              <div>
+                <div class="sectionTitle">Van → Naar</div>
+              </div>
+            </div>
+
+            <div class="setupGrid">
+              <div class="setupPanel">
+                <div class="setupTitle">Van</div>
+                <div class="chipLabel">Product</div>
+                ${renderChipGroup(BISCUITS.map(b=>b.id),state.fromBiscuit,'from-product',id=>biscuitLabel(id))}
+                ${state.fromBiscuit?`<div class="chipLabel">Formaat</div>${renderChipGroup(formatsForBiscuit(state.fromBiscuit),state.fromFormat,'from-format')}`:''}
+              </div>
+
+              <div class="setupPanel">
+                <div class="setupTitle">Naar</div>
+                <div class="chipLabel">Product</div>
+                ${renderChipGroup(BISCUITS.map(b=>b.id),state.toBiscuit,'to-product',id=>biscuitLabel(id))}
+                ${state.toBiscuit?`<div class="chipLabel">Formaat</div>${renderChipGroup(formatsForBiscuit(state.toBiscuit),state.toFormat,'to-format')}`:''}
+              </div>
+            </div>
+
+            <div class="toolbar" style="margin-top:16px;justify-content:flex-end">
+              <button class="ghostBtn" data-action="reset-all">Reset</button>
+              <button class="primaryBtn" data-action="go-sections" ${canContinueSetup?'':'disabled'}>Verder</button>
+            </div>
+          </div>
+        `:''}
+
+        ${state.stage===2&&!state.section?`
+          <div class="card">
+            <div class="sectionHead">
+              <div>
+                <div class="sectionTitle">Sections</div>
+              </div>
+              <button class="backBtn" data-action="back-setup">Back</button>
+            </div>
+
+            <div class="grid2">
+              <button class="menuBtn" data-action="open-section" data-value="cavanna">
+                <div class="tileIcon">⚙️</div>
+                <div class="tileTitle">Cavanna</div>
+              </button>
+
+              <button class="menuBtn" data-action="open-section" data-value="robertpack">
+                <div class="tileIcon">📦</div>
+                <div class="tileTitle">Robert Pack</div>
+              </button>
+
+              <button class="menuBtn" data-action="open-section" data-value="dozen">
+                <div class="tileIcon">🔧</div>
+                <div class="tileTitle">Dozen Opzetter</div>
+              </button>
+
+              <button class="menuBtn" data-action="open-section" data-value="dekselaar">
+                <div class="tileIcon">🧰</div>
+                <div class="tileTitle">Dekselaar Opzetter</div>
+              </button>
+            </div>
+          </div>
+        `:''}
+
+        ${state.stage===2&&state.section?`
+          <div class="card">
+            <div class="sectionHead">
+              <div>
+                <div class="sectionTitle">${state.section==='cavanna'?'Cavanna':state.section==='robertpack'?'Robert Pack':state.section==='dozen'?'Dozen Opzetter':'Dekselaar Opzetter'}</div>
+              </div>
+              <div class="row">
+                <button class="backBtn" data-action="close-section">Back</button>
+                <button class="ghostBtn" data-action="reset-all">Start over</button>
+              </div>
+            </div>
+
+            <div class="toolbar">
+              ${state.section==='cavanna'?`
+                <button class="toggleBtn ${state.cavannaLine==='9'?'active':''}" data-action="cav-line" data-value="9">Cavanna 9</button>
+                <button class="toggleBtn ${state.cavannaLine==='10'?'active':''}" data-action="cav-line" data-value="10">Cavanna 10</button>
+              `:''}
+
+              ${state.section==='robertpack'?`
+                <button class="toggleBtn ${state.robertpackLine==='9'?'active':''}" data-action="rp-line" data-value="9">Robert Pack 9</button>
+                <button class="toggleBtn ${state.robertpackLine==='10'?'active':''}" data-action="rp-line" data-value="10">Robert Pack 10</button>
+              `:''}
+            </div>
+
+            <div class="sectionStrip">
+              <div class="row">
+                <div class="pill">${escapeHtml(biscuitLabel(state.fromBiscuit))} ${escapeHtml(state.fromFormat||'')}</div>
+                <div class="pill">${escapeHtml(biscuitLabel(state.toBiscuit))} ${escapeHtml(state.toFormat||'')}</div>
+              </div>
+
+              <div class="sectionTools">
+                <button class="iconAction ${state.viewMode==='start'?'active':''}" data-action="view-mode" data-value="start" aria-label="Start Ombouw">▶️</button>
+                <button class="iconAction ${state.viewMode==='list'?'active':''}" data-action="view-mode" data-value="list" aria-label="Show List">📋</button>
+              </div>
+            </div>
+
+            ${state.viewMode?`
+              <div class="toolbar">
+                <button class="toggleBtn ${!state.onlyChanges?'active':''}" data-action="show-mode" data-value="all">Show all</button>
+                <button class="toggleBtn ${state.onlyChanges?'active':''}" data-action="show-mode" data-value="changes">Only changes</button>
+              </div>
+            `:''}
+
+            ${state.viewMode==='start'?renderStepPlayer(visibleRows):''}
+            ${state.viewMode==='list'?`<div class="listPanel">${renderValueList(visibleRows)}</div>`:''}
+          </div>
+        `:''}
+      `;
+
+      bindActions();
+    }
+
+    function bindActions(){
+      document.querySelectorAll('[data-action]').forEach(el=>{
+        el.addEventListener('click',()=>{
+          const action=el.dataset.action;
+          const value=el.dataset.value;
+
+          if(action==='from-product') setState({fromBiscuit:value,fromFormat:null});
+          if(action==='to-product') setState({toBiscuit:value,toFormat:null});
+          if(action==='from-format') setState({fromFormat:value});
+          if(action==='to-format') setState({toFormat:value});
+          if(action==='reset-all') resetAll();
+          if(action==='go-sections'&&state.fromBiscuit&&state.fromFormat&&state.toBiscuit&&state.toFormat) setState({stage:2});
+          if(action==='back-setup') setState({stage:1});
+          if(action==='open-section') setState({section:value,viewMode:null,stepIndex:0});
+          if(action==='close-section') setState({section:null,viewMode:null,stepIndex:0});
+          if(action==='cav-line') setState({cavannaLine:value,stepIndex:0});
+          if(action==='rp-line') setState({robertpackLine:value,stepIndex:0});
+          if(action==='view-mode') setState({viewMode:value,stepIndex:0});
+          if(action==='show-mode') setState({onlyChanges:value==='changes',stepIndex:0});
+          if(action==='prev-step'&&state.stepIndex>0) setState({stepIndex:state.stepIndex-1});
+
+          if(action==='next-step'){
+            const visibleRows=filterRows(getRows(),state.onlyChanges);
+            if(state.stepIndex<visibleRows.length-1){
+              setState({stepIndex:state.stepIndex+1});
+            }else{
+              setState({viewMode:null,stepIndex:0});
+            }
+          }
+
+          if(action==='close-view') setState({viewMode:null,stepIndex:0});
+        });
+      });
+    }
+
+    render();
+    loadData();
+  </script>
+</body>
+</html>
