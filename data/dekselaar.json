@@ -19,7 +19,7 @@
   },
   "values": {
     "4x4": {
-      "2 Magazijn breedte links": "0425,4",
+      "2 Magazijn breedte links": "425,4",
       "4 Zuigerbalk": "85",
       "5 Zuigerbalk": "352",
       "6 Transportbalk": "260",
@@ -28,7 +28,7 @@
       "12A Diepte vouwer": "242,1",
       "12B Diepte vouwer": "242,1",
       "13 Geleiding invoer": "B",
-      "14 Transport band": "0239,7",
+      "14 Transport band": "239,7",
       "15 Geleiding uitvoer": "B",
       "16 Zijgeleider kartontransport": "NEE",
       "17 Zijgeleider kartontransport": "NEE",
@@ -36,7 +36,7 @@
       "19 Formaat": "****"
     },
     "4x5": {
-      "2 Magazijn breedte links": "0425,4",
+      "2 Magazijn breedte links": "425,4",
       "4 Zuigerbalk": "85",
       "5 Zuigerbalk": "352",
       "6 Transportbalk": "260",
@@ -45,7 +45,7 @@
       "12A Diepte vouwer": "242,1",
       "12B Diepte vouwer": "242,1",
       "13 Geleiding invoer": "B",
-      "14 Transport band": "0239,7",
+      "14 Transport band": "239,7",
       "15 Geleiding uitvoer": "B",
       "16 Zijgeleider kartontransport": "NEE",
       "17 Zijgeleider kartontransport": "NEE",
@@ -70,11 +70,11 @@
       "19 Formaat": "5"
     },
     "theekokos": {
-      "2 Magazijn breedte links": "0417,8",
-      "4 Zuigerbalk": "08,5",
+      "2 Magazijn breedte links": "417,8",
+      "4 Zuigerbalk": "8,5",
       "5 Zuigerbalk": "35,6",
       "6 Transportbalk": "260",
-      "8 Planobreedte": "0410,5",
+      "8 Planobreedte": "410,5",
       "11 Breedte vouwers": "311",
       "12A Diepte vouwer": "242",
       "12B Diepte vouwer": "217",
@@ -83,18 +83,18 @@
       "15 Geleiding uitvoer": "B",
       "16 Zijgeleider kartontransport": "NEE",
       "17 Zijgeleider kartontransport": "NEE",
-      "18 Lijmkop houder": "150,0",
+      "18 Lijmkop houder": "150",
       "19 Formaat": "1"
     },
     "5x6": {
-      "2 Magazijn breedte links": "510,0",
-      "4 Zuigerbalk": "11,0",
-      "5 Zuigerbalk": "36,0",
-      "6 Transportbalk": "23,0",
-      "8 Planobreedte": "507,0",
-      "11 Breedte vouwers": "395,00",
+      "2 Magazijn breedte links": "510",
+      "4 Zuigerbalk": "11",
+      "5 Zuigerbalk": "36",
+      "6 Transportbalk": "23",
+      "8 Planobreedte": "507",
+      "11 Breedte vouwers": "395",
       "12A Diepte vouwer": "258,3",
-      "12B Diepte vouwer": "251,0",
+      "12B Diepte vouwer": "251",
       "13 Geleiding invoer": "Β",
       "14 Transport band": "260",
       "15 Geleiding uitvoer": "B",
@@ -104,7 +104,7 @@
       "19 Formaat": "3"
     },
     "3x6": {
-      "2 Magazijn breedte links": "0502,0",
+      "2 Magazijn breedte links": "502",
       "4 Zuigerbalk": "110",
       "5 Zuigerbalk": "360",
       "6 Transportbalk": "230",
