@@ -558,10 +558,28 @@
   <div class="app" id="app"></div>
   <script>
     const BISCUITS=[
-      {id:'richtea',label:'Rich Tea',formats:['5x6','3x6'],icon:'🍪'},
-      {id:'koffiekoek',label:'Koffiekoek',formats:['4x4','4x5','5x5'],icon:'🧈'},
-      {id:'theekokos',label:'Thee/Kokos',formats:['5x5'],icon:'🥥'}
-    ];
+  {
+    id:'richtea',
+    label:'Rich Tea',
+    formats:['5x6','3x6'],
+    icon:'🍪',
+    color:'blauw'
+  },
+  {
+    id:'koffiekoek',
+    label:'Koffiekoek',
+    formats:['4x4','4x5','5x5'],
+    icon:'🧈',
+    color:'bruin'
+  },
+  {
+    id:'theekokos',
+    label:'Thee/Kokos',
+    formats:['5x5'],
+    icon:'🥥',
+    color:'wit'
+  }
+];
 
     const FILES={
       cavanna9:'./data/cavanna9.json',
@@ -597,6 +615,11 @@
       zwart:'#111111',
       groen:'#8bcf4a'
     };
+
+const LINE_COLORS={
+  '9':'rood',
+  '10':'grijs'
+};
 
     function biscuitLabel(id){
       return BISCUITS.find(b=>b.id===id)?.label||''
@@ -668,6 +691,32 @@
       if(!color) return '';
       return `<span class="colorDot ${name}" style="background:${color}"></span>`;
     }
+
+function getBiscuitMeta(id){
+  return BISCUITS.find(b=>b.id===id)||null;
+}
+
+function renderLineBadge(line){
+  const colorName=LINE_COLORS[String(line)] || 'grijs';
+  return `
+    <span class="lineBadge">
+      ${renderColorDot(colorName)}
+      <span>${escapeHtml(String(line))}</span>
+    </span>
+  `;
+}
+
+function renderProductBadge(id){
+  const biscuit=getBiscuitMeta(id);
+  if(!biscuit) return '';
+
+  return `
+    <span class="productBadge">
+      ${renderColorDot(biscuit.color)}
+      <span>${escapeHtml(biscuit.label)}</span>
+    </span>
+  `;
+}
 
     function renderRichValue(value){
       const normalized=normalizeDisplayValue(value);
@@ -767,10 +816,14 @@
     }
 
     function renderChipGroup(items,value,onClick,formatter=x=>x){
-      return `<div class="chipRow">${
-        items.map(item=>`<button class="chip ${value===item?'active':''}" data-action="${onClick}" data-value="${item}">${formatter(item)}</button>`).join('')
-      }</div>`;
-    }
+  return `<div class="chipRow">${
+    items.map(item=>`
+      <button class="chip ${value===item?'active':''}" data-action="${onClick}" data-value="${item}">
+        <span class="chipInner">${formatter(item)}</span>
+      </button>
+    `).join('')
+  }</div>`;
+}
 
     function renderValueList(rows){
       if(!rows.length) return `<div class="emptyNote">No rows to show.</div>`;
@@ -876,14 +929,24 @@ function renderStepPlayer(rows){
               <div class="setupPanel">
                 <div class="setupTitle">Van</div>
                 <div class="chipLabel">Product</div>
-                ${renderChipGroup(BISCUITS.map(b=>b.id),state.fromBiscuit,'from-product',id=>biscuitLabel(id))}
+${renderChipGroup(
+  BISCUITS.map(b=>b.id),
+  state.fromBiscuit,
+  'from-product',
+  id=>`${renderColorDot(getBiscuitMeta(id)?.color)} <span>${escapeHtml(biscuitLabel(id))}</span>`
+)}
                 ${state.fromBiscuit?`<div class="chipLabel">Formaat</div>${renderChipGroup(formatsForBiscuit(state.fromBiscuit),state.fromFormat,'from-format')}`:''}
               </div>
 
               <div class="setupPanel">
                 <div class="setupTitle">Naar</div>
                 <div class="chipLabel">Product</div>
-                ${renderChipGroup(BISCUITS.map(b=>b.id),state.toBiscuit,'to-product',id=>biscuitLabel(id))}
+${renderChipGroup(
+  BISCUITS.map(b=>b.id),
+  state.toBiscuit,
+  'to-product',
+  id=>`${renderColorDot(getBiscuitMeta(id)?.color)} <span>${escapeHtml(biscuitLabel(id))}</span>`
+)}
                 ${state.toBiscuit?`<div class="chipLabel">Formaat</div>${renderChipGroup(formatsForBiscuit(state.toBiscuit),state.toFormat,'to-format')}`:''}
               </div>
             </div>
