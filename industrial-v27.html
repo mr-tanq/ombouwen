@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pally Ombouwen v27</title>
+<style>
+body{margin:0;background:#0b0d12;color:#f5f7fb;font-family:Arial,sans-serif}
+.container{max-width:1200px;margin:0 auto;padding:20px}
+.card{background:#171c24;border:1px solid rgba(255,255,255,.08);border-radius:24px;padding:20px;margin-bottom:16px}
+h1{font-size:42px;margin:0 0 10px}
+h2{margin:0 0 12px}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+button{background:#222b36;color:white;border:1px solid rgba(255,255,255,.1);padding:12px 16px;border-radius:999px;cursor:pointer}
+button.active{background:#d8b48a;color:#111}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.list{display:grid;gap:10px;margin-top:16px}
+.item{background:#11161d;border:1px solid rgba(255,255,255,.06);padding:12px;border-radius:16px}
+.label{font-size:13px;color:#aaa;margin-bottom:8px}
+.values{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.value{background:#1d2530;padding:8px 10px;border-radius:12px}
+.arrow{opacity:.4}
+@media(max-width:800px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <h1>Pally Ombouwen v27</h1>
+    <p>Stable fallback version using external JSON files.</p>
+  </div>
+
+  <div class="card">
+    <h2>Van</h2>
+    <div class="row" id="fromProducts"></div>
+    <div class="row" id="fromFormats"></div>
+  </div>
+
+  <div class="card">
+    <h2>Naar</h2>
+    <div class="row" id="toProducts"></div>
+    <div class="row" id="toFormats"></div>
+  </div>
+
+  <div class="card">
+    <h2>Section</h2>
+    <div class="row">
+      <button onclick="setSection('cavanna9')">Cavanna 9</button>
+      <button onclick="setSection('cavanna10')">Cavanna 10</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 id="resultTitle">Result</h2>
+    <div class="list" id="resultList"></div>
+  </div>
+</div>
+
+<script>
+const biscuits = {
+  koffiekoek:['4x4','4x5','5x5'],
+  theekokos:['5x5'],
+  richtea:['5x6','3x6']
+};
+
+let data = {};
+let fromProduct = null;
+let toProduct = null;
+let fromFormat = null;
+let toFormat = null;
+let currentSection = 'cavanna9';
+
+async function init(){
+  try{
+    const res9 = await fetch('./data/cavanna9.json');
+    const res10 = await fetch('./data/cavanna10.json');
+    data.cavanna9 = await res9.json();
+    data.cavanna10 = await res10.json();
+    renderProducts();
+  }catch(e){
+    document.getElementById('resultList').innerHTML = '<div class="item">Failed to load JSON files: '+e.message+'</div>';
+  }
+}
+
+function renderProducts(){
+  const fromWrap = document.getElementById('fromProducts');
+  const toWrap = document.getElementById('toProducts');
+
+  fromWrap.innerHTML = '';
+  toWrap.innerHTML = '';
+
+  Object.keys(biscuits).forEach(product=>{
+    const btn1 = document.createElement('button');
+    btn1.textContent = product;
+    if(fromProduct===product) btn1.classList.add('active');
+    btn1.onclick = ()=>{
+      fromProduct = product;
+      fromFormat = null;
+      renderProducts();
+      renderFormats();
+      renderResults();
+    };
+    fromWrap.appendChild(btn1);
+
+    const btn2 = document.createElement('button');
+    btn2.textContent = product;
+    if(toProduct===product) btn2.classList.add('active');
+    btn2.onclick = ()=>{
+      toProduct = product;
+      toFormat = null;
+      renderProducts();
+      renderFormats();
+      renderResults();
+    };
+    toWrap.appendChild(btn2);
+  });
+}
+
+function renderFormats(){
+  const fromWrap = document.getElementById('fromFormats');
+  const toWrap = document.getElementById('toFormats');
+  fromWrap.innerHTML = '';
+  toWrap.innerHTML = '';
+
+  if(fromProduct){
+    biscuits[fromProduct].forEach(format=>{
+      const btn = document.createElement('button');
+      btn.textContent = format;
+      if(fromFormat===format) btn.classList.add('active');
+      btn.onclick = ()=>{
+        fromFormat = format;
+        renderFormats();
+        renderResults();
+      };
+      fromWrap.appendChild(btn);
+    });
+  }
+
+  if(toProduct){
+    biscuits[toProduct].forEach(format=>{
+      const btn = document.createElement('button');
+      btn.textContent = format;
+      if(toFormat===format) btn.classList.add('active');
+      btn.onclick = ()=>{
+        toFormat = format;
+        renderFormats();
+        renderResults();
+      };
+      toWrap.appendChild(btn);
+    });
+  }
+}
+
+function setSection(section){
+  currentSection = section;
+  renderResults();
+}
+
+function renderResults(){
+  const wrap = document.getElementById('resultList');
+  const title = document.getElementById('resultTitle');
+
+  if(!fromFormat || !toFormat){
+    wrap.innerHTML = '<div class="item">Select formats first.</div>';
+    return;
+  }
+
+  title.textContent = currentSection + ' • ' + fromFormat + ' → ' + toFormat;
+
+  const source = data[currentSection]?.values || {};
+  const fromValues = source[fromFormat] || {};
+  const toValues = source[toFormat] || {};
+  const keys = [...new Set([...Object.keys(fromValues), ...Object.keys(toValues)])];
+
+  wrap.innerHTML = '';
+
+  keys.forEach(key=>{
+    const oldVal = fromValues[key] || '—';
+    const newVal = toValues[key] || '—';
+    const div = document.createElement('div');
+    div.className = 'item';
+    div.innerHTML = '<div class="label">'+key+'</div><div class="values"><div class="value">'+oldVal+'</div><div class="arrow">→</div><div class="value">'+newVal+'</div></div>';
+    wrap.appendChild(div);
+  });
+}
+
+init();
+</script>
+</body>
+</html>
