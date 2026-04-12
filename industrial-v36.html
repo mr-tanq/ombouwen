@@ -942,7 +942,21 @@ function renderStepPlayer(rows){
             <div class="summaryArrow">→</div>
 <div class="summaryNode active">${state.toBiscuit?renderProductBadge(state.toBiscuit):'Naar'}</div>
             ${state.toFormat?`<div class="summaryNode active">${escapeHtml(state.toFormat)}</div>`:''}
-            ${state.section?`<div class="summaryArrow">•</div><div class="summaryNode">${state.section==='cavanna'?'Cavanna '+state.cavannaLine:state.section==='robertpack'?'Robert Pack '+state.robertpackLine:state.section==='dozen'?'Dozen Opzetter':'Dekselaar Opzetter'}</div>`:''}
+${state.section?`
+  <div class="summaryArrow">•</div>
+  <div class="summaryNode">
+    ${
+      state.section==='cavanna'
+        ? `Cavanna ${renderLineBadge(state.cavannaLine)}`
+        : state.section==='robertpack'
+          ? `Robert Pack ${renderLineBadge(state.robertpackLine)}`
+          : state.section==='dozen'
+            ? 'Dozen Opzetter'
+            : 'Dekselaar Opzetter'
+    }
+  </div>
+`:''}
+
           </div>
         </div>
 
