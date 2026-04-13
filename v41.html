@@ -528,10 +528,10 @@
   };
 
   const SECTION_DESCS = {
-    cavanna:    'Instellingen voor de Cavanna inpakker, lijn 9 en 10.',
-    robertpack: 'Plaatst de verpakte rijen biscuits in de dozen, lijn 9 en 10.',
-    dozen:      'Vouwt en zet de dozen op voor de Robert Pack.',
-    dekselaar:  'Plaatst en sluit de deksel op de gevulde dozen.'
+    cavanna:    'Instellingen voor Cavanna 9 en 10',
+    robertpack: 'Instellingen voor RobertPack 9 en 10',
+    dozen:      'Instellingen voor Dozen Opzetter',
+    dekselaar:  'Instellingen voor Dekselaar Opzetter'
   };
 
   async function loadData(){
@@ -746,7 +746,7 @@
         <div class="content">
           <div class="content-header">
             <div class="content-title">Configureer ombouw</div>
-            <div class="content-sub">Selecteer het bronproduct en het doelproduct voor deze ombouw.</div>
+            <div class="content-sub">Selecteer van welk product je komt en naar welk product je gaat.</div>
           </div>
           <div class="panel-grid">
             <div class="panel">
@@ -843,7 +843,7 @@
 
           ${state.viewMode==='start' ? renderStepPlayer(visibleRows) : ''}
           ${state.viewMode==='list'  ? renderValueList(visibleRows) : ''}
-          ${!state.viewMode ? `<div class="emptyNote">Kies een weergavemodus hierboven.</div>` : ''}
+          ${!state.viewMode ? `<div class="emptyNote">Kies hierboven hoe je de informatie wilt weergeven.</div>` : ''}
         </div>`;
     }
 
@@ -853,13 +853,13 @@
           <div class="topbar-logo">
             <img src="./pally-logo.png" alt="Pally" onerror="this.style.display='none'">
           </div>
-          <span class="topbar-name">PALLY</span>
+          <span class="topbar-name">Pally Biscuits</span>
           <div class="topbar-divider"></div>
           <span class="topbar-module">Ombouwen</span>
         </div>
         <div class="topbar-right">
           <div class="status-dot"></div>
-          <span class="status-label">SYSTEEM ONLINE</span>
+          <span class="status-label">Systeem Online</span>
         </div>
       </div>
       <div class="body">
