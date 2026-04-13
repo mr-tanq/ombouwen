@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pally Ombouwen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            geist: ['Geist', 'system-ui', '-apple-system', 'sans-serif'],
+          },
+          colors: {
+            pitch: '#000000',
+            charcoal: '#0a0a0a',
+            surface: '#111111',
+            elevated: '#161616',
+            border: '#1f1f1f',
+            borderHover: '#2a2a2a',
+            gold: '#d8b48a',
+            goldLight: '#f1d4b1',
+            blue: '#67b8ff',
+            blueLight: '#a5d4ff',
+            green: '#59d48a',
+            muted: '#a1a1aa',
+            dim: '#52525b',
+          },
+          borderRadius: {
+            '4xl': '2rem',
+            '5xl': '2.5rem',
+          },
+          keyframes: {
+            fadeUp: {
+              '0%': { opacity: '0', transform: 'translateY(12px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+            shimmer: {
+              '0%': { backgroundPosition: '-200% center' },
+              '100%': { backgroundPosition: '200% center' },
+            },
+            pulse2: {
+              '0%, 100%': { opacity: '1' },
+              '50%': { opacity: '0.5' },
+            }
+          },
+          animation: {
+            fadeUp: 'fadeUp 0.4s cubic-bezier(0.16,1,0.3,1) both',
+            shimmer: 'shimmer 2.5s linear infinite',
+            pulse2: 'pulse2 2s ease-in-out infinite',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --bg: #000000;
+      --card: #111111;
+      --line: rgba(255,255,255,.06);
+      --lineGold: rgba(216,180,138,.18);
+      --text: #ffffff;
+      --muted: #a1a1aa;
+      --gold: #d8b48a;
+      --blue: #67b8ff;
+      --green: #59d48a;
+      --shadow: 0 32px 80px rgba(0,0,0,.6);
+      --glow-gold: 0 0 40px rgba(216,180,138,.12);
+      --glow-blue: 0 0 40px rgba(103,184,255,.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0; padding: 0;
+      background: #000000;
+      color: var(--text);
+      font-family: 'Geist', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body { min-height: 100vh; }
+    button { font: inherit; cursor: pointer; }
+    img { max-width: 100%; display: block; }
+
+    /* Noise texture overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .app {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px 16px 60px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ──── HERO ──── */
+    .hero {
+      border: 1px solid rgba(216,180,138,.15);
+      background: linear-gradient(145deg,
+        rgba(216,180,138,.05) 0%,
+        rgba(255,255,255,.02) 50%,
+        rgba(103,184,255,.03) 100%
+      );
+      border-radius: 28px;
+      padding: 28px;
+      margin-bottom: 12px;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(20px);
+      animation: fadeUp 0.5s cubic-bezier(0.16,1,0.3,1) both;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -1px; left: -1px; right: -1px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(216,180,138,.4), transparent);
+    }
+
+    .heroTop {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .brandWrap {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      min-width: 0;
+    }
+
+    .logoBox {
+      width: 80px;
+      height: 80px;
+      border-radius: 20px;
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(216,180,138,.12);
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex: 0 0 auto;
+    }
+
+    .eyebrow {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .25em;
+      color: rgba(216,180,138,.7);
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    h1, h2, h3, h4, p { margin: 0; }
+
+    h1 {
+      font-size: clamp(32px, 5vw, 48px);
+      line-height: .95;
+      letter-spacing: -.05em;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    /* ──── SUMMARY BAR ──── */
+    .statusPill, .pill {
+      border: 1px solid rgba(255,255,255,.07);
+      background: rgba(255,255,255,.04);
+      border-radius: 999px;
+      padding: 8px 14px;
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 11px;
+      white-space: nowrap;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      transition: all .2s ease;
+    }
+
+    .summaryBar {
+      margin-top: 20px;
+      border: 1px solid rgba(255,255,255,.05);
+      background: rgba(255,255,255,.02);
+      border-radius: 18px;
+      padding: 12px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .summaryNode, .summaryArrow {
+      border-radius: 12px;
+      padding: 8px 12px;
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    .summaryNode {
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.06);
+      color: var(--muted);
+    }
+
+    .summaryNode.active {
+      background: rgba(216,180,138,.1);
+      color: var(--gold);
+      border-color: rgba(216,180,138,.2);
+    }
+
+    .summaryArrow {
+      color: rgba(255,255,255,.2);
+      padding-left: 4px;
+      padding-right: 4px;
+    }
+
+    /* ──── STEP TRACK ──── */
+    .stepTrack {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+      margin: 14px 0;
+    }
+
+    .stepDot {
+      height: 2px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.06);
+      transition: all .4s ease;
+    }
+
+    .stepDot.active {
+      background: linear-gradient(90deg, var(--gold), var(--goldLight));
+      box-shadow: 0 0 12px rgba(216,180,138,.3);
+    }
+
+    /* ──── CARD ──── */
+    .card {
+      background: rgba(255,255,255,.02);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+      animation: fadeUp 0.45s cubic-bezier(0.16,1,0.3,1) both;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: -1px; left: -1px; right: -1px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.06), transparent);
+    }
+
+    /* ──── SECTION TITLES ──── */
+    .sectionHead {
+      display: flex;
+      gap: 14px;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .sectionTitle {
+      font-size: clamp(24px, 4vw, 34px);
+      font-weight: 800;
+      letter-spacing: -.04em;
+      color: #ffffff;
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    /* ──── SETUP GRID ──── */
+    .grid2, .setupGrid {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .setupPanel {
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.05);
+      background: rgba(255,255,255,.02);
+      padding: 20px;
+      transition: border-color .2s ease;
+    }
+
+    .setupPanel:hover {
+      border-color: rgba(255,255,255,.08);
+    }
+
+    .setupTitle {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -.03em;
+      color: #ffffff;
+    }
+
+    /* ──── CHIPS ──── */
+    .chipRow {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .chipLabel {
+      margin-top: 16px;
+      font-size: 10px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: rgba(216,180,138,.65);
+      font-weight: 700;
+    }
+
+    .chip, .backBtn, .ghostBtn, .toggleBtn, .menuBtn, .iconAction, .iconNav {
+      border: none;
+      transition: all .18s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    .chip, .backBtn, .ghostBtn, .toggleBtn {
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 999px;
+      padding: 9px 16px;
+      font-weight: 600;
+      font-size: 13px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .chip:hover, .ghostBtn:hover, .toggleBtn:hover {
+      background: rgba(255,255,255,.07);
+      border-color: rgba(255,255,255,.12);
+      color: #ffffff;
+    }
+
+    .chip.active, .toggleBtn.active {
+      background: rgba(103,184,255,.08);
+      color: var(--blue);
+      border-color: rgba(103,184,255,.2);
+    }
+
+    /* ──── PRIMARY BUTTON ──── */
+    .primaryBtn {
+      background: linear-gradient(135deg, var(--goldLight), var(--gold));
+      color: #0a0a0a;
+      border-radius: 999px;
+      padding: 12px 22px;
+      font-weight: 800;
+      font-size: 14px;
+      letter-spacing: -.01em;
+      border: none;
+      box-shadow: 0 8px 24px rgba(216,180,138,.2), 0 0 0 1px rgba(216,180,138,.3) inset;
+      transition: all .2s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    .primaryBtn:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 32px rgba(216,180,138,.3), 0 0 0 1px rgba(216,180,138,.4) inset;
+    }
+
+    .primaryBtn:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    .primaryBtn:disabled {
+      opacity: .3;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    /* ──── MENU BUTTONS (section tiles) ──── */
+    .menuBtn {
+      text-align: left;
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.05);
+      background: rgba(255,255,255,.02);
+      color: var(--text);
+      padding: 24px;
+      min-height: 160px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .menuBtn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 0%, rgba(255,255,255,.04), transparent 70%);
+      opacity: 0;
+      transition: opacity .3s ease;
+    }
+
+    .menuBtn:hover {
+      transform: translateY(-2px);
+      border-color: rgba(216,180,138,.2);
+      box-shadow: 0 0 40px rgba(216,180,138,.06), 0 20px 40px rgba(0,0,0,.4);
+    }
+
+    .menuBtn:hover::after {
+      opacity: 1;
+    }
+
+    .tileIcon {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.07);
+      font-size: 24px;
+      margin-bottom: 14px;
+    }
+
+    .tileTitle {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -.03em;
+      color: #ffffff;
+    }
+
+    /* ──── TOOLBAR ──── */
+    .toolbar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    /* ──── LIST PANEL ──── */
+    .listPanel {
+      margin-top: 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,.04);
+      background: rgba(0,0,0,.3);
+      padding: 12px;
+    }
+
+    .valueList {
+      display: grid;
+      gap: 8px;
+    }
+
+    .valueRow {
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.05);
+      background: rgba(255,255,255,.02);
+      padding: 14px 16px;
+      transition: border-color .2s ease;
+    }
+
+    .valueRow:hover {
+      border-color: rgba(255,255,255,.08);
+    }
+
+    .valueLabel {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.4;
+      font-weight: 500;
+    }
+
+    .valueFlow {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .valueBox {
+      border-radius: 12px;
+      padding: 8px 14px;
+      font-weight: 700;
+      font-size: 13px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.06);
+      min-height: 40px;
+      display: flex;
+      align-items: center;
+    }
+
+    .valueBox.new {
+      background: rgba(103,184,255,.07);
+      color: #cfe8ff;
+      border-color: rgba(103,184,255,.15);
+    }
+
+    .valueArrow {
+      color: rgba(255,255,255,.2);
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .emptyNote {
+      color: var(--muted);
+      padding: 20px;
+      border: 1px dashed rgba(255,255,255,.07);
+      border-radius: 16px;
+      background: rgba(255,255,255,.01);
+      font-size: 14px;
+      text-align: center;
+    }
+
+    /* ──── STEP PLAYER ──── */
+    .stepPlayer {
+      margin-top: 16px;
+      border-radius: 24px;
+      border: 1px solid rgba(103,184,255,.15);
+      background: linear-gradient(145deg,
+        rgba(103,184,255,.05),
+        rgba(103,184,255,.02)
+      );
+      padding: 20px;
+    }
+
+    .progressText {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 10px;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .progressBar {
+      height: 2px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.06);
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .progressFill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--blue), var(--blueLight));
+      border-radius: 999px;
+      transition: width .4s cubic-bezier(0.16,1,0.3,1);
+      box-shadow: 0 0 12px rgba(103,184,255,.4);
+    }
+
+    .stepPlayerCard {
+      border-radius: 20px;
+      background: rgba(0,0,0,.3);
+      border: 1px solid rgba(255,255,255,.06);
+      padding: 24px;
+    }
+
+    .stepPlayerLabel {
+      font-size: clamp(22px, 4vw, 30px);
+      line-height: 1.1;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 20px;
+      letter-spacing: -.04em;
+    }
+
+    .playerValueFlow {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 4px;
+      margin-bottom: 20px;
+    }
+
+    .playerValueBox {
+      border-radius: 16px;
+      padding: 16px 22px;
+      font-weight: 800;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.07);
+      min-width: 110px;
+      min-height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      transition: all .2s ease;
+    }
+
+    .playerValueBox.new {
+      background: rgba(103,184,255,.08);
+      color: #d6ebff;
+      border-color: rgba(103,184,255,.2);
+      box-shadow: 0 0 24px rgba(103,184,255,.1);
+    }
+
+    .playerArrow {
+      font-size: 20px;
+      color: rgba(255,255,255,.2);
+      font-weight: 700;
+    }
+
+    .playerControls {
+      display: flex;
+      gap: 10px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+
+    .loading {
+      padding: 24px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 14px;
+    }
+
+    /* ──── RICH VALUES ──── */
+    .richValue {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .richText {
+      font-weight: 700;
+      color: inherit;
+    }
+
+    .colorDots {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .colorDot {
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+      border: 1.5px solid rgba(255,255,255,.12);
+      display: inline-block;
+    }
+
+    .colorDot.wit { border-color: rgba(255,255,255,.4); }
+    .colorDot.grijs { border-color: rgba(255,255,255,.2); }
+
+    /* ──── BADGES ──── */
+    .lineBadge, .productBadge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.07);
+      font-weight: 700;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .lineSelector {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .lineToggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .chipInner {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ──── SECTION STRIP ──── */
+    .sectionStrip {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .sectionTools {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    /* ──── ICON BUTTONS ──── */
+    .iconAction {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,.06);
+      background: rgba(255,255,255,.03);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      color: #fff;
+      transition: all .2s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    .iconAction:hover {
+      transform: translateY(-2px);
+      border-color: rgba(216,180,138,.2);
+      box-shadow: 0 8px 24px rgba(0,0,0,.4), 0 0 20px rgba(216,180,138,.08);
+    }
+
+    .iconAction.active {
+      border-color: rgba(216,180,138,.3);
+      background: rgba(216,180,138,.08);
+      box-shadow: 0 0 24px rgba(216,180,138,.12);
+    }
+
+    .iconNav {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.07);
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 700;
+      transition: all .2s ease;
+      padding: 0;
+    }
+
+    .iconNav:hover {
+      border-color: rgba(255,255,255,.12);
+      color: #ffffff;
+      transform: translateX(-1px);
+    }
+
+    @media (max-width: 900px) {
+      .setupGrid, .grid2 { grid-template-columns: 1fr; }
+      .heroTop, .sectionStrip { align-items: flex-start; }
+      .logoBox { width: 64px; height: 64px; }
+      .stepPlayerLabel { font-size: 20px; }
+      .playerValueBox { font-size: 18px; min-width: 90px; min-height: 60px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app" id="app"></div>
+  <script>
+    const BISCUITS=[
+  {
+    id:'richtea',
+    label:'Rich Tea',
+    formats:['5x6','3x6'],
+    icon:'🍪',
+    color:'blauw'
+  },
+  {
+    id:'koffiekoek',
+    label:'Koffiekoek',
+    formats:['4x4','4x5','5x5'],
+    icon:'🧈',
+    color:'bruin'
+  },
+  {
+    id:'theekokos',
+    label:'Thee/Kokos',
+    formats:['5x5'],
+    icon:'🥥',
+    color:'wit'
+  }
+];
+
+    const FILES={
+      cavanna9:'./data/cavanna9.json',
+      cavanna10:'./data/cavanna10.json',
+      robertpack:'./data/robertpack.json',
+      dozen:'./data/dozen.json',
+      dekselaar:'./data/dekselaar.json'
+    };
+
+    const state={
+      loading:true,
+      error:'',
+      data:null,
+      stage:1,
+      fromBiscuit:null,
+      fromFormat:null,
+      toBiscuit:null,
+      toFormat:null,
+      section:null,
+      cavannaLine:'9',
+      robertpackLine:'9',
+      viewMode:null,
+      onlyChanges:true,
+      stepIndex:0
+    };
+
+    const COLOR_MAP={
+      rood:'#ff1f1f',
+      grijs:'#8a8f98',
+      bruin:'#7a4a21',
+      wit:'#ffffff',
+      blauw:'#14aaf5',
+      zwart:'#111111',
+      groen:'#8bcf4a'
+    };
+
+const LINE_COLORS={
+  '9':'rood',
+  '10':'grijs'
+};
+
+    function biscuitLabel(id){
+      return BISCUITS.find(b=>b.id===id)?.label||''
+    }
+
+    function formatsForBiscuit(id){
+      return BISCUITS.find(b=>b.id===id)?.formats||[]
+    }
+
+    function buildFlowRows(fromObj,toObj){
+      const keys=Array.from(new Set([...(Object.keys(fromObj||{})),...(Object.keys(toObj||{}))]));
+      return keys.map(key=>[key,fromObj?.[key]??'—',toObj?.[key]??'—'])
+    }
+
+    function escapeHtml(v){
+      return String(v??'')
+        .replace(/&/g,'&amp;')
+        .replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;')
+        .replace(/"/g,'&quot;')
+        .replace(/'/g,'&#39;')
+    }
+
+    function cleanNumberToken(token){
+      let s=String(token).trim();
+      if(!s) return s;
+      if(!/^[-+]?\d+[\.,]?\d*$/.test(s)) return s;
+
+      const hasComma=s.includes(',');
+      const hasDot=s.includes('.');
+      const sep=hasComma?',':(hasDot?'.':'');
+      let parts=sep?s.split(sep):[s];
+      let intPart=parts[0].replace(/^0+(\d)/,'$1');
+
+      if(intPart==='') intPart='0';
+      if(parts.length===1) return intPart;
+
+      let decPart=parts[1].replace(/0+$/,'');
+      if(decPart==='') return intPart;
+
+      return intPart+','+decPart;
+    }
+
+    function normalizeDisplayValue(value){
+      return String(value??'')
+        .replace(/\u0392/g,'B')
+        .split('/')
+        .map(part=>cleanNumberToken(part.trim()))
+        .join(' / ');
+    }
+
+    function normalizeCompareValue(value){
+      return normalizeDisplayValue(value).toLowerCase().replace(/\s+/g,' ').trim();
+    }
+
+    function filterRows(rows,onlyChanges){
+      return onlyChanges
+        ? rows.filter(r=>normalizeCompareValue(r[1])!==normalizeCompareValue(r[2]))
+        : rows
+    }
+
+    function isColorToken(token){
+      return Object.prototype.hasOwnProperty.call(COLOR_MAP,String(token).trim().toLowerCase())
+    }
+
+    function renderColorDot(token){
+      const name=String(token).trim().toLowerCase();
+      const color=COLOR_MAP[name];
+      if(!color) return '';
+      return `<span class="colorDot ${name}" style="background:${color}"></span>`;
+    }
+
+function getBiscuitMeta(id){
+  return BISCUITS.find(b=>b.id===id)||null;
+}
+
+function renderLineBadge(line){
+  const colorName=LINE_COLORS[String(line)] || 'grijs';
+  return `
+    <span class="lineBadge">
+      ${renderColorDot(colorName)}
+      <span>${escapeHtml(String(line))}</span>
+    </span>
+  `;
+}
+
+function renderProductBadge(id){
+  const biscuit=getBiscuitMeta(id);
+  if(!biscuit) return '';
+
+  return `
+    <span class="productBadge">
+      ${renderColorDot(biscuit.color)}
+      <span>${escapeHtml(biscuit.label)}</span>
+    </span>
+  `;
+}
+
+    function renderRichValue(value){
+      const normalized=normalizeDisplayValue(value);
+      const parts=normalized.split('/').map(p=>p.trim()).filter(Boolean);
+
+      if(parts.length && parts.every(isColorToken)){
+        return `<span class="richValue"><span class="colorDots">${parts.map(renderColorDot).join('')}</span></span>`;
+      }
+
+      const htmlParts=parts.map(part =>
+        isColorToken(part)
+          ? renderColorDot(part)
+          : `<span class="richText">${escapeHtml(part)}</span>`
+      );
+
+      return `<span class="richValue">${htmlParts.join('<span class="richText">/</span>')}</span>`;
+    }
+
+    async function loadData(){
+      try{
+        const entries=await Promise.all(
+          Object.entries(FILES).map(async([key,path])=>{
+            const res=await fetch(path,{cache:'no-store'});
+            if(!res.ok) throw new Error('Failed to load '+path);
+            return [key, await res.json()];
+          })
+        );
+        state.data=Object.fromEntries(entries);
+      }catch(err){
+        state.error=err.message||'Failed to load external data files.';
+      }finally{
+        state.loading=false;
+        render();
+      }
+    }
+
+    function setState(patch){
+      Object.assign(state,patch);
+      render();
+    }
+
+    function resetAll(){
+      Object.assign(state,{
+        stage:1,
+        fromBiscuit:null,
+        fromFormat:null,
+        toBiscuit:null,
+        toFormat:null,
+        section:null,
+        cavannaLine:'9',
+        robertpackLine:'9',
+        viewMode:null,
+        onlyChanges:true,
+        stepIndex:0
+      });
+      render();
+    }
+    function getRobertPackValuesForFormat(format,col){
+      const values=state.data?.robertpack?.values||{};
+      const bucket=values?.[format]||{};
+      return bucket?.[col]||{};
+    }
+
+    function getRows(){
+      if(!state.data) return [];
+
+      if(state.section==='cavanna'){
+        const source=state.cavannaLine==='10' ? state.data.cavanna10 : state.data.cavanna9;
+        return buildFlowRows(
+          source?.values?.[state.fromFormat]||{},
+          source?.values?.[state.toFormat]||{}
+        );
+      }
+
+      if(state.section==='robertpack'){
+        const fromValues=getRobertPackValuesForFormat(state.fromFormat,state.robertpackLine);
+        const toValues=getRobertPackValuesForFormat(state.toFormat,state.robertpackLine);
+        return buildFlowRows(fromValues,toValues);
+      }
+
+      if(state.section==='dozen'){
+        return buildFlowRows(
+          state.data.dozen?.values?.[state.fromFormat]||{},
+          state.data.dozen?.values?.[state.toFormat]||{}
+        );
+      }
+
+      if(state.section==='dekselaar'){
+        return buildFlowRows(
+          state.data.dekselaar?.values?.[state.fromFormat]||{},
+          state.data.dekselaar?.values?.[state.toFormat]||{}
+        );
+      }
+
+      return [];
+    }
+
+    function renderChipGroup(items,value,onClick,formatter=x=>x){
+  return `<div class="chipRow">${
+    items.map(item=>`
+      <button class="chip ${value===item?'active':''}" data-action="${onClick}" data-value="${item}">
+        <span class="chipInner">${formatter(item)}</span>
+      </button>
+    `).join('')
+  }</div>`;
+}
+
+    function renderValueList(rows){
+      if(!rows.length) return `<div class="emptyNote">No rows to show.</div>`;
+
+      return `<div class="valueList">${
+        rows.map(r=>`
+          <div class="valueRow">
+            <div class="valueLabel">${escapeHtml(r[0])}</div>
+            <div class="valueFlow">
+              <div class="valueBox">${renderRichValue(r[1])}</div>
+              <div class="valueArrow">→</div>
+              <div class="valueBox new">${renderRichValue(r[2])}</div>
+            </div>
+          </div>
+        `).join('')
+      }</div>`;
+    }
+function renderStepPlayer(rows){
+      const total=rows.length;
+      const current=rows[state.stepIndex];
+
+      if(!total||!current) return `<div class="emptyNote">No rows to show.</div>`;
+
+      const progress=((state.stepIndex+1)/total)*100;
+
+      return `
+        <div class="stepPlayer">
+          <div class="progressText">Step ${state.stepIndex+1} of ${total}</div>
+          <div class="progressBar">
+            <div class="progressFill" style="width:${progress}%"></div>
+          </div>
+          <div class="stepPlayerCard">
+            <div class="stepPlayerLabel">${escapeHtml(current[0])}</div>
+            <div class="playerValueFlow">
+              <div class="playerValueBox">${renderRichValue(current[1])}</div>
+              <div class="playerArrow">→</div>
+              <div class="playerValueBox new">${renderRichValue(current[2])}</div>
+            </div>
+            <div class="playerControls">
+              <button class="backBtn" data-action="prev-step" ${state.stepIndex===0?'disabled':''}>Previous</button>
+              <button class="primaryBtn" data-action="next-step">${state.stepIndex<total-1?'Next':'Done'}</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function render(){
+      const app=document.getElementById('app');
+
+      if(state.loading){
+        app.innerHTML=`<div class="card"><div class="loading">Loading data…</div></div>`;
+        return;
+      }
+
+      if(state.error){
+        app.innerHTML=`<div class="card"><div class="loading">${escapeHtml(state.error)}</div></div>`;
+        return;
+      }
+
+      const canContinueSetup=state.fromBiscuit&&state.fromFormat&&state.toBiscuit&&state.toFormat;
+      const rows=getRows();
+      const visibleRows=filterRows(rows,state.onlyChanges);
+
+      app.innerHTML=`
+        <div class="hero">
+          <div class="heroTop">
+            <div class="brandWrap">
+              <div class="logoBox">
+                <img src="./pally-logo.png" alt="Pally logo" onerror="this.style.display='none'">
+              </div>
+              <div>
+                <div class="eyebrow">Pally Biscuits</div>
+                <h1>Ombouwen</h1>
+              </div>
+            </div>
+          </div>
+
+          <div class="summaryBar">
+            <div class="summaryNode">${state.fromBiscuit?renderProductBadge(state.fromBiscuit):'Van'}</div>
+            ${state.fromFormat?`<div class="summaryNode">${escapeHtml(state.fromFormat)}</div>`:''}
+            <div class="summaryArrow">→</div>
+            <div class="summaryNode active">${state.toBiscuit?renderProductBadge(state.toBiscuit):'Naar'}</div>
+            ${state.toFormat?`<div class="summaryNode active">${escapeHtml(state.toFormat)}</div>`:''}
+            ${state.section?`
+              <div class="summaryArrow">·</div>
+              <div class="summaryNode">
+                ${
+                  state.section==='cavanna'
+                    ? `Cavanna ${renderLineBadge(state.cavannaLine)}`
+                    : state.section==='robertpack'
+                      ? `Robert Pack ${renderLineBadge(state.robertpackLine)}`
+                      : state.section==='dozen'
+                        ? 'Dozen Opzetter'
+                        : 'Dekselaar Opzetter'
+                }
+              </div>
+            `:''}
+          </div>
+        </div>
+
+        <div class="stepTrack">
+          <div class="stepDot ${state.stage>=1?'active':''}"></div>
+          <div class="stepDot ${state.stage>=2?'active':''}"></div>
+        </div>
+
+        ${state.stage===1&&!state.section?`
+          <div class="card">
+            <div class="sectionHead">
+              <div>
+                <div class="sectionTitle">Van → Naar</div>
+              </div>
+            </div>
+
+            <div class="setupGrid">
+              <div class="setupPanel">
+                <div class="setupTitle">Van</div>
+                <div class="chipLabel">Product</div>
+                ${renderChipGroup(
+                  BISCUITS.map(b=>b.id),
+                  state.fromBiscuit,
+                  'from-product',
+                  id=>`${renderColorDot(getBiscuitMeta(id)?.color)} <span>${escapeHtml(biscuitLabel(id))}</span>`
+                )}
+                ${state.fromBiscuit?`<div class="chipLabel">Formaat</div>${renderChipGroup(formatsForBiscuit(state.fromBiscuit),state.fromFormat,'from-format')}`:''}
+              </div>
+
+              <div class="setupPanel">
+                <div class="setupTitle">Naar</div>
+                <div class="chipLabel">Product</div>
+                ${renderChipGroup(
+                  BISCUITS.map(b=>b.id),
+                  state.toBiscuit,
+                  'to-product',
+                  id=>`${renderColorDot(getBiscuitMeta(id)?.color)} <span>${escapeHtml(biscuitLabel(id))}</span>`
+                )}
+                ${state.toBiscuit?`<div class="chipLabel">Formaat</div>${renderChipGroup(formatsForBiscuit(state.toBiscuit),state.toFormat,'to-format')}`:''}
+              </div>
+            </div>
+
+            <div class="toolbar" style="margin-top:16px;justify-content:flex-end">
+              <button class="ghostBtn" data-action="reset-all">Reset</button>
+              <button class="primaryBtn" data-action="go-sections" ${canContinueSetup?'':'disabled'}>Verder</button>
+            </div>
+          </div>
+        `:''}
+
+        ${state.stage===2&&!state.section?`
+          <div class="card">
+            <div class="sectionHead">
+              <div>
+                <div class="sectionTitle">Sections</div>
+              </div>
+              <button class="iconNav" data-action="back-setup" aria-label="Back">‹</button>
+            </div>
+
+            <div class="grid2">
+              <button class="menuBtn" data-action="open-section" data-value="cavanna">
+                <div class="tileIcon">⚙️</div>
+                <div class="tileTitle">Cavanna</div>
+              </button>
+
+              <button class="menuBtn" data-action="open-section" data-value="robertpack">
+                <div class="tileIcon">📦</div>
+                <div class="tileTitle">Robert Pack</div>
+              </button>
+
+              <button class="menuBtn" data-action="open-section" data-value="dozen">
+                <div class="tileIcon">🔧</div>
+                <div class="tileTitle">Dozen Opzetter</div>
+              </button>
+
+              <button class="menuBtn" data-action="open-section" data-value="dekselaar">
+                <div class="tileIcon">🧰</div>
+                <div class="tileTitle">Dekselaar Opzetter</div>
+              </button>
+            </div>
+          </div>
+        `:''}
+
+        ${state.stage===2&&state.section?`
+          <div class="card">
+            <div class="sectionHead">
+              <div>
+                <div class="sectionTitle">${state.section==='cavanna'?'Cavanna':state.section==='robertpack'?'Robert Pack':state.section==='dozen'?'Dozen Opzetter':'Dekselaar Opzetter'}</div>
+              </div>
+              <div class="row">
+                <button class="iconNav" data-action="close-section" aria-label="Back">‹</button>
+                <button class="ghostBtn" data-action="reset-all">Start over</button>
+              </div>
+            </div>
+
+            <div class="toolbar">
+              ${state.section==='cavanna'?`
+                <button class="toggleBtn lineToggle ${state.cavannaLine==='9'?'active':''}" data-action="cav-line" data-value="9">
+                  ${renderColorDot('rood')}<span>Cavanna 9</span>
+                </button>
+                <button class="toggleBtn lineToggle ${state.cavannaLine==='10'?'active':''}" data-action="cav-line" data-value="10">
+                  ${renderColorDot('grijs')}<span>Cavanna 10</span>
+                </button>
+              `:''}
+
+              ${state.section==='robertpack'?`
+                <button class="toggleBtn lineToggle ${state.robertpackLine==='9'?'active':''}" data-action="rp-line" data-value="9">
+                  ${renderColorDot('rood')}<span>Robert Pack 9</span>
+                </button>
+                <button class="toggleBtn lineToggle ${state.robertpackLine==='10'?'active':''}" data-action="rp-line" data-value="10">
+                  ${renderColorDot('grijs')}<span>Robert Pack 10</span>
+                </button>
+              `:''}
+            </div>
+
+            <div class="sectionStrip">
+              <div class="row">
+                <div class="pill">
+                  ${renderColorDot(getBiscuitMeta(state.fromBiscuit)?.color)}
+                  ${escapeHtml(biscuitLabel(state.fromBiscuit))}
+                  ${escapeHtml(state.fromFormat||'')}
+                </div>
+                <div class="pill">
+                  ${renderColorDot(getBiscuitMeta(state.toBiscuit)?.color)}
+                  ${escapeHtml(biscuitLabel(state.toBiscuit))}
+                  ${escapeHtml(state.toFormat||'')}
+                </div>
+              </div>
+
+              <div class="sectionTools">
+                <button class="iconAction ${state.viewMode==='start'?'active':''}" data-action="view-mode" data-value="start" aria-label="Start Ombouw">▶️</button>
+                <button class="iconAction ${state.viewMode==='list'?'active':''}" data-action="view-mode" data-value="list" aria-label="Show List">📋</button>
+              </div>
+            </div>
+
+            ${state.viewMode?`
+              <div class="toolbar">
+                <button class="toggleBtn ${!state.onlyChanges?'active':''}" data-action="show-mode" data-value="all">Show all</button>
+                <button class="toggleBtn ${state.onlyChanges?'active':''}" data-action="show-mode" data-value="changes">Only changes</button>
+              </div>
+            `:''}
+
+            ${state.viewMode==='start'?renderStepPlayer(visibleRows):''}
+            ${state.viewMode==='list'?`<div class="listPanel">${renderValueList(visibleRows)}</div>`:''}
+          </div>
+        `:''}
+      `;
+
+      bindActions();
+    }
+
+    function bindActions(){
+      document.querySelectorAll('[data-action]').forEach(el=>{
+        el.addEventListener('click',()=>{
+          const action=el.dataset.action;
+          const value=el.dataset.value;
+
+          if(action==='from-product') setState({fromBiscuit:value,fromFormat:null});
+          if(action==='to-product') setState({toBiscuit:value,toFormat:null});
+          if(action==='from-format') setState({fromFormat:value});
+          if(action==='to-format') setState({toFormat:value});
+          if(action==='reset-all') resetAll();
+          if(action==='go-sections'&&state.fromBiscuit&&state.fromFormat&&state.toBiscuit&&state.toFormat) setState({stage:2});
+          if(action==='back-setup') setState({stage:1});
+          if(action==='open-section') setState({section:value,viewMode:null,stepIndex:0});
+          if(action==='close-section') setState({section:null,viewMode:null,stepIndex:0});
+          if(action==='cav-line') setState({cavannaLine:value,stepIndex:0});
+          if(action==='rp-line') setState({robertpackLine:value,stepIndex:0});
+          if(action==='show-mode') setState({onlyChanges:value==='changes',stepIndex:0});
+          if(action==='prev-step'&&state.stepIndex>0) setState({stepIndex:state.stepIndex-1});
+
+          if(action==='view-mode'){
+            if(state.viewMode===value){
+              setState({viewMode:null,stepIndex:0});
+            }else{
+              setState({viewMode:value,stepIndex:0});
+            }
+          }
+
+          if(action==='next-step'){
+            const visibleRows=filterRows(getRows(),state.onlyChanges);
+            if(state.stepIndex<visibleRows.length-1){
+              setState({stepIndex:state.stepIndex+1});
+            }else{
+              setState({viewMode:null,stepIndex:0});
+            }
+          }
+        });
+      });
+    }
+
+    render();
+    loadData();
+  </script>
+</body>
+</html>
