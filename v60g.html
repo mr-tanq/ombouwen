@@ -1,0 +1,1672 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Pally · Ombouwen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════
+   DESIGN TOKENS — GOLD DARK
+═══════════════════════════════════════ */
+:root {
+  --bg:       #0A0A0A;
+  --s1:       #111111;
+  --s2:       #161616;
+  --s3:       #1C1C1C;
+  --s4:       #242424;
+  --line:     rgba(255,255,255,0.06);
+  --line2:    rgba(255,255,255,0.10);
+  --line3:    rgba(255,255,255,0.16);
+  --text:     #F0EDE8;
+  --text2:    #8A8680;
+  --text3:    #4A4744;
+  --gold:     #C9A84C;
+  --gold2:    #E8C96A;
+  --gold3:    #A8873A;
+  --gold-bg:  rgba(201,168,76,0.08);
+  --gold-bg2: rgba(201,168,76,0.14);
+  --green:    #2ECC8A;
+  --green-bg: rgba(46,204,138,0.08);
+  --red:      #E05555;
+  --red-bg:   rgba(224,85,85,0.08);
+  --amber:    #D4903A;
+  --amber-bg: rgba(212,144,58,0.08);
+  --cyan:     #06b6d4;
+  --cyan-bg:  rgba(6,182,212,0.08);
+  --mono:     'Inter', system-ui, monospace;
+  --sans:     'Inter', system-ui, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.5;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+button { font: inherit; cursor: pointer; border: none; background: none; }
+img { max-width: 100%; display: block; }
+
+/* scanlines — subtle */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background: repeating-linear-gradient(0deg, transparent, transparent 3px,
+    rgba(255,255,255,0.004) 3px, rgba(255,255,255,0.004) 4px);
+}
+
+.shell { display: grid; grid-template-rows: auto 1fr; min-height: 100vh; position: relative; z-index: 1; }
+
+/* ═══════════════════════════════════════
+   TOPBAR
+═══════════════════════════════════════ */
+.topbar {
+  height: 52px;
+  background: var(--s1);
+  border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 28px;
+  position: sticky; top: 0; z-index: 200;
+}
+.topbar-brand { display: flex; align-items: center; gap: 13px; }
+.topbar-logo {
+  width: 26px; height: 26px;
+  border: 1px solid var(--gold3);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.topbar-logo svg { width: 13px; height: 13px; stroke: var(--gold); fill: none; stroke-width: 1.5; }
+.topbar-name {
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 0.18em; text-transform: uppercase; color: var(--text);
+}
+.topbar-sep { width: 1px; height: 16px; background: var(--line2); }
+.topbar-module {
+  font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text3);
+}
+.topbar-right { display: flex; align-items: center; gap: 14px; }
+.topbar-online {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--green);
+}
+.topbar-online::before {
+  content: ''; width: 5px; height: 5px; border-radius: 50%;
+  background: var(--green); flex-shrink: 0;
+}
+.topbar-avatar {
+  width: 26px; height: 26px;
+  background: var(--s3); border: 1px solid var(--line2);
+  font-size: 9px; font-weight: 700; letter-spacing: 0.06em;
+  color: var(--text2);
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ═══════════════════════════════════════
+   BODY LAYOUT
+═══════════════════════════════════════ */
+.body { display: grid; grid-template-columns: 210px 1fr; }
+
+/* ═══════════════════════════════════════
+   SIDEBAR
+═══════════════════════════════════════ */
+.sidebar {
+  background: var(--s1);
+  border-right: 1px solid var(--line);
+  display: flex; flex-direction: column;
+  min-height: calc(100vh - 52px);
+  position: sticky; top: 52px; align-self: start;
+  max-height: calc(100vh - 52px); overflow-y: auto;
+}
+.sidebar::-webkit-scrollbar { width: 2px; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--line2); }
+
+/* Run card */
+.run-card {
+  margin: 14px;
+  border: 1px solid var(--gold3);
+  background: var(--gold-bg);
+  padding: 12px 13px;
+}
+.run-label {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--gold);
+  margin-bottom: 10px;
+}
+.run-flow { display: flex; align-items: center; gap: 8px; }
+.run-prod { flex: 1; min-width: 0; }
+.run-prod-lbl {
+  font-size: 9px; color: var(--text3); letter-spacing: 0.08em;
+  text-transform: uppercase; margin-bottom: 2px;
+}
+.run-prod-val { font-size: 11px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.run-prod-val.naar { color: var(--gold); }
+.run-arr { font-size: 11px; color: var(--text3); flex-shrink: 0; }
+
+/* Nav items */
+.nav-list { padding: 8px 0; flex: 1; }
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 16px; font-size: 12px; color: var(--text3);
+  cursor: pointer; transition: all 0.1s;
+  border-left: 1px solid transparent;
+}
+.nav-item:hover { color: var(--text2); background: var(--s2); }
+.nav-item.on {
+  color: var(--text); background: var(--s2);
+  border-left-color: var(--gold);
+}
+.nav-item svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+/* Workflow steps */
+.workflow {
+  padding: 14px 14px 16px;
+  border-top: 1px solid var(--line);
+}
+.wf-label {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--text3); margin-bottom: 10px;
+}
+.wf-step { display: flex; align-items: center; gap: 9px; padding: 4px 0; }
+.wf-num {
+  width: 18px; height: 18px; flex-shrink: 0;
+  border: 1px solid var(--line2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; font-weight: 700; color: var(--text3);
+}
+.wf-num.done { border-color: var(--green); color: var(--green); }
+.wf-num.now  { border-color: var(--gold);  color: var(--gold); }
+.wf-txt { font-size: 11px; color: var(--text3); }
+.wf-txt.done { color: var(--text2); }
+.wf-txt.now  { color: var(--text); }
+.wf-conn { width: 1px; height: 12px; background: var(--line); margin-left: 8px; }
+
+/* ═══════════════════════════════════════
+   MAIN
+═══════════════════════════════════════ */
+.main { display: flex; flex-direction: column; min-width: 0; }
+
+.breadcrumb {
+  border-bottom: 1px solid var(--line);
+  padding: 0 28px; height: 36px;
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(0,0,0,0.3);
+}
+.bc-item { font-size: 10px; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; }
+.bc-item.active { color: var(--text); }
+.bc-sep { font-size: 10px; color: var(--text3); opacity: 0.4; }
+
+.content {
+  flex: 1; padding: 28px 28px 48px;
+  animation: fadeUp .2s cubic-bezier(.16,1,.3,1) both;
+}
+@keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ═══════════════════════════════════════
+   PAGE HEADER
+═══════════════════════════════════════ */
+.page-head {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  margin-bottom: 22px; gap: 16px; flex-wrap: wrap;
+}
+.page-title {
+  font-size: 22px; font-weight: 700; color: var(--text);
+  letter-spacing: -0.04em; line-height: 1;
+}
+.page-title span { font-weight: 300; color: var(--text2); }
+.page-sub { font-size: 11px; color: var(--text3); margin-top: 5px; letter-spacing: 0.04em; }
+
+/* ═══════════════════════════════════════
+   BUTTONS
+═══════════════════════════════════════ */
+.btn-gold {
+  background: transparent;
+  border: 1px solid var(--gold3);
+  color: var(--gold);
+  padding: 9px 18px;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
+  transition: all 0.12s; white-space: nowrap;
+}
+.btn-gold:hover { background: var(--gold-bg); border-color: var(--gold); }
+.btn-gold svg { width: 13px; height: 13px; stroke: var(--gold); fill: none; stroke-width: 1.8; }
+
+.btn-ghost {
+  background: transparent; border: 1px solid var(--line2);
+  color: var(--text2); padding: 8px 16px;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.06em;
+  cursor: pointer; transition: all 0.12s;
+}
+.btn-ghost:hover { background: var(--s3); color: var(--text); }
+.btn-ghost:disabled { opacity: 0.2; cursor: not-allowed; }
+
+.btn-primary {
+  background: var(--gold); color: var(--bg);
+  border: none; padding: 9px 20px;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  cursor: pointer; transition: background 0.12s;
+}
+.btn-primary:hover { background: var(--gold2); }
+.btn-primary:disabled { opacity: 0.18; cursor: not-allowed; background: var(--gold); }
+
+/* ═══════════════════════════════════════
+   SETUP PANELS
+═══════════════════════════════════════ */
+.panel-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); margin-bottom: 22px; }
+.panel {
+  background: var(--s2); padding: 16px 18px;
+  border: 1px solid transparent;
+}
+.panel-header {
+  padding-bottom: 12px; border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 14px;
+}
+.panel-title {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--text3);
+}
+.panel-badge {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 3px 8px;
+  background: var(--green-bg); color: var(--green);
+  display: flex; align-items: center; gap: 4px;
+}
+.panel-badge::before {
+  content: ''; width: 4px; height: 4px; border-radius: 50%;
+  background: var(--green); display: inline-block;
+}
+.field-label {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--text3); margin-bottom: 9px; margin-top: 14px;
+}
+.field-label:first-child { margin-top: 0; }
+
+/* Chips */
+.chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  font-size: 12px; padding: 6px 12px;
+  border: 1px solid var(--line2); background: var(--s3); color: var(--text2);
+  display: inline-flex; align-items: center; gap: 7px;
+  cursor: pointer; transition: all 0.12s;
+}
+.chip:hover { background: var(--s4); color: var(--text); border-color: var(--line3); }
+.chip.active {
+  background: var(--gold-bg2); border-color: var(--gold3); color: var(--gold);
+}
+
+.actions-bar {
+  display: flex; align-items: center; justify-content: flex-end; gap: 10px;
+  padding-top: 20px; border-top: 1px solid var(--line);
+}
+
+/* ═══════════════════════════════════════
+   SECTION TILES (machine picker)
+═══════════════════════════════════════ */
+.section-tiles {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1px; background: var(--line);
+  border: 1px solid var(--line); margin-bottom: 22px;
+}
+.section-tile {
+  background: var(--s2); padding: 16px;
+  cursor: pointer; transition: background 0.1s;
+  display: flex; flex-direction: column; gap: 7px;
+}
+.section-tile:hover { background: var(--s3); }
+.section-tile.active { background: var(--s3); box-shadow: inset 0 1px 0 var(--gold); }
+
+.st-logo-wrap { height: 36px; display: flex; align-items: center; }
+.st-logo {
+  height: 30px; width: auto; max-width: 100%;
+  object-fit: contain; object-position: left center;
+  opacity: 0.75; filter: brightness(1.2) saturate(0.8);
+  transition: opacity 0.14s;
+}
+.section-tile:hover .st-logo,
+.section-tile.active .st-logo { opacity: 1; filter: brightness(1.3); }
+
+.st-name {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--text2);
+}
+.section-tile.active .st-name { color: var(--gold); }
+.st-desc { font-size: 11px; color: var(--text3); line-height: 1.4; }
+.st-arrow { font-size: 11px; color: var(--text3); margin-top: auto; align-self: flex-end; }
+.section-tile.active .st-arrow { color: var(--gold); }
+
+/* Section detail header */
+.view-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 20px; gap: 14px; flex-wrap: wrap;
+}
+.view-header-left { display: flex; align-items: center; gap: 12px; }
+.view-header-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.btn-back {
+  width: 30px; height: 30px;
+  border: 1px solid var(--line2); background: var(--s2);
+  color: var(--text2); display: flex; align-items: center; justify-content: center;
+  font-size: 15px; cursor: pointer; transition: all 0.12s; flex-shrink: 0;
+}
+.btn-back:hover { background: var(--s3); color: var(--text); }
+.section-header-logo {
+  height: 28px; width: auto; object-fit: contain;
+  opacity: 0.85; filter: brightness(1.2);
+}
+.pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 10px; border: 1px solid var(--line2); background: var(--s2);
+  font-size: 11px; font-weight: 500; color: var(--text2); letter-spacing: 0.02em;
+}
+
+/* Line toggle */
+.toggle-row { display: flex; gap: 4px; margin-bottom: 18px; }
+.toggle-btn {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 6px 13px; border: 1px solid var(--line2); background: var(--s2);
+  color: var(--text3); display: inline-flex; align-items: center; gap: 7px;
+  cursor: pointer; transition: all 0.12s;
+}
+.toggle-btn:hover { color: var(--text2); background: var(--s3); }
+.toggle-btn.active { background: var(--gold-bg); border-color: var(--gold3); color: var(--gold); }
+
+/* Mode bar */
+.mode-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 16px; gap: 12px; flex-wrap: wrap;
+}
+.view-tabs { display: flex; gap: 3px; }
+.view-tab {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 7px 13px; border: 1px solid var(--line2); background: var(--s2); color: var(--text3);
+  cursor: pointer; transition: all 0.12s; display: inline-flex; align-items: center; gap: 7px;
+}
+.view-tab:hover { background: var(--s3); color: var(--text); }
+.view-tab.active { background: var(--s3); border-color: var(--line3); color: var(--text); }
+.filter-pills { display: flex; gap: 2px; }
+.filter-btn {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 5px 10px; border: 1px solid transparent; background: transparent; color: var(--text3);
+  cursor: pointer; transition: all 0.1s;
+}
+.filter-btn:hover { color: var(--text2); }
+.filter-btn.active { background: var(--s3); border-color: var(--line2); color: var(--text); }
+
+/* ═══════════════════════════════════════
+   VALUE TABLE
+═══════════════════════════════════════ */
+.value-table {
+  border: 1px solid var(--line); background: var(--s2); overflow: hidden;
+}
+.value-table-header {
+  display: grid; grid-template-columns: minmax(150px,2fr) 120px 22px 120px;
+  padding: 8px 16px; border-bottom: 1px solid var(--line);
+  background: var(--s3);
+}
+.vtcol {
+  font-size: 8px; font-weight: 700; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--text3);
+}
+.value-rows { display: flex; flex-direction: column; }
+.value-row {
+  display: grid; grid-template-columns: minmax(150px,2fr) 120px 22px 120px;
+  padding: 10px 16px; border-bottom: 1px solid var(--line);
+  align-items: center; gap: 8px; transition: background 0.1s;
+}
+.value-row:last-child { border-bottom: none; }
+.value-row:hover { background: var(--s3); }
+.value-key {
+  font-size: 12px; color: rgba(255,255,255,0.65);
+  display: flex; align-items: center; gap: 8px; min-width: 0; padding-right: 6px;
+}
+.value-key-text { white-space: normal; word-break: break-word; line-height: 1.4; }
+.param-num {
+  font-size: 9px; font-weight: 700; color: var(--amber);
+  background: var(--amber-bg); padding: 2px 5px; flex-shrink: 0;
+  letter-spacing: 0.06em; align-self: flex-start; margin-top: 1px;
+}
+.value-cell { font-size: 12px; font-weight: 500; color: var(--text3); }
+.value-cell.is-new { color: var(--gold); font-weight: 600; }
+.value-sep { font-size: 11px; color: var(--text3); text-align: center; opacity: 0.4; }
+
+/* ═══════════════════════════════════════
+   STEP PLAYER
+═══════════════════════════════════════ */
+.player-wrap { display: grid; grid-template-columns: 1fr 260px; gap: 12px; align-items: start; }
+.player-main {
+  border: 1px solid var(--line); background: var(--s2); overflow: hidden; position: relative;
+}
+.player-top {
+  padding: 10px 20px; border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--s3);
+}
+.player-counter { font-size: 10px; color: var(--text3); letter-spacing: 0.1em; flex-shrink: 0; }
+.prog-track {
+  flex: 1; height: 2px; background: var(--line2); margin: 0 16px;
+  overflow: hidden; position: relative;
+}
+.prog-fill {
+  height: 100%; background: var(--gold);
+  transition: width 0.3s cubic-bezier(.16,1,.3,1);
+}
+.player-body { padding: 28px; }
+.player-key-lbl {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--text3); margin-bottom: 8px;
+}
+.player-label {
+  font-size: 22px; font-weight: 700; color: var(--text);
+  letter-spacing: -0.04em; line-height: 1.15; margin-bottom: 26px;
+  display: flex; align-items: center; gap: 11px; flex-wrap: wrap;
+}
+.player-num {
+  font-size: 11px; font-weight: 700; color: var(--amber);
+  background: var(--amber-bg); padding: 3px 8px; flex-shrink: 0;
+}
+.player-vals { display: flex; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+.player-val-block { flex: 1; min-width: 100px; }
+.player-val-lbl {
+  font-size: 8px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--text3); margin-bottom: 7px;
+}
+.player-val-box {
+  border: 1px solid var(--line2); background: var(--s3);
+  padding: 13px 16px; font-size: 17px; font-weight: 600;
+  color: var(--text2); min-height: 52px;
+  display: flex; align-items: center; gap: 8px;
+}
+.player-val-box.new { border-color: rgba(201,168,76,0.25); background: var(--gold-bg); color: var(--gold); }
+.player-arr { font-size: 14px; color: var(--text3); flex-shrink: 0; margin-top: 22px; opacity: 0.4; }
+.player-controls {
+  padding: 12px 20px; border-top: 1px solid var(--line);
+  display: flex; align-items: center; gap: 8px;
+  background: var(--s3);
+}
+
+.mini-panel { border: 1px solid var(--line); background: var(--s2); overflow: hidden; }
+.mini-header {
+  padding: 9px 13px; border-bottom: 1px solid var(--line); background: var(--s3);
+  font-size: 8px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text3);
+}
+.mini-list { display: flex; flex-direction: column; max-height: 400px; overflow-y: auto; }
+.mini-list::-webkit-scrollbar { width: 2px; }
+.mini-list::-webkit-scrollbar-thumb { background: var(--line2); }
+.mini-row {
+  display: flex; align-items: center; gap: 7px;
+  padding: 8px 12px; border-bottom: 1px solid var(--line);
+  cursor: pointer; transition: background 0.1s;
+}
+.mini-row:last-child { border-bottom: none; }
+.mini-row:hover { background: var(--s3); }
+.mini-row.active { background: var(--s3); border-left: 1px solid var(--gold); padding-left: 11px; }
+.mini-num { font-size: 9px; color: var(--text3); width: 18px; flex-shrink: 0; }
+.mini-row.active .mini-num { color: var(--gold); }
+.mini-key { font-size: 11px; color: var(--text3); flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mini-row.active .mini-key { color: var(--text); font-weight: 600; }
+.mini-check { font-size: 9px; color: var(--green); }
+
+/* ═══════════════════════════════════════
+   COLOR DOTS
+═══════════════════════════════════════ */
+.richValue { display: inline-flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+.richText { font-weight: 600; }
+.colorDots { display: inline-flex; gap: 4px; align-items: center; }
+.colorDot {
+  width: 10px; height: 10px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.1); display: inline-block;
+}
+.colorDot.wit { border-color: rgba(255,255,255,0.4); }
+.colorDot.grijs { border-color: rgba(255,255,255,0.2); }
+.colorDot.blauw { background: #3b82f6 !important; border-color: rgba(59,130,246,0.5); }
+
+/* ═══════════════════════════════════════
+   CHECK MODE
+═══════════════════════════════════════ */
+.check-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 20px; gap: 14px; flex-wrap: wrap;
+}
+.check-header-left { display: flex; align-items: center; gap: 12px; }
+.check-header-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+.check-player {
+  border: 1px solid var(--line); background: var(--s2);
+  overflow: hidden; margin-bottom: 1px;
+}
+
+.check-top {
+  padding: 11px 18px; border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--s3); gap: 14px;
+}
+.check-progress { display: flex; align-items: center; gap: 10px; }
+.check-counter { font-size: 11px; font-weight: 600; color: var(--text2); letter-spacing: 0.06em; }
+
+.check-badge {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 4px 10px; display: flex; align-items: center; gap: 5px;
+}
+.check-badge::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+.check-badge.pending { background: var(--amber-bg); color: var(--amber); }
+.check-badge.match   { background: var(--green-bg); color: var(--green); }
+.check-badge.miss    { background: var(--red-bg);   color: var(--red); }
+.check-badge.saved   { background: var(--cyan-bg);  color: var(--cyan); }
+
+.check-body { padding: 22px 18px 18px; }
+.check-param-lbl {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--text3); margin-bottom: 6px;
+}
+.check-param-name {
+  font-size: 24px; font-weight: 700; color: var(--text);
+  letter-spacing: -0.04em; line-height: 1.1; margin-bottom: 22px;
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+}
+
+.check-vals {
+  display: grid; grid-template-columns: 1fr 24px 1fr;
+  align-items: start; margin-bottom: 0; gap: 0;
+}
+.check-val-block { display: flex; flex-direction: column; gap: 6px; }
+.check-val-lbl {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--text3); padding: 0 14px;
+}
+.check-val-box {
+  border: 1px solid var(--line2); background: var(--bg);
+  padding: 13px 14px; font-size: 22px; font-weight: 700;
+  color: var(--text3); min-height: 56px;
+  display: flex; align-items: center;
+  transition: all 0.18s ease;
+}
+.check-val-box.expected { color: rgba(255,255,255,0.55); }
+.check-val-box.actual { background: var(--s3); border-color: var(--line3); color: var(--text); }
+.check-val-box.actual:focus-within { border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold-bg2); }
+.check-val-box.st-match  { border-color: var(--green); background: var(--green-bg); color: var(--green); }
+.check-val-box.st-miss   { border-color: var(--red);   background: var(--red-bg);   color: var(--red); }
+.check-val-box.st-saved  { border-color: var(--cyan);  background: var(--cyan-bg);  color: var(--cyan); }
+.check-val-box.st-skip   { border-color: var(--line2); background: var(--s3); color: var(--text3); }
+.check-input {
+  width: 100%; border: none; background: transparent; color: inherit;
+  font-family: var(--sans); font-size: 22px; font-weight: 700;
+  padding: 0; outline: none; caret-color: var(--gold);
+}
+.check-input::placeholder { color: var(--text3); font-size: 15px; font-weight: 400; }
+.check-arrow { text-align: center; font-size: 13px; color: var(--text3); opacity: 0.4; margin-top: 26px; }
+
+/* Color confirm buttons */
+.color-confirm-wrap {
+  display: flex; gap: 1px; background: var(--line);
+  width: 100%;
+}
+.color-confirm-btn {
+  flex: 1; padding: 14px 8px;
+  display: flex; flex-direction: column; align-items: center; gap: 5px;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  cursor: pointer; transition: background 0.12s; background: var(--s3);
+}
+.color-confirm-btn.yes { color: var(--green); }
+.color-confirm-btn.yes:hover { background: var(--green-bg); }
+.color-confirm-btn.no  { color: var(--text3); }
+.color-confirm-btn.no:hover  { background: var(--s4); }
+.color-confirm-btn svg { width: 18px; height: 18px; }
+
+/* Action row (text params) */
+.check-actions {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 1px; background: var(--line);
+  border-top: 1px solid var(--line);
+}
+.check-action {
+  background: var(--s2); padding: 12px 8px;
+  display: flex; flex-direction: column; align-items: center; gap: 5px;
+  cursor: pointer; transition: background 0.1s;
+}
+.check-action:hover { background: var(--s3); }
+.check-action svg { width: 17px; height: 17px; }
+.check-action-lbl {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3);
+}
+.check-action.match svg { stroke: var(--green); fill: none; stroke-width: 2.5; }
+.check-action.match .check-action-lbl { color: var(--green); }
+.check-action.match:hover { background: var(--green-bg); }
+.check-action.save svg { stroke: var(--gold); fill: none; stroke-width: 2; }
+.check-action.save .check-action-lbl { color: var(--gold); }
+.check-action.save:hover { background: var(--gold-bg); }
+.check-action.skip svg { stroke: var(--text3); fill: none; stroke-width: 2; }
+
+.check-nav {
+  padding: 11px 18px; border-top: 1px solid var(--line);
+  background: var(--s3);
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+/* Summary */
+.check-summary { animation: fadeUp .2s cubic-bezier(.16,1,.3,1) both; }
+.summary-hero { font-size: 20px; font-weight: 700; color: var(--text); letter-spacing: -0.03em; margin-bottom: 4px; }
+.summary-sub { font-size: 11px; color: var(--text3); margin-bottom: 22px; }
+.summary-stats { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 22px; }
+.stat-pill {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 7px 14px; border: 1px solid; font-size: 11px; font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.stat-pill .sn { font-size: 16px; }
+.stat-pill.ok    { border-color: rgba(46,204,138,0.3);  background: var(--green-bg); color: var(--green); }
+.stat-pill.miss  { border-color: rgba(224,85,85,0.3);   background: var(--red-bg);   color: var(--red); }
+.stat-pill.saved { border-color: rgba(6,182,212,0.3);   background: var(--cyan-bg);  color: var(--cyan); }
+.stat-pill.skip  { border-color: var(--line2); background: var(--s3); color: var(--text3); }
+
+.summary-table {
+  border: 1px solid var(--line); background: var(--s2);
+  overflow: hidden; margin-bottom: 20px;
+}
+.summary-row {
+  display: grid; grid-template-columns: minmax(120px,2fr) 100px 20px 100px 26px;
+  padding: 11px 16px; border-bottom: 1px solid var(--line); align-items: center; gap: 8px;
+}
+.summary-row:last-child { border-bottom: none; }
+.summary-row.row-match  { background: rgba(46,204,138,0.04); }
+.summary-row.row-miss   { background: rgba(224,85,85,0.04); }
+.summary-row.row-saved  { background: rgba(6,182,212,0.04); }
+.summary-key { font-size: 12px; color: rgba(255,255,255,0.65); display: flex; align-items: center; gap: 8px; }
+.summary-from { font-size: 12px; color: var(--text3); }
+.summary-sep  { font-size: 11px; color: var(--text3); opacity: 0.4; text-align: center; }
+.summary-to   { font-size: 12px; font-weight: 700; }
+.summary-to.match  { color: var(--green); }
+.summary-to.miss   { color: var(--red); }
+.summary-to.saved  { color: var(--cyan); }
+.summary-to.skip   { color: var(--text3); }
+.summary-icon { font-size: 11px; font-weight: 700; text-align: center; }
+.summary-icon.match { color: var(--green); }
+.summary-icon.miss  { color: var(--red); }
+.summary-icon.saved { color: var(--cyan); }
+.summary-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.btn-save-finish {
+  background: var(--green); color: var(--bg); border: none;
+  padding: 10px 22px; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  cursor: pointer; transition: background 0.12s; display: inline-flex; align-items: center; gap: 7px;
+}
+.btn-save-finish:hover { filter: brightness(1.1); }
+
+/* Tabs */
+.tab-bar {
+  display: flex; gap: 2px; margin-bottom: 20px;
+  border-bottom: 1px solid var(--line);
+}
+.tab-btn {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 8px 15px; border: 1px solid transparent; border-bottom: none;
+  background: transparent; color: var(--text3); cursor: pointer; transition: all 0.12s;
+  margin-bottom: -1px;
+}
+.tab-btn:hover { color: var(--text2); }
+.tab-btn.active { background: var(--s2); border-color: var(--line2); border-bottom-color: var(--s2); color: var(--text); }
+
+/* History / Audit */
+.version-list { display: flex; flex-direction: column; gap: 8px; }
+.version-card { border: 1px solid var(--line); background: var(--s2); overflow: hidden; }
+.version-card-header {
+  padding: 10px 16px; border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; gap: 11px;
+  background: var(--s3); cursor: pointer;
+}
+.v-badge {
+  font-size: 9px; font-weight: 700; padding: 2px 7px; letter-spacing: 0.08em;
+  background: var(--amber-bg); color: var(--amber); flex-shrink: 0;
+}
+.v-badge.latest { background: var(--green-bg); color: var(--green); }
+.v-meta { font-size: 10px; color: var(--text2); flex: 1; }
+.v-count { font-size: 9px; padding: 2px 7px; background: var(--s4); color: var(--text3); flex-shrink: 0; }
+.v-date { font-size: 9px; color: var(--text3); flex-shrink: 0; }
+.v-body { padding: 12px 16px; display: none; }
+.v-body.open { display: block; }
+.v-param-row {
+  display: grid; grid-template-columns: 1fr 90px 18px 90px;
+  gap: 8px; padding: 6px 8px; align-items: center;
+}
+.v-param-row:hover { background: var(--s3); }
+.v-param-name { font-size: 11px; color: rgba(255,255,255,0.55); display: flex; align-items: center; gap: 6px; }
+.v-param-val { font-size: 11px; color: var(--text3); }
+.v-param-val.new { color: var(--gold); font-weight: 600; }
+.v-param-sep { font-size: 10px; color: var(--text3); opacity: 0.4; text-align: center; }
+
+.audit-list { display: flex; flex-direction: column; gap: 6px; }
+.audit-entry {
+  border: 1px solid var(--line); background: var(--s2); padding: 12px 16px;
+  display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: start;
+}
+.audit-icon { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
+.audit-icon.saved { background: var(--cyan-bg); border: 1px solid rgba(6,182,212,0.2); }
+.audit-icon.mismatch { background: var(--red-bg); border: 1px solid rgba(224,85,85,0.2); }
+.audit-icon.match { background: var(--green-bg); border: 1px solid rgba(46,204,138,0.2); }
+.audit-title { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+.audit-meta { font-size: 10px; color: var(--text3); line-height: 1.6; }
+.audit-change { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; margin-top: 3px; }
+.audit-old { color: var(--text3); }
+.audit-arr { color: var(--text3); opacity: 0.4; }
+.audit-new { color: var(--gold); font-weight: 700; }
+.audit-ts { font-size: 9px; color: var(--text3); white-space: nowrap; }
+
+/* ═══════════════════════════════════════
+   CONFIRM OVERLAY
+═══════════════════════════════════════ */
+.check-confirm-overlay {
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(0,0,0,0.8);
+  display: flex; align-items: center; justify-content: center;
+  animation: fadeUp .16s cubic-bezier(.16,1,.3,1) both;
+}
+.check-confirm-box {
+  background: var(--s2); border: 1px solid var(--gold3);
+  padding: 28px; max-width: 400px; width: 90%;
+  display: flex; flex-direction: column; gap: 18px;
+}
+.check-confirm-title { font-size: 16px; font-weight: 700; color: var(--text); letter-spacing: -0.03em; }
+.check-confirm-body  { font-size: 12px; color: var(--text2); line-height: 1.65; }
+.check-confirm-vals  {
+  display: flex; align-items: center; gap: 12px;
+  padding: 13px 16px; border: 1px solid var(--line2); background: var(--s3);
+}
+.check-confirm-val { font-size: 15px; font-weight: 700; }
+.check-confirm-val.old { color: var(--text3); }
+.check-confirm-val.new { color: var(--gold); }
+.check-confirm-arr { font-size: 12px; color: var(--text3); opacity: 0.5; }
+.check-confirm-actions { display: flex; gap: 8px; }
+.btn-confirm-save {
+  flex: 1; font-size: 11px; font-weight: 700; padding: 10px 16px;
+  background: var(--gold); color: var(--bg); border: none;
+  cursor: pointer; letter-spacing: 0.06em; text-transform: uppercase;
+  transition: background 0.12s;
+}
+.btn-confirm-save:hover { background: var(--gold2); }
+.btn-confirm-skip {
+  font-size: 11px; font-weight: 600; padding: 10px 16px;
+  border: 1px solid var(--line2); background: transparent; color: var(--text2);
+  cursor: pointer; transition: all 0.12s;
+}
+.btn-confirm-skip:hover { background: var(--s3); color: var(--text); }
+
+/* ═══════════════════════════════════════
+   LOADING / EMPTY
+═══════════════════════════════════════ */
+.loading-screen {
+  display: flex; align-items: center; justify-content: center;
+  flex: 1; padding: 80px; flex-direction: column; gap: 14px;
+}
+.loading-bar-wrap { width: 160px; height: 1px; background: var(--line2); overflow: hidden; }
+.loading-bar-fill {
+  height: 100%; width: 40%;
+  background: var(--gold);
+  animation: sweep 1.6s ease-in-out infinite;
+}
+@keyframes sweep { 0% { transform: translateX(-200%); } 100% { transform: translateX(500%); } }
+.loading-label {
+  font-size: 9px; font-weight: 700; color: var(--text3); letter-spacing: 0.2em; text-transform: uppercase;
+}
+.emptyNote {
+  padding: 56px 36px; text-align: center; color: var(--text3);
+  font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+}
+.emptyNote::before { content: ''; display: block; width: 28px; height: 1px; background: var(--line2); }
+
+/* ═══════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════ */
+@media (max-width: 860px) {
+  .body { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .panel-grid { grid-template-columns: 1fr; }
+  .section-tiles { grid-template-columns: 1fr; }
+  .player-wrap { grid-template-columns: 1fr; }
+  .mini-panel { display: none; }
+  .value-table-header, .value-row { grid-template-columns: minmax(110px,2fr) 80px 18px 80px; }
+  .summary-row { grid-template-columns: 1fr 70px 16px 70px 22px; }
+  .content { padding: 20px 16px 36px; }
+  .topbar, .breadcrumb { padding: 0 16px; }
+}
+</style>
+</head>
+<body>
+
+<div id="pally-err" style="display:none;position:fixed;bottom:10px;left:10px;right:10px;z-index:9999;background:#1a0000;border:1px solid #e05555;padding:10px 13px;font-family:monospace;font-size:11px;color:#e05555;white-space:pre-wrap;max-height:110px;overflow:auto" onclick="this.style.display='none'"></div>
+
+<div class="shell" id="app-shell"></div>
+
+<script>
+(function(){
+'use strict';
+
+/* ═══════════════════════════
+   DATA
+═══════════════════════════ */
+const BISCUITS = [
+  { id:'richtea',    label:'Rich Tea',   formats:['5x6','3x6'], color:'blauw' },
+  { id:'koffiekoek', label:'Koffiekoek', formats:['4x4','5x4','5x5'], color:'bruin' },
+  { id:'theekokos',  label:'Thee/Kokos', formats:['5x5'], color:'wit' }
+];
+
+const SECTIONS = {
+  cavanna:    { title:'Cavanna',            logo:'./cavanna-logo.png',    desc:'Flow wrapper · lijn 9 en 10', hasLines:true },
+  robertpack: { title:'Robert Pack',        logo:'./robertpack-logo.png', desc:'Case packer · lijn 9 en 10', hasLines:true },
+  dozen:      { title:'Dozen Opzetter',     logo:'./dozen-logo.png',      desc:'Dozen opzetter',              hasLines:false },
+  dekselaar:  { title:'Dekselaar Opzetter', logo:'./dekselaar-logo.png',  desc:'Dekselaar opzetter',          hasLines:false }
+};
+
+const FILES = {
+  cavanna9:   './data/cavanna9.json',
+  cavanna10:  './data/cavanna10.json',
+  robertpack: './data/robertpack.json',
+  dozen:      './data/dozen.json',
+  dekselaar:  './data/dekselaar.json'
+};
+
+const COLOR_MAP = {
+  rood:'#ef4444', grijs:'#64748b', bruin:'#7a4a21',
+  wit:'#ffffff', blauw:'#3b82f6', zwart:'#111', groen:'#22c55e'
+};
+
+/* ═══════════════════════════
+   STATE
+═══════════════════════════ */
+const state = {
+  loading:true, error:'', data:null,
+  stage:1,
+  fromBiscuit:null, fromFormat:null,
+  toBiscuit:null, toFormat:null,
+  section:null,
+  cavannaLine:'9', robertpackLine:'9',
+  viewMode:null, onlyChanges:true, stepIndex:0
+};
+
+const chk = {
+  active:false, stepIndex:0, results:{},
+  showSummary:false, pendingSave:null,
+  tab:'check', _finishAfterSave:false
+};
+
+/* ═══════════════════════════
+   STORAGE
+═══════════════════════════ */
+const STORE_KEY = 'pally_v1';
+function loadStore(){ try{ return JSON.parse(localStorage.getItem(STORE_KEY)||'{}'); }catch(e){ return {}; } }
+function saveStore(s){ try{ localStorage.setItem(STORE_KEY,JSON.stringify(s)); }catch(e){} }
+function getStore(){
+  const s=loadStore();
+  if(!s.versions)      s.versions={};
+  if(!s.auditLog)      s.auditLog=[];
+  if(!s.currentValues) s.currentValues={};
+  return s;
+}
+function buildStoreKey(){
+  const line = state.section==='cavanna' ? state.cavannaLine :
+               state.section==='robertpack' ? state.robertpackLine : '';
+  return state.section+'|'+state.toBiscuit+'|'+state.toFormat+'|'+line;
+}
+function nowStr(){
+  return new Date().toLocaleString('nl-NL',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+}
+
+/* ═══════════════════════════
+   HELPERS
+═══════════════════════════ */
+const biscuitLabel      = id => (BISCUITS.find(b=>b.id===id)||{}).label||'';
+const formatsForBiscuit = id => (BISCUITS.find(b=>b.id===id)||{}).formats||[];
+const getBiscuitMeta    = id => BISCUITS.find(b=>b.id===id)||null;
+const getSectionTitle   = id => (SECTIONS[id]||{}).title||id;
+
+function buildFlowRows(fromObj,toObj){
+  const keys=Array.from(new Set([...Object.keys(fromObj||{}),...Object.keys(toObj||{})]));
+  return keys.map(k=>[k, fromObj&&fromObj[k]!=null?fromObj[k]:'—', toObj&&toObj[k]!=null?toObj[k]:'—']);
+}
+
+function escapeHtml(v){
+  return String(v!=null?v:'')
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+function cleanNumberToken(t){
+  let s=String(t).trim(); if(!s) return s;
+  if(!/^[-+]?\d+[\.,]?\d*$/.test(s)) return s;
+  const hc=s.includes(','), hd=s.includes('.');
+  const sep=hc?',':(hd?'.':'');
+  let parts=sep?s.split(sep):[s];
+  let ip=parts[0].replace(/^0+(\d)/,'$1');
+  if(ip==='') ip='0';
+  if(parts.length===1) return ip;
+  let dp=parts[1].replace(/0+$/,'');
+  return dp?ip+','+dp:ip;
+}
+
+function normalizeDisplayValue(v){
+  return String(v!=null?v:'').replace(/\u0392/g,'B')
+    .split('/').map(p=>cleanNumberToken(p.trim())).join(' / ');
+}
+function normalizeCompareValue(v){
+  return normalizeDisplayValue(v).toLowerCase().replace(/\s+/g,' ').trim();
+}
+const filterRows=(rows,only)=>only?rows.filter(r=>normalizeCompareValue(r[1])!==normalizeCompareValue(r[2])):rows;
+const isColorToken=t=>Object.prototype.hasOwnProperty.call(COLOR_MAP,String(t).trim().toLowerCase());
+
+function renderColorDot(token){
+  const name=String(token).trim().toLowerCase();
+  const col=COLOR_MAP[name]; if(!col) return '';
+  return '<span class="colorDot '+name+'" style="background:'+col+'"></span>';
+}
+function renderRichValue(value){
+  const norm=normalizeDisplayValue(value);
+  const parts=norm.split('/').map(p=>p.trim()).filter(Boolean);
+  if(parts.length&&parts.every(isColorToken))
+    return '<span class="richValue"><span class="colorDots">'+parts.map(renderColorDot).join('')+'</span></span>';
+  const html=parts.map(p=>isColorToken(p)?renderColorDot(p):'<span class="richText">'+escapeHtml(p)+'</span>');
+  return '<span class="richValue">'+html.join('<span class="richText">/</span>')+'</span>';
+}
+function renderParamKey(key){
+  const m=String(key).match(/^(\d+[A-Z]?)\s+(.+)$/);
+  if(!m) return '<span class="value-key-text">'+escapeHtml(key)+'</span>';
+  return '<span class="param-num">'+escapeHtml(m[1])+'</span><span class="value-key-text">'+escapeHtml(m[2])+'</span>';
+}
+function renderPlayerLabel(key){
+  const m=String(key).match(/^(\d+[A-Z]?)\s+(.+)$/);
+  if(!m) return '<span>'+escapeHtml(key)+'</span>';
+  return '<span class="player-num">'+escapeHtml(m[1])+'</span><span>'+escapeHtml(m[2])+'</span>';
+}
+
+/* ═══════════════════════════
+   DATA LOADING
+═══════════════════════════ */
+async function loadData(){
+  try{
+    const entries=await Promise.all(Object.entries(FILES).map(async([key,path])=>{
+      const res=await fetch(path,{cache:'no-store'});
+      if(!res.ok) throw new Error('Laden mislukt: '+path);
+      return [key,await res.json()];
+    }));
+    state.data=Object.fromEntries(entries);
+  }catch(err){
+    state.error=err.message||'Laden mislukt.';
+  }finally{
+    state.loading=false; render();
+  }
+}
+
+/* ═══════════════════════════
+   ROWS
+═══════════════════════════ */
+function getRobertPackValues(format,line){
+  const rp=state.data&&state.data.robertpack;
+  const byFmt=rp&&rp.values&&rp.values[format]?rp.values[format]:{};
+  return byFmt[line]||{};
+}
+function getRows(){
+  if(!state.data) return [];
+  const { section, cavannaLine, robertpackLine, fromFormat, toFormat, data } = state;
+  if(section==='cavanna'){
+    const src=cavannaLine==='10'?data.cavanna10:data.cavanna9;
+    return buildFlowRows((src&&src.values&&src.values[fromFormat])||{},(src&&src.values&&src.values[toFormat])||{});
+  }
+  if(section==='robertpack')
+    return buildFlowRows(getRobertPackValues(fromFormat,robertpackLine),getRobertPackValues(toFormat,robertpackLine));
+  if(section==='dozen')
+    return buildFlowRows((data.dozen&&data.dozen.values&&data.dozen.values[fromFormat])||{},(data.dozen&&data.dozen.values&&data.dozen.values[toFormat])||{});
+  if(section==='dekselaar')
+    return buildFlowRows((data.dekselaar&&data.dekselaar.values&&data.dekselaar.values[fromFormat])||{},(data.dekselaar&&data.dekselaar.values&&data.dekselaar.values[toFormat])||{});
+  return [];
+}
+function getExpectedValue(paramKey,fallback){
+  const store=getStore(); const sk=buildStoreKey();
+  const cv=store.currentValues&&store.currentValues[sk];
+  return (cv&&cv[paramKey]!=null)?cv[paramKey]:fallback;
+}
+
+/* ═══════════════════════════
+   CHECK MODE
+═══════════════════════════ */
+function openCheckMode(){
+  Object.assign(chk,{active:true,stepIndex:0,results:{},showSummary:false,pendingSave:null,tab:'check',_finishAfterSave:false});
+  render();
+}
+function closeCheckMode(){
+  Object.assign(chk,{active:false,showSummary:false,pendingSave:null,_finishAfterSave:false});
+  render();
+}
+function advanceCheck(){
+  chk.pendingSave=null;
+  if(chk._finishAfterSave){ chk._finishAfterSave=false; chk.showSummary=true; render(); return; }
+  const rows=getRows();
+  if(chk.stepIndex<rows.length-1){ chk.stepIndex++; render(); }
+  else{ chk.showSummary=true; render(); }
+}
+function confirmSave(){
+  const p=chk.pendingSave; if(!p) return;
+  const store=getStore(); const sk=buildStoreKey();
+  if(!store.currentValues[sk]) store.currentValues[sk]={};
+  store.currentValues[sk][p.paramKey]=p.actualVal;
+  store.auditLog.unshift({
+    ts:nowStr(), section:getSectionTitle(state.section),
+    line:state.section==='cavanna'?state.cavannaLine:state.section==='robertpack'?state.robertpackLine:'',
+    toBiscuit:biscuitLabel(state.toBiscuit), toFormat:state.toFormat,
+    param:p.paramKey,
+    old:normalizeDisplayValue(String(p.expectedVal)),
+    new_:normalizeDisplayValue(String(p.actualVal)),
+    note:'', action:'saved'
+  });
+  if(!store.versions[sk]) store.versions[sk]=[];
+  const last=store.versions[sk][0];
+  const ce={param:p.paramKey,old:normalizeDisplayValue(String(p.expectedVal)),new_:normalizeDisplayValue(String(p.actualVal)),note:''};
+  if(!last||last.locked){
+    store.versions[sk].unshift({v:store.versions[sk].length+1,ts:nowStr(),changes:[ce],locked:false});
+  } else {
+    const idx=last.changes.findIndex(c=>c.param===p.paramKey);
+    if(idx>=0) last.changes[idx]=ce; else last.changes.push(ce);
+    last.ts=nowStr();
+  }
+  saveStore(store);
+  chk.results[p.paramKey]={status:'saved',actual:p.actualVal};
+  removeConfirmOverlay();
+  const fin=chk._finishAfterSave; chk._finishAfterSave=false;
+  if(fin){ chk.showSummary=true; render(); } else { advanceCheck(); }
+}
+function confirmSkip(){
+  const p=chk.pendingSave; if(!p) return;
+  chk.results[p.paramKey]={status:'mismatch',actual:p.actualVal};
+  removeConfirmOverlay();
+  const fin=chk._finishAfterSave; chk._finishAfterSave=false;
+  if(fin){ chk.showSummary=true; render(); } else { advanceCheck(); }
+}
+function commitAndClose(){
+  const store=getStore(); const sk=buildStoreKey();
+  if(store.versions[sk]&&store.versions[sk][0]&&!store.versions[sk][0].locked){
+    store.versions[sk][0].locked=true; saveStore(store);
+  }
+  closeCheckMode();
+}
+function renderConfirmOverlay(){
+  const p=chk.pendingSave; if(!p) return;
+  const ex=document.getElementById('pally-confirm'); if(ex) ex.remove();
+  const div=document.createElement('div');
+  div.className='check-confirm-overlay'; div.id='pally-confirm';
+  div.innerHTML=
+    '<div class="check-confirm-box">'
+    +'<div class="check-confirm-title">Waarde verschilt</div>'
+    +'<div class="check-confirm-body">De machine-waarde verschilt van de lijst. Wil je de nieuwe waarde opslaan als geldende waarde?</div>'
+    +'<div class="check-confirm-vals">'
+    +'<span class="check-confirm-val old">'+escapeHtml(normalizeDisplayValue(String(p.expectedVal)))+'</span>'
+    +'<span class="check-confirm-arr">→</span>'
+    +'<span class="check-confirm-val new">'+escapeHtml(normalizeDisplayValue(String(p.actualVal)))+'</span>'
+    +'</div>'
+    +'<div class="check-confirm-actions">'
+    +'<button class="btn-confirm-save" id="pally-cs">↑ Ja, opslaan als nieuwe waarde</button>'
+    +'<button class="btn-confirm-skip" id="pally-ck">Nee, doorgaan</button>'
+    +'</div></div>';
+  document.body.appendChild(div);
+  document.getElementById('pally-cs').addEventListener('click',confirmSave);
+  document.getElementById('pally-ck').addEventListener('click',confirmSkip);
+}
+function removeConfirmOverlay(){ const el=document.getElementById('pally-confirm'); if(el) el.remove(); }
+function saveCurrentInput(){
+  const inp=document.getElementById('chk-input');
+  const rows=getRows(); const cur=rows[chk.stepIndex]; if(!cur) return;
+  const key=cur[0]; const expRaw=cur[2];
+  const normExp=normalizeDisplayValue(String(expRaw));
+  const expParts=normExp.split('/').map(p=>p.trim()).filter(Boolean);
+  if(expParts.length>0&&expParts.every(isColorToken)) return;
+  const val=inp?inp.value:(chk.results[key]&&chk.results[key].actual?chk.results[key].actual:'');
+  const exp=getExpectedValue(key,expRaw);
+  const status=val.trim()?(normalizeCompareValue(String(exp))===normalizeCompareValue(val)?'match':'mismatch'):((chk.results[key]&&chk.results[key].status)||'pending');
+  chk.results[key]=Object.assign({},chk.results[key]||{},{actual:val,status});
+}
+
+/* ═══════════════════════════
+   RENDER: VALUE LIST
+═══════════════════════════ */
+function renderValueList(rows){
+  if(!rows.length) return '<div class="emptyNote">Geen data gevonden</div>';
+  return '<div class="value-table">'
+    +'<div class="value-table-header"><span class="vtcol">Parameter</span><span class="vtcol">Huidig</span><span class="vtcol"></span><span class="vtcol">Nieuw</span></div>'
+    +'<div class="value-rows">'
+    +rows.map(r=>'<div class="value-row"><span class="value-key">'+renderParamKey(r[0])+'</span><span class="value-cell">'+renderRichValue(r[1])+'</span><span class="value-sep">→</span><span class="value-cell is-new">'+renderRichValue(r[2])+'</span></div>').join('')
+    +'</div></div>';
+}
+
+/* ═══════════════════════════
+   RENDER: STEP PLAYER
+═══════════════════════════ */
+function renderStepPlayer(rows){
+  const total=rows.length; const cur=rows[state.stepIndex];
+  if(!total||!cur) return '<div class="emptyNote">Geen data gevonden</div>';
+  const pct=((state.stepIndex+1)/total*100).toFixed(1);
+  const isLast=state.stepIndex>=total-1;
+  const miniRows=rows.map((r,i)=>
+    '<div class="mini-row'+(i===state.stepIndex?' active':'')+'" data-action="jump-step" data-value="'+i+'">'
+    +'<span class="mini-num">'+String(i+1).padStart(2,'0')+'</span>'
+    +'<span class="mini-key">'+escapeHtml(r[0])+'</span>'
+    +(i<state.stepIndex?'<span class="mini-check">✓</span>':'')
+    +'</div>'
+  ).join('');
+  return '<div class="player-wrap">'
+    +'<div class="player-main">'
+    +'<div class="player-top"><span class="player-counter">'+(state.stepIndex+1)+' / '+total+'</span>'
+    +'<div class="prog-track"><div class="prog-fill" style="width:'+pct+'%"></div></div>'
+    +'<span class="player-counter">'+pct+'%</span></div>'
+    +'<div class="player-body">'
+    +'<div class="player-key-lbl">Parameter</div>'
+    +'<div class="player-label">'+renderPlayerLabel(cur[0])+'</div>'
+    +'<div class="player-vals">'
+    +'<div class="player-val-block"><div class="player-val-lbl">Huidig</div><div class="player-val-box">'+renderRichValue(cur[1])+'</div></div>'
+    +'<div class="player-arr">→</div>'
+    +'<div class="player-val-block"><div class="player-val-lbl">Nieuw</div><div class="player-val-box new">'+renderRichValue(cur[2])+'</div></div>'
+    +'</div></div>'
+    +'<div class="player-controls">'
+    +'<button class="btn-ghost" data-action="prev-step" '+(state.stepIndex===0?'disabled':'')+'>← Vorige</button>'
+    +'<button class="btn-primary" data-action="next-step">'+(isLast?'Afronden ✓':'Volgende →')+'</button>'
+    +'</div></div>'
+    +'<div class="mini-panel"><div class="mini-header">Overzicht</div><div class="mini-list">'+miniRows+'</div></div>'
+    +'</div>';
+}
+
+/* ═══════════════════════════
+   RENDER: CHECK MODE
+═══════════════════════════ */
+function renderCheckMode(rows){
+  if(!rows.length) return '<div class="emptyNote">Geen parameters gevonden</div>';
+  if(chk.showSummary) return renderCheckSummary(rows);
+
+  const total=rows.length;
+  const done=rows.filter(([k])=>{ const s=chk.results[k]&&chk.results[k].status; return s&&s!=='pending'; }).length;
+  const pct=Math.round(done/total*100);
+  const cur=rows[chk.stepIndex]; if(!cur) return '<div class="emptyNote">Geen parameter</div>';
+  const [curKey,,expRaw]=cur;
+  const expected=getExpectedValue(curKey,expRaw);
+  const res=chk.results[curKey]||{}; const actualVal=res.actual||''; const curStatus=res.status||'pending';
+
+  const isColorVal=v=>{
+    const parts=normalizeDisplayValue(String(v)).split('/').map(p=>p.trim()).filter(Boolean);
+    return parts.length>0&&parts.every(isColorToken);
+  };
+  const colorMode=isColorVal(expected);
+
+  const boxClass=curStatus==='match'?'st-match':curStatus==='mismatch'?'st-miss':curStatus==='saved'?'st-saved':curStatus==='skipped'?'st-skip':'actual';
+  const badgeCls=curStatus==='match'?'match':curStatus==='mismatch'?'miss':curStatus==='saved'?'saved':'pending';
+  const badgeLbl={match:'✓ Match',mismatch:'✕ Afwijking',saved:'↑ Opgeslagen',skipped:'— Skip',pending:'In behandeling'};
+  const isLast=chk.stepIndex>=total-1;
+
+  let actualArea;
+  if(colorMode){
+    const matchSt=curStatus==='match'?'background:var(--green-bg);border:1px solid var(--green);':'border:1px solid var(--line2);background:var(--s3);';
+    const skipSt =curStatus==='skipped'?'background:var(--s4);':'border:1px solid var(--line2);background:var(--s3);';
+    actualArea='<div style="display:flex;flex-direction:column;gap:6px;">'
+      +'<div class="check-val-lbl">Klopt dit op de machine?</div>'
+      +'<div class="color-confirm-wrap">'
+      +'<div class="color-confirm-btn yes" style="'+matchSt+'" data-action="chk-color" data-value="match" data-param="'+escapeHtml(curKey)+'">'
+      +'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Ja, klopt'
+      +'</div>'
+      +'<div class="color-confirm-btn no" style="'+skipSt+'" data-action="chk-color" data-value="skipped" data-param="'+escapeHtml(curKey)+'">'
+      +'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/></svg>Overslaan'
+      +'</div>'
+      +'</div></div>';
+  } else {
+    actualArea='<div class="check-val-block">'
+      +'<div class="check-val-lbl">Actueel (machine)</div>'
+      +'<div class="check-val-box '+boxClass+'">'
+      +'<input class="check-input" id="chk-input" type="text" autocomplete="off" placeholder="Voer waarde in\u2026" value="'+escapeHtml(actualVal)+'" data-param="'+escapeHtml(curKey)+'" data-expected="'+escapeHtml(String(expected))+'">'
+      +'</div></div>';
+  }
+
+  const miniRows=rows.map(([key],i)=>{
+    const s=(chk.results[key]&&chk.results[key].status)||'pending';
+    const dotColor=s==='match'?'var(--green)':s==='mismatch'?'var(--red)':s==='saved'?'var(--cyan)':s==='skipped'?'var(--text3)':'var(--line2)';
+    return '<div class="mini-row'+(i===chk.stepIndex?' active':'')+'" data-action="chk-jump" data-value="'+i+'">'
+      +'<span class="mini-num">'+String(i+1).padStart(2,'0')+'</span>'
+      +'<span class="mini-key">'+escapeHtml(key)+'</span>'
+      +'<span style="width:6px;height:6px;border-radius:50%;background:'+dotColor+';flex-shrink:0;"></span>'
+      +'</div>';
+  }).join('');
+
+  return '<div style="display:grid;grid-template-columns:1fr 210px;gap:12px;align-items:start;">'
+    +'<div>'
+    +'<div class="check-player">'
+    +'<div class="check-top">'
+    +'<div class="check-progress"><span class="check-counter">'+(chk.stepIndex+1)+' / '+total+'</span>'
+    +'<div class="prog-track" style="width:80px;"><div class="prog-fill" style="width:'+pct+'%"></div></div>'
+    +'<span style="font-size:10px;color:var(--text3);">'+pct+'%</span></div>'
+    +'<div class="check-badge '+badgeCls+'">'+(badgeLbl[curStatus]||'In behandeling')+'</div>'
+    +'</div>'
+    +'<div class="check-body">'
+    +'<div class="check-param-lbl">Parameter</div>'
+    +'<div class="check-param-name">'+renderPlayerLabel(curKey)+'</div>'
+    +'<div class="check-vals">'
+    +'<div class="check-val-block"><div class="check-val-lbl">Verwacht (lijst)</div>'
+    +'<div class="check-val-box expected">'+renderRichValue(String(expected))+'</div></div>'
+    +'<div class="check-arrow">→</div>'
+    +actualArea
+    +'</div>'
+    +(!colorMode?
+      '<div class="check-actions">'
+      +'<div class="check-action match" data-action="chk-act" data-value="match" data-param="'+escapeHtml(curKey)+'">'
+      +'<svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>'
+      +'<span class="check-action-lbl">Match</span></div>'
+      +'<div class="check-action save" data-action="chk-act" data-value="save" data-param="'+escapeHtml(curKey)+'">'
+      +'<svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>'
+      +'<span class="check-action-lbl">Opslaan</span></div>'
+      +'<div class="check-action" data-action="chk-act" data-value="skip" data-param="'+escapeHtml(curKey)+'">'
+      +'<svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/></svg>'
+      +'<span class="check-action-lbl">Overslaan</span></div>'
+      +'</div>'
+    :'')
+    +'</div>'
+    +'<div class="check-nav">'
+    +'<button class="btn-ghost" data-action="chk-prev" '+(chk.stepIndex===0?'disabled':'')+'>← Vorige</button>'
+    +'<div style="display:flex;align-items:center;gap:10px;">'
+    +'<span style="font-size:10px;color:var(--text3);font-weight:600;letter-spacing:0.06em;">'+done+'/'+total+' klaar</span>'
+    +'<button class="btn-primary" data-action="'+(isLast?'chk-finish':'chk-next')+'" data-param="'+escapeHtml(curKey)+'">'+(isLast?'Afronden ✓':'Volgende →')+'</button>'
+    +'</div></div>'
+    +'</div></div>'
+    +'<div class="mini-panel"><div class="mini-header">Parameters · '+pct+'%</div><div class="mini-list">'+miniRows+'</div></div>'
+    +'</div>';
+}
+
+/* ═══════════════════════════
+   RENDER: CHECK SUMMARY
+═══════════════════════════ */
+function renderCheckSummary(rows){
+  const matches   =rows.filter(([k])=>chk.results[k]&&chk.results[k].status==='match');
+  const saved     =rows.filter(([k])=>chk.results[k]&&chk.results[k].status==='saved');
+  const mismatches=rows.filter(([k])=>chk.results[k]&&chk.results[k].status==='mismatch');
+  const skipped   =rows.filter(([k])=>chk.results[k]&&chk.results[k].status==='skipped');
+  const pending   =rows.filter(([k])=>!chk.results[k]||!chk.results[k].status||chk.results[k].status==='pending');
+
+  const tableRows=rows.filter(([k])=>chk.results[k]&&chk.results[k].status&&chk.results[k].status!=='pending').map(([key,,expRaw])=>{
+    const r=chk.results[key]; const s=r&&r.status||'pending';
+    const expDisp=normalizeDisplayValue(String(getExpectedValue(key,expRaw)));
+    const isColor=expDisp.split('/').map(p=>p.trim()).filter(Boolean).every(isColorToken);
+    const toDisp=isColor?renderRichValue(expDisp):escapeHtml(normalizeDisplayValue(String(r&&r.actual||'—')));
+    const rc=s==='match'?'row-match':s==='saved'?'row-saved':s==='mismatch'?'row-miss':'';
+    const icon=s==='match'?'✓':s==='saved'?'↑':s==='mismatch'?'✕':'—';
+    return '<div class="summary-row '+rc+'">'
+      +'<span class="summary-key">'+renderParamKey(key)+'</span>'
+      +'<span class="summary-from">'+renderRichValue(expDisp)+'</span>'
+      +'<span class="summary-sep">→</span>'
+      +'<span class="summary-to '+s+'">'+toDisp+'</span>'
+      +'<span class="summary-icon '+s+'">'+icon+'</span>'
+      +'</div>';
+  }).join('');
+
+  const firstMiss=rows.findIndex(([k])=>chk.results[k]&&chk.results[k].status==='mismatch');
+  return '<div class="check-summary">'
+    +'<div class="summary-hero">Check afgerond</div>'
+    +'<div class="summary-sub">'+getSectionTitle(state.section)+' · '+escapeHtml(biscuitLabel(state.toBiscuit))+' '+escapeHtml(state.toFormat||'')+'</div>'
+    +'<div class="summary-stats">'
+    +'<span class="stat-pill ok"><span class="sn">'+matches.length+'</span> Match</span>'
+    +'<span class="stat-pill miss"><span class="sn">'+mismatches.length+'</span> Afwijking</span>'
+    +'<span class="stat-pill saved"><span class="sn">'+saved.length+'</span> Opgeslagen</span>'
+    +(skipped.length?'<span class="stat-pill skip"><span class="sn">'+skipped.length+'</span> Overgeslagen</span>':'')
+    +(pending.length?'<span class="stat-pill skip"><span class="sn">'+pending.length+'</span> Niet gecheckt</span>':'')
+    +'</div>'
+    +(tableRows?'<div class="summary-table">'+tableRows+'</div>':'<div class="emptyNote" style="padding:28px;margin-bottom:18px;">Geen parameters gecheckt</div>')
+    +'<div class="summary-actions">'
+    +(saved.length?'<button class="btn-save-finish" data-action="chk-commit">✓ Opslaan &amp; sluiten</button>':'')
+    +(firstMiss>=0?'<button class="btn-ghost" data-action="chk-goto-miss" data-value="'+firstMiss+'">↩ Bekijk afwijkingen</button>':'')
+    +'<button class="btn-ghost" data-action="close-check">Sluiten</button>'
+    +'</div></div>';
+}
+
+/* ═══════════════════════════
+   RENDER: HISTORY
+═══════════════════════════ */
+function renderHistory(){
+  const store=getStore(); const sk=buildStoreKey();
+  const versions=store.versions[sk]||[];
+  if(!versions.length) return '<div class="emptyNote">Nog geen versies opgeslagen</div>';
+  return '<div class="version-list">'+versions.map((v,vi)=>
+    '<div class="version-card">'
+    +'<div class="version-card-header" data-action="toggle-version" data-value="'+vi+'">'
+    +'<span class="v-badge'+(vi===0?' latest':'')+'">v'+v.v+'</span>'
+    +'<span class="v-meta">'+escapeHtml(biscuitLabel(state.toBiscuit))+' '+escapeHtml(state.toFormat||'')+' · '+getSectionTitle(state.section)+'</span>'
+    +'<span class="v-count">'+v.changes.length+' wijziging'+(v.changes.length!==1?'en':'')+'</span>'
+    +'<span class="v-date">'+v.ts+'</span>'
+    +'</div>'
+    +'<div class="v-body'+(vi===0?' open':'')+'" id="vb-'+vi+'">'
+    +'<div style="padding:10px 6px;">'
+    +v.changes.map(c=>
+      '<div class="v-param-row">'
+      +'<span class="v-param-name">'+renderParamKey(c.param)+'</span>'
+      +'<span class="v-param-val">'+escapeHtml(c.old)+'</span>'
+      +'<span class="v-param-sep">→</span>'
+      +'<span class="v-param-val new">'+escapeHtml(c.new_)+'</span>'
+      +'</div>'
+      +(c.note?'<div style="padding:0 8px 4px;font-size:10px;color:var(--text3);font-style:italic;">"'+escapeHtml(c.note)+'"</div>':'')
+    ).join('')
+    +'</div></div></div>'
+  ).join('')+'</div>';
+}
+
+/* ═══════════════════════════
+   RENDER: AUDIT
+═══════════════════════════ */
+function renderAudit(){
+  const store=getStore();
+  const logs=store.auditLog.filter(e=>e.section===getSectionTitle(state.section)&&e.toBiscuit===biscuitLabel(state.toBiscuit)&&e.toFormat===state.toFormat);
+  if(!logs.length) return '<div class="emptyNote">Geen wijzigingen gelogd</div>';
+  const im={match:'✓',mismatch:'✕',saved:'↑',skipped:'—'};
+  return '<div class="audit-list">'+logs.map(e=>
+    '<div class="audit-entry">'
+    +'<div class="audit-icon '+(e.action||'saved')+'">'+(im[e.action]||'·')+'</div>'
+    +'<div><div class="audit-title">'+escapeHtml(e.param)+'</div>'
+    +'<div class="audit-meta">'+escapeHtml(e.section)+(e.line?' · Lijn '+e.line:'')+' · '+escapeHtml(e.toBiscuit)+' '+escapeHtml(e.toFormat)+'</div>'
+    +'<div class="audit-change"><span class="audit-old">'+escapeHtml(e.old)+'</span><span class="audit-arr">→</span><span class="audit-new">'+escapeHtml(e.new_)+'</span></div>'
+    +(e.note?'<div style="margin-top:4px;font-size:11px;color:var(--text2);font-style:italic;">"'+escapeHtml(e.note)+'"</div>':'')
+    +'</div>'
+    +'<div class="audit-ts">'+escapeHtml(e.ts)+'</div>'
+    +'</div>'
+  ).join('')+'</div>';
+}
+
+/* ═══════════════════════════
+   RENDER: SIDEBAR
+═══════════════════════════ */
+function renderSidebar(){
+  const canCont=state.fromBiscuit&&state.fromFormat&&state.toBiscuit&&state.toFormat;
+  const sl=!state.section?null:
+    state.section==='cavanna'?'Cavanna · L'+state.cavannaLine:
+    state.section==='robertpack'?'Robert Pack · L'+state.robertpackLine:
+    state.section==='dozen'?'Dozen Opzetter':'Dekselaar Opzetter';
+
+  const steps=[
+    {label:'Product & formaat',done:canCont,active:state.stage===1},
+    {label:'Sectie & ombouw',done:state.stage===2&&!!state.section,active:state.stage===2&&!chk.active},
+    {label:'Check & verify',done:false,active:chk.active,ck:chk.active}
+  ];
+
+  return '<div class="sidebar">'
+    +'<div class="run-card"><div class="run-label">Actieve ombouw</div>'
+    +'<div class="run-flow">'
+    +'<div class="run-prod"><div class="run-prod-lbl">Van</div><div class="run-prod-val">'+(state.fromBiscuit?biscuitLabel(state.fromBiscuit)+(state.fromFormat?' · '+state.fromFormat:''):'—')+'</div></div>'
+    +'<div class="run-arr">→</div>'
+    +'<div class="run-prod"><div class="run-prod-lbl">Naar</div><div class="run-prod-val naar">'+(state.toBiscuit?biscuitLabel(state.toBiscuit)+(state.toFormat?' · '+state.toFormat:''):'—')+'</div></div>'
+    +'</div></div>'
+    +'<div class="nav-list">'
+    +'<div class="nav-item'+(state.stage===1&&!chk.active?' on':'')+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 13l4 4L19 7"/></svg>Configuratie</div>'
+    +'<div class="nav-item'+(state.stage===2&&!chk.active?' on':'')+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Sectie & ombouw</div>'
+    +'<div class="nav-item'+(chk.active?' on':'')+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Check & verify</div>'
+    +'<div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Versies</div>'
+    +'<div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>Audit log</div>'
+    +'</div>'
+    +'<div class="workflow"><div class="wf-label">Voortgang</div>'
+    +steps.map((s,i)=>
+      '<div class="wf-step"><div class="wf-num'+(s.done?' done':s.ck?'':s.active?' now':'')+'">'+  (s.done?'✓':i+1)+'</div>'
+      +'<div class="wf-txt'+(s.done?' done':s.ck?'':s.active?' now':'')+'">'+s.label+'</div></div>'
+      +(i<steps.length-1?'<div class="wf-conn"></div>':'')
+    ).join('')
+    +'</div></div>';
+}
+
+/* ═══════════════════════════
+   MAIN RENDER
+═══════════════════════════ */
+function setState(patch){ Object.assign(state,patch); render(); }
+function resetAll(){
+  Object.assign(state,{stage:1,fromBiscuit:null,fromFormat:null,toBiscuit:null,toFormat:null,section:null,cavannaLine:'9',robertpackLine:'9',viewMode:null,onlyChanges:true,stepIndex:0});
+  Object.assign(chk,{active:false,stepIndex:0,results:{},showSummary:false,pendingSave:null,tab:'check',_finishAfterSave:false});
+  render();
+}
+
+function render(){
+  const shell=document.getElementById('app-shell');
+  const canCont=state.fromBiscuit&&state.fromFormat&&state.toBiscuit&&state.toFormat;
+  const rows=getRows();
+  const visRows=filterRows(rows,state.onlyChanges);
+
+  const bcParts=['<span class="bc-item'+(state.stage===1&&!chk.active?' active':'')+'">Configuratie</span>'];
+  if(state.stage>=2) bcParts.push('<span class="bc-sep"> › </span><span class="bc-item'+(state.stage===2&&!chk.active&&!state.section?' active':'')+'">Sectie</span>');
+  if(state.stage===2&&state.section) bcParts.push('<span class="bc-sep"> › </span><span class="bc-item'+(!chk.active?' active':'')+'">'+getSectionTitle(state.section)+'</span>');
+  if(chk.active) bcParts.push('<span class="bc-sep"> › </span><span class="bc-item active" style="color:var(--gold);">Check Mode</span>');
+
+  let content='';
+
+  if(state.loading){
+    content='<div class="loading-screen"><div class="loading-bar-wrap"><div class="loading-bar-fill"></div></div><div class="loading-label">Systeem initialiseren</div></div>';
+  } else if(state.error){
+    content='<div class="content"><div class="emptyNote">'+escapeHtml(state.error)+'</div></div>';
+
+  } else if(chk.active&&state.stage===2&&state.section){
+    /* ── CHECK MODE ── */
+    const sec=SECTIONS[state.section];
+    const tc=chk.tab==='check'?renderCheckMode(rows):chk.tab==='history'?renderHistory():renderAudit();
+    content='<div class="content">'
+      +'<div class="check-header">'
+      +'<div class="check-header-left">'
+      +'<button class="btn-back" data-action="close-check">‹</button>'
+      +'<img src="'+escapeHtml(sec.logo)+'" alt="'+escapeHtml(sec.title)+'" class="section-header-logo" onerror="this.style.display=\'none\'">'
+      +'<span style="font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;padding:3px 9px;background:var(--gold-bg);color:var(--gold);">Check Mode</span>'
+      +'</div>'
+      +'<div class="check-header-right">'
+      +'<div class="pill">'+renderColorDot((getBiscuitMeta(state.toBiscuit)||{}).color)+' '+escapeHtml(biscuitLabel(state.toBiscuit))+' '+escapeHtml(state.toFormat||'')+'</div>'
+      +(state.section==='cavanna'?'<div class="pill">Lijn '+state.cavannaLine+'</div>':'')
+      +(state.section==='robertpack'?'<div class="pill">Lijn '+state.robertpackLine+'</div>':'')
+      +'</div></div>'
+      +'<div class="tab-bar">'
+      +'<button class="tab-btn'+(chk.tab==='check'?' active':'')+'" data-action="chk-tab" data-value="check">Check</button>'
+      +'<button class="tab-btn'+(chk.tab==='history'?' active':'')+'" data-action="chk-tab" data-value="history">Versies</button>'
+      +'<button class="tab-btn'+(chk.tab==='audit'?' active':'')+'" data-action="chk-tab" data-value="audit">Audit log</button>'
+      +'</div>'+tc+'</div>';
+
+  } else if(state.stage===1){
+    /* ── CONFIGURATIE ── */
+    content='<div class="content">'
+      +'<div class="page-head"><div><div class="page-title">Ombouw <span>configureren</span></div><div class="page-sub">Selecteer bronproduct en doelproduct</div></div></div>'
+      +'<div class="panel-grid">'
+      +'<div class="panel"><div class="panel-header"><span class="panel-title">Van</span>'+(state.fromBiscuit&&state.fromFormat?'<span class="panel-badge">Gereed</span>':'')+'</div>'
+      +'<div class="field-label">Product</div><div class="chip-row">'
+      +BISCUITS.map(b=>'<button class="chip'+(state.fromBiscuit===b.id?' active':'')+'" data-action="from-product" data-value="'+b.id+'">'+renderColorDot(b.color)+'<span>'+escapeHtml(b.label)+'</span></button>').join('')
+      +'</div>'+(state.fromBiscuit?'<div class="field-label">Formaat</div><div class="chip-row">'+formatsForBiscuit(state.fromBiscuit).map(f=>'<button class="chip'+(state.fromFormat===f?' active':'')+'" data-action="from-format" data-value="'+f+'">'+f+'</button>').join('')+'</div>':'')+'</div>'
+      +'<div class="panel"><div class="panel-header"><span class="panel-title">Naar</span>'+(state.toBiscuit&&state.toFormat?'<span class="panel-badge">Gereed</span>':'')+'</div>'
+      +'<div class="field-label">Product</div><div class="chip-row">'
+      +BISCUITS.map(b=>'<button class="chip'+(state.toBiscuit===b.id?' active':'')+'" data-action="to-product" data-value="'+b.id+'">'+renderColorDot(b.color)+'<span>'+escapeHtml(b.label)+'</span></button>').join('')
+      +'</div>'+(state.toBiscuit?'<div class="field-label">Formaat</div><div class="chip-row">'+formatsForBiscuit(state.toBiscuit).map(f=>'<button class="chip'+(state.toFormat===f?' active':'')+'" data-action="to-format" data-value="'+f+'">'+f+'</button>').join('')+'</div>':'')+'</div>'
+      +'</div>'
+      +'<div class="actions-bar"><button class="btn-ghost" data-action="reset-all">Reset</button>'
+      +'<button class="btn-primary" data-action="go-sections" '+(canCont?'':'disabled')+'>Volgende →</button></div>'
+      +'</div>';
+
+  } else if(state.stage===2&&!state.section){
+    /* ── SECTIE PICKER ── */
+    const tiles=Object.entries(SECTIONS).map(([id,sec])=>
+      '<div class="section-tile'+(state.section===id?' active':'')+'" data-action="open-section" data-value="'+id+'">'
+      +'<div class="st-logo-wrap"><img class="st-logo" src="'+escapeHtml(sec.logo)+'" alt="'+escapeHtml(sec.title)+'" onerror="this.style.display=\'none\'"></div>'
+      +'<div class="st-name">'+escapeHtml(sec.title)+'</div>'
+      +'<div class="st-desc">'+escapeHtml(sec.desc)+'</div>'
+      +'<div class="st-arrow">→</div>'
+      +'</div>'
+    ).join('');
+    content='<div class="content">'
+      +'<div class="view-header"><div class="view-header-left"><button class="btn-back" data-action="back-setup">‹</button><div style="font-size:17px;font-weight:700;color:var(--text);letter-spacing:-0.03em;">Kies sectie</div></div></div>'
+      +'<div class="section-tiles">'+tiles+'</div>'
+      +'</div>';
+
+  } else if(state.stage===2&&state.section){
+    /* ── SECTIE DETAIL ── */
+    const sec=SECTIONS[state.section];
+    content='<div class="content">'
+      +'<div class="view-header">'
+      +'<div class="view-header-left">'
+      +'<button class="btn-back" data-action="close-section">‹</button>'
+      +'<img src="'+escapeHtml(sec.logo)+'" alt="'+escapeHtml(sec.title)+'" class="section-header-logo" onerror="this.style.display=\'none\'">'
+      +'</div>'
+      +'<div class="view-header-right">'
+      +'<div class="pill">'+renderColorDot((getBiscuitMeta(state.fromBiscuit)||{}).color)+' '+escapeHtml(biscuitLabel(state.fromBiscuit))+' '+escapeHtml(state.fromFormat||'')+'</div>'
+      +'<span style="color:var(--text3);font-size:11px;">→</span>'
+      +'<div class="pill">'+renderColorDot((getBiscuitMeta(state.toBiscuit)||{}).color)+' '+escapeHtml(biscuitLabel(state.toBiscuit))+' '+escapeHtml(state.toFormat||'')+'</div>'
+      +'<button class="btn-gold" data-action="open-check"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Check & Verify</button>'
+      +'</div></div>'
+      +(sec.hasLines?'<div class="toggle-row">'
+        +(state.section==='cavanna'?
+          '<button class="toggle-btn'+(state.cavannaLine==='9'?' active':'')+'" data-action="cav-line" data-value="9">'+renderColorDot('rood')+' Lijn 9</button>'
+          +'<button class="toggle-btn'+(state.cavannaLine==='10'?' active':'')+'" data-action="cav-line" data-value="10">'+renderColorDot('grijs')+' Lijn 10</button>':'')
+        +(state.section==='robertpack'?
+          '<button class="toggle-btn'+(state.robertpackLine==='9'?' active':'')+'" data-action="rp-line" data-value="9">'+renderColorDot('rood')+' Lijn 9</button>'
+          +'<button class="toggle-btn'+(state.robertpackLine==='10'?' active':'')+'" data-action="rp-line" data-value="10">'+renderColorDot('grijs')+' Lijn 10</button>':'')
+        +'</div>':'')
+      +'<div class="mode-bar">'
+      +'<div class="view-tabs">'
+      +'<button class="view-tab'+(state.viewMode==='start'?' active':'')+'" data-action="view-mode" data-value="start">▶ Stap voor stap</button>'
+      +'<button class="view-tab'+(state.viewMode==='list'?' active':'')+'" data-action="view-mode" data-value="list">☰ Lijst</button>'
+      +'</div>'
+      +(state.viewMode?'<div class="filter-pills">'
+        +'<button class="filter-btn'+(!state.onlyChanges?' active':'')+'" data-action="show-mode" data-value="all">Alles</button>'
+        +'<button class="filter-btn'+(state.onlyChanges?' active':'')+'" data-action="show-mode" data-value="changes">Wijzigingen</button>'
+        +'</div>':'')
+      +'</div>'
+      +(state.viewMode==='start'?renderStepPlayer(visRows):'')
+      +(state.viewMode==='list'?renderValueList(visRows):'')
+      +(!state.viewMode?'<div class="emptyNote">Kies hierboven een weergave</div>':'')
+      +'</div>';
+  }
+
+  shell.innerHTML=
+    '<div class="topbar">'
+    +'<div class="topbar-brand">'
+    +'<div class="topbar-logo"><svg viewBox="0 0 14 14"><polygon points="7,1 13,4.5 13,11 7,13 1,11 1,4.5"/></svg></div>'
+    +'<span class="topbar-name">Pally Biscuits</span>'
+    +'<div class="topbar-sep"></div>'
+    +'<span class="topbar-module">'+(chk.active?'Check Mode':'Ombouwen')+'</span>'
+    +'</div>'
+    +'<div class="topbar-right">'
+    +'<div class="topbar-online">Online</div>'
+    +'<div class="topbar-avatar">OP</div>'
+    +'</div></div>'
+    +'<div class="body">'+renderSidebar()
+    +'<div class="main">'
+    +'<div class="breadcrumb">'+bcParts.join('')+'</div>'
+    +content
+    +'</div></div>';
+
+  bindActions();
+}
+
+/* ═══════════════════════════
+   BIND ACTIONS
+═══════════════════════════ */
+function bindActions(){
+  document.querySelectorAll('[data-action]').forEach(el=>{
+    if(el.tagName==='INPUT'||el.tagName==='TEXTAREA') return;
+    el.addEventListener('click',()=>{
+      const a=el.dataset.action; const v=el.dataset.value;
+
+      if(a==='from-product')  setState({fromBiscuit:v,fromFormat:null});
+      if(a==='to-product')    setState({toBiscuit:v,toFormat:null});
+      if(a==='from-format')   setState({fromFormat:v});
+      if(a==='to-format')     setState({toFormat:v});
+      if(a==='reset-all')     resetAll();
+      if(a==='go-sections'&&(state.fromBiscuit&&state.fromFormat&&state.toBiscuit&&state.toFormat)) setState({stage:2});
+      if(a==='back-setup')    setState({stage:1});
+      if(a==='open-section')  setState({section:v,viewMode:null,stepIndex:0});
+      if(a==='close-section') setState({section:null,viewMode:null,stepIndex:0});
+      if(a==='cav-line')      setState({cavannaLine:v,stepIndex:0});
+      if(a==='rp-line')       setState({robertpackLine:v,stepIndex:0});
+      if(a==='show-mode')     setState({onlyChanges:v==='changes',stepIndex:0});
+      if(a==='jump-step')     setState({stepIndex:parseInt(v,10)});
+      if(a==='prev-step'&&state.stepIndex>0) setState({stepIndex:state.stepIndex-1});
+      if(a==='view-mode')     setState({viewMode:state.viewMode===v?null:v,stepIndex:0});
+      if(a==='next-step'){
+        const vr=filterRows(getRows(),state.onlyChanges);
+        if(state.stepIndex<vr.length-1) setState({stepIndex:state.stepIndex+1});
+        else setState({viewMode:null,stepIndex:0});
+      }
+
+      if(a==='open-check')   openCheckMode();
+      if(a==='close-check')  closeCheckMode();
+      if(a==='chk-commit')   commitAndClose();
+      if(a==='chk-tab')      { chk.tab=v; render(); }
+      if(a==='chk-jump')     { saveCurrentInput(); chk.stepIndex=parseInt(v,10); render(); }
+      if(a==='chk-prev')     { saveCurrentInput(); if(chk.stepIndex>0){ chk.stepIndex--; render(); } }
+      if(a==='chk-next')     {
+        saveCurrentInput();
+        const rows=getRows(); const cur=rows[chk.stepIndex]; if(!cur) return;
+        const res=chk.results[cur[0]]||{};
+        if(res.status==='mismatch'){
+          chk.pendingSave={paramKey:cur[0],expectedVal:getExpectedValue(cur[0],cur[2]),actualVal:res.actual||''};
+          renderConfirmOverlay();
+        } else { advanceCheck(); }
+      }
+      if(a==='chk-finish')   {
+        saveCurrentInput();
+        const rows=getRows(); const cur=rows[chk.stepIndex]; if(!cur) return;
+        const res=chk.results[cur[0]]||{};
+        if(res.status==='mismatch'){
+          chk.pendingSave={paramKey:cur[0],expectedVal:getExpectedValue(cur[0],cur[2]),actualVal:res.actual||''};
+          chk._finishAfterSave=true; renderConfirmOverlay();
+        } else { chk.showSummary=true; render(); }
+      }
+      if(a==='chk-goto-miss') { chk.showSummary=false; chk.stepIndex=parseInt(v,10); render(); }
+      if(a==='chk-act'){
+        saveCurrentInput();
+        const param=el.dataset.param; const rows=getRows();
+        const cur=rows.find(r=>r[0]===param); if(!cur) return;
+        const expRaw=cur[2]; const exp=getExpectedValue(param,expRaw);
+        const inp=document.getElementById('chk-input');
+        const actual=inp?inp.value.trim():((chk.results[param]&&chk.results[param].actual)||'');
+        if(v==='match'){
+          chk.results[param]={status:'match',actual:normalizeDisplayValue(String(exp))};
+          advanceCheck();
+        } else if(v==='save'){
+          if(!actual){ alert('Voer eerst een waarde in.'); return; }
+          chk.pendingSave={paramKey:param,expectedVal:exp,actualVal:actual};
+          confirmSave();
+        } else if(v==='skip'){
+          chk.results[param]={status:'skipped',actual:actual};
+          advanceCheck();
+        }
+      }
+      if(a==='chk-color'){
+        const param=el.dataset.param;
+        chk.results[param]={status:v==='match'?'match':'skipped',actual:v==='match'?'✓':'—'};
+        advanceCheck();
+      }
+      if(a==='toggle-version'){
+        const b=document.getElementById('vb-'+v); if(b) b.classList.toggle('open');
+      }
+    });
+  });
+
+  /* Live input */
+  const inp=document.getElementById('chk-input');
+  if(inp){
+    inp.addEventListener('input',()=>{
+      const rows=getRows(); const cur=rows[chk.stepIndex]; if(!cur) return;
+      const key=cur[0]; const expRaw=cur[2];
+      const val=inp.value;
+      const exp=getExpectedValue(key,expRaw);
+      const status=val.trim()?(normalizeCompareValue(String(exp))===normalizeCompareValue(val)?'match':'mismatch'):'pending';
+      chk.results[key]=Object.assign({},chk.results[key]||{},{actual:val,status});
+      /* live color update */
+      const box=inp.closest('.check-val-box');
+      if(box) box.className='check-val-box '+(status==='match'?'st-match':status==='mismatch'?'st-miss':'actual');
+      const badge=document.querySelector('.check-badge');
+      const lm={match:'✓ Match',mismatch:'✕ Afwijking',pending:'In behandeling'};
+      const cm={match:'match',mismatch:'miss',pending:'pending'};
+      if(badge){ badge.className='check-badge '+(cm[status]||'pending'); badge.textContent=lm[status]||'In behandeling'; }
+    });
+    inp.focus();
+    const len=inp.value.length; inp.setSelectionRange(len,len);
+  }
+}
+
+render();
+loadData();
+
+})();
+</script>
+</body>
+</html>
