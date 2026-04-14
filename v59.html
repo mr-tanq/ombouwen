@@ -1,0 +1,1816 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pally · Ombouwen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black:       #000000;
+      --surface-1:   rgba(255,255,255,.03);
+      --surface-2:   rgba(255,255,255,.055);
+      --surface-3:   rgba(255,255,255,.08);
+      --border:      rgba(255,255,255,.07);
+      --border-2:    rgba(255,255,255,.12);
+      --border-3:    rgba(255,255,255,.18);
+      --amber:       #f59e0b;
+      --amber-dim:   rgba(245,158,11,.15);
+      --amber-glow:  rgba(245,158,11,.3);
+      --blue:        #3b82f6;
+      --blue-dim:    rgba(59,130,246,.15);
+      --blue-glow:   rgba(59,130,246,.3);
+      --green:       #22c55e;
+      --green-dim:   rgba(34,197,94,.15);
+      --green-glow:  rgba(34,197,94,.35);
+      --red:         #ef4444;
+      --red-dim:     rgba(239,68,68,.15);
+      --red-glow:    rgba(239,68,68,.3);
+      --slate:       #64748b;
+      --text:        #ffffff;
+      --text-2:      #94a3b8;
+      --text-3:      #475569;
+      --mono:        'Geist Mono', monospace;
+      --sans:        'Geist', system-ui, sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      background: var(--black); color: var(--text);
+      font-family: var(--sans); font-size: 14px; line-height: 1.5;
+      min-height: 100vh; -webkit-font-smoothing: antialiased; overflow-x: hidden;
+    }
+    button { font: inherit; cursor: pointer; border: none; background: none; }
+    img { max-width: 100%; display: block; }
+
+    /* scanline */
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px,
+        rgba(255,255,255,.007) 2px, rgba(255,255,255,.007) 4px);
+    }
+    .shell { display: grid; grid-template-rows: auto 1fr; min-height: 100vh; position: relative; z-index: 1; }
+
+    /* ── TOPBAR ── */
+    .topbar {
+      height: 56px; border-bottom: 1px solid var(--border);
+      background: rgba(0,0,0,.9); backdrop-filter: blur(20px) saturate(1.6);
+      -webkit-backdrop-filter: blur(20px) saturate(1.6);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 32px; position: sticky; top: 0; z-index: 200;
+    }
+    .topbar-brand { display: flex; align-items: center; gap: 14px; }
+    .topbar-logo {
+      width: 30px; height: 30px; border: 1px solid var(--border-2); border-radius: 6px;
+      overflow: hidden; display: flex; align-items: center; justify-content: center;
+      background: var(--surface-2); flex-shrink: 0;
+    }
+    .topbar-name { font-family: var(--mono); font-size: 12px; font-weight: 600; color: var(--text); letter-spacing: .14em; text-transform: uppercase; }
+    .topbar-sep  { width: 1px; height: 18px; background: var(--border-2); }
+    .topbar-module { font-family: var(--mono); font-size: 10px; color: var(--text-3); letter-spacing: .22em; text-transform: uppercase; }
+    .topbar-right { display: flex; align-items: center; gap: 16px; }
+    .sys-readout { font-family: var(--mono); font-size: 10px; color: var(--text-3); letter-spacing: .08em; }
+    .status-pill {
+      display: flex; align-items: center; gap: 7px; padding: 5px 12px;
+      border-radius: 20px; border: 1px solid rgba(34,197,94,.2); background: rgba(34,197,94,.06);
+    }
+    .status-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--green);
+      box-shadow: 0 0 8px var(--green-glow); animation: pulse 3s ease-in-out infinite; flex-shrink: 0;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+    .status-label { font-family: var(--mono); font-size: 10px; color: var(--green); letter-spacing: .12em; opacity: .8; }
+
+    /* ── BODY LAYOUT ── */
+    .body { display: grid; grid-template-columns: 260px 1fr; }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      border-right: 1px solid var(--border); background: rgba(0,0,0,.6);
+      display: flex; flex-direction: column; padding: 28px 0;
+      min-height: calc(100vh - 56px);
+      position: sticky; top: 56px; align-self: start;
+      max-height: calc(100vh - 56px); overflow-y: auto;
+    }
+    .sidebar::-webkit-scrollbar { width: 2px; }
+    .sidebar::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 1px; }
+    .sidebar-section { padding: 0 18px 22px; }
+    .sidebar-label {
+      font-family: var(--mono); font-size: 9px; font-weight: 700;
+      letter-spacing: .26em; text-transform: uppercase; color: var(--text-3); margin-bottom: 10px;
+    }
+    .flow-card { border: 1px solid var(--border); border-radius: 10px; background: var(--surface-1); overflow: hidden; }
+    .flow-card-row { display: grid; grid-template-columns: 1fr auto 1fr; align-items: stretch; }
+    .flow-block { padding: 11px 13px; }
+    .flow-block + .flow-block { border-left: 1px solid var(--border); }
+    .flow-block-label { font-family: var(--mono); font-size: 8px; color: var(--text-3); letter-spacing: .2em; text-transform: uppercase; margin-bottom: 4px; }
+    .flow-block-value { font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .flow-block-value.dim   { color: var(--text-3); font-weight: 400; }
+    .flow-block-value.amber { color: var(--amber); }
+    .flow-arrow-col { display: flex; align-items: center; justify-content: center; padding: 0 9px; border-left: 1px solid var(--border); border-right: 1px solid var(--border); background: var(--surface-1); font-family: var(--mono); font-size: 11px; color: var(--text-3); }
+    .section-tag { margin-top: 7px; display: flex; align-items: center; gap: 7px; padding: 5px 11px; border-radius: 6px; border: 1px solid var(--border); background: var(--surface-1); font-family: var(--mono); font-size: 10px; color: var(--text-3); letter-spacing: .06em; }
+    .tag-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--amber); box-shadow: 0 0 6px var(--amber-glow); flex-shrink: 0; }
+    .sidebar-sep { height: 1px; background: var(--border); margin: 0 18px 22px; }
+    .step-list { display: flex; flex-direction: column; gap: 3px; padding: 0 18px; }
+    .step-item {
+      display: flex; align-items: center; gap: 11px; padding: 9px 11px;
+      border-radius: 8px; cursor: default; border: 1px solid transparent; transition: all .18s ease;
+    }
+    .step-item.done        { background: rgba(34,197,94,.05);  border-color: rgba(34,197,94,.1); }
+    .step-item.active      { background: rgba(245,158,11,.05); border-color: rgba(245,158,11,.12); }
+    .step-item.check-active{ background: rgba(6,182,212,.05);  border-color: rgba(6,182,212,.15); }
+    .step-num {
+      font-family: var(--mono); font-size: 9px; font-weight: 700;
+      width: 21px; height: 21px; border-radius: 5px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      border: 1px solid var(--border-2); color: var(--text-3); background: var(--surface-1); transition: all .18s ease;
+    }
+    .step-item.done        .step-num { background: rgba(34,197,94,.15);  border-color: rgba(34,197,94,.3);   color: var(--green); }
+    .step-item.active      .step-num { background: rgba(245,158,11,.1);  border-color: rgba(245,158,11,.25); color: var(--amber); }
+    .step-item.check-active .step-num{ background: rgba(6,182,212,.1);   border-color: rgba(6,182,212,.28);  color: #06b6d4; box-shadow: 0 0 8px rgba(6,182,212,.2); }
+    .step-text { font-size: 12px; color: var(--text-3); font-weight: 500; }
+    .step-item.done        .step-text { color: rgba(34,197,94,.75); }
+    .step-item.active      .step-text { color: var(--text); }
+    .step-item.check-active .step-text{ color: rgba(6,182,212,.9); }
+
+    /* ── MAIN ── */
+    .main { display: flex; flex-direction: column; min-width: 0; }
+    .breadcrumb {
+      border-bottom: 1px solid var(--border); padding: 0 32px; height: 38px;
+      display: flex; align-items: center; gap: 8px; background: rgba(0,0,0,.4);
+    }
+    .bc-item { font-family: var(--mono); font-size: 10px; color: var(--text-3); letter-spacing: .08em; }
+    .bc-item.active { color: rgba(255,255,255,.6); }
+    .bc-sep { font-family: var(--mono); font-size: 10px; color: var(--text-3); opacity: .4; }
+
+    .content { flex: 1; padding: 36px 36px 56px; animation: fadeUp .22s cubic-bezier(.16,1,.3,1) both; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+    .content-header { margin-bottom: 28px; }
+    .content-title  { font-size: 24px; font-weight: 700; color: var(--text); letter-spacing: -.04em; margin-bottom: 5px; line-height: 1.15; }
+    .content-sub    { font-size: 13px; color: var(--text-2); line-height: 1.6; max-width: 480px; }
+
+    /* ── PANEL GRID ── */
+    .panel-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 24px; }
+    .panel {
+      border: 1px solid var(--border); border-radius: 12px; background: var(--surface-1);
+      overflow: hidden; position: relative; backdrop-filter: blur(10px); transition: border-color .18s;
+    }
+    .panel::before { content:''; position:absolute; inset:0; border-radius:12px; background: linear-gradient(135deg,rgba(255,255,255,.02) 0%,transparent 60%); pointer-events:none; }
+    .panel:hover { border-color: var(--border-2); }
+    .panel-header { padding: 12px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,.015); }
+    .panel-title { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.35); }
+    .panel-badge { margin-left: auto; display: flex; align-items: center; gap: 5px; font-family: var(--mono); font-size: 8px; font-weight: 700; padding: 3px 9px; border-radius: 20px; background: rgba(34,197,94,.1); border: 1px solid rgba(34,197,94,.2); color: var(--green); letter-spacing: .12em; }
+    .panel-badge::before { content:''; width:4px; height:4px; border-radius:50%; background: var(--green); display:inline-block; flex-shrink:0; }
+    .panel-body { padding: 18px; }
+    .field-label { font-family: var(--mono); font-size: 9px; font-weight: 700; letter-spacing: .24em; text-transform: uppercase; color: var(--text-3); margin-bottom: 10px; margin-top: 16px; }
+    .field-label:first-child { margin-top: 0; }
+
+    /* chips */
+    .chip-row, .chipRow { display: flex; flex-wrap: wrap; gap: 7px; }
+    .chip {
+      font-size: 12px; font-weight: 500; padding: 7px 13px; border-radius: 7px;
+      border: 1px solid var(--border-2); background: var(--surface-1); color: var(--text-2);
+      display: inline-flex; align-items: center; gap: 8px;
+      transition: all .14s cubic-bezier(.16,1,.3,1); position: relative; overflow: hidden;
+    }
+    .chip:hover { background: var(--surface-3); color: var(--text); border-color: var(--border-3); transform: translateY(-1px); }
+    .chip.active { background: rgba(245,158,11,.09); border-color: rgba(245,158,11,.28); color: var(--amber); box-shadow: 0 0 0 3px rgba(245,158,11,.07); }
+    .chipInner { display: inline-flex; align-items: center; gap: 8px; }
+
+    /* actions bar */
+    .actions-bar { display: flex; align-items: center; justify-content: flex-end; gap: 10px; padding-top: 22px; border-top: 1px solid var(--border); }
+    .btn-ghost { font-size: 13px; font-weight: 500; padding: 8px 17px; border-radius: 8px; border: 1px solid var(--border-2); background: transparent; color: var(--text-2); transition: all .14s ease; }
+    .btn-ghost:hover { background: var(--surface-2); color: var(--text); border-color: var(--border-3); }
+    .btn-ghost:disabled { opacity: .25; cursor: not-allowed; }
+    .btn-primary { font-size: 13px; font-weight: 700; padding: 8px 20px; border-radius: 8px; color: #000; background: var(--amber); border: none; transition: all .16s cubic-bezier(.16,1,.3,1); }
+    .btn-primary:hover:not(:disabled) { background: #fbbf24; box-shadow: 0 0 22px var(--amber-glow); transform: translateY(-1px); }
+    .btn-primary:disabled { opacity: .18; cursor: not-allowed; }
+
+    /* section cards */
+    .section-grid { display: flex; flex-direction: column; gap: 8px; }
+    .section-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--surface-1);
+      padding: 14px 18px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 16px;
+      transition: all .18s cubic-bezier(.16,1,.3,1);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .section-card::before { content:""; position:absolute; inset:0; background:linear-gradient(90deg,rgba(255,255,255,.015) 0%,transparent 60%); pointer-events:none; }
+    .section-card:hover { border-color: var(--border-3); background: var(--surface-2); box-shadow: 0 6px 20px rgba(0,0,0,.4); }
+    .section-card-icon { width: 40px; height: 40px; border: 1px solid var(--border-2); border-radius: 9px; background: var(--surface-2); display: flex; align-items: center; justify-content: center; transition: all .18s ease; flex-shrink: 0; }
+    .section-card-icon svg { width: 17px; height: 17px; stroke: rgba(255,255,255,.3); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; transition: stroke .18s ease; }
+    .section-card:hover .section-card-icon { border-color: rgba(245,158,11,.3); background: rgba(245,158,11,.07); }
+    .section-card:hover .section-card-icon svg { stroke: var(--amber); }
+    .section-card-title { font-size: 15px; font-weight: 700; color: var(--text); letter-spacing: -.025em; }
+    .section-card-desc { font-size: 11px; color: var(--text-3); line-height: 1.4; flex: 1; min-width: 0; }
+    .section-card-footer { display: flex; align-items: center; flex-shrink: 0; }
+    
+    .section-header-logo { height: 32px; width: auto; object-fit: contain; opacity: .9; filter: brightness(1.15); }
+    .section-card-arrow { font-size: 14px; color: var(--text-3); transition: color .14s, transform .14s; }
+    .section-card:hover 
+    .section-header-logo { height: 32px; width: auto; object-fit: contain; opacity: .9; filter: brightness(1.15); }
+    .section-card-arrow { font-size: 14px; color: var(--text-3); transition: color .14s, transform .14s; }
+
+    /* toggle row */
+    .toggle-row { display: flex; gap: 6px; margin-bottom: 20px; }
+    .toggleBtn { font-family: var(--mono); font-size: 10px; font-weight: 700; padding: 6px 13px; border-radius: 7px; border: 1px solid var(--border-2); background: var(--surface-1); color: var(--text-3); letter-spacing: .12em; text-transform: uppercase; display: inline-flex; align-items: center; gap: 7px; transition: all .14s ease; }
+    .toggleBtn:hover { color: var(--text-2); background: var(--surface-2); }
+    .toggleBtn.active { background: rgba(245,158,11,.08); border-color: rgba(245,158,11,.22); color: var(--amber); }
+    .lineToggle { display: inline-flex; align-items: center; gap: 7px; }
+
+    /* view header */
+    .view-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; gap: 14px; flex-wrap: wrap; }
+    .view-header-left  { display: flex; align-items: center; gap: 13px; }
+    .view-header-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .btn-back { width: 33px; height: 33px; border-radius: 7px; border: 1px solid var(--border-2); background: var(--surface-1); color: rgba(255,255,255,.4); display: flex; align-items: center; justify-content: center; font-size: 16px; transition: all .14s ease; flex-shrink: 0; }
+    .btn-back:hover { background: var(--surface-3); color: var(--text); }
+    .view-title { font-size: 19px; font-weight: 700; color: var(--text); letter-spacing: -.03em; }
+    .pill { display: inline-flex; align-items: center; gap: 7px; padding: 4px 11px; border-radius: 20px; border: 1px solid var(--border-2); background: var(--surface-1); font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--text-2); letter-spacing: .02em; }
+
+    /* mode bar */
+    .mode-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; gap: 12px; flex-wrap: wrap; }
+    .view-actions { display: flex; gap: 5px; }
+    .view-action-btn { font-family: var(--mono); font-size: 9px; font-weight: 700; padding: 7px 14px; border-radius: 7px; border: 1px solid var(--border-2); background: var(--surface-1); color: var(--text-3); display: inline-flex; align-items: center; gap: 7px; transition: all .14s ease; letter-spacing: .12em; text-transform: uppercase; }
+    .view-action-btn:hover { background: var(--surface-3); color: var(--text); }
+    .view-action-btn.active { background: rgba(59,130,246,.08); border-color: rgba(59,130,246,.22); color: var(--blue); }
+    .view-action-btn.check-btn { }
+    .view-action-btn.check-btn.active { background: rgba(34,197,94,.08); border-color: rgba(34,197,94,.22); color: var(--green); }
+    .mode-pills { display: flex; gap: 3px; }
+    .mode-btn { font-family: var(--mono); font-size: 9px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; padding: 5px 11px; border-radius: 6px; border: 1px solid var(--border); background: transparent; color: var(--text-3); transition: all .12s ease; }
+    .mode-btn:hover { color: var(--text-2); }
+    .mode-btn.active { background: var(--surface-2); border-color: var(--border-2); color: var(--text); }
+
+    /* value table */
+    .value-table { border: 1px solid var(--border); border-radius: 11px; overflow: hidden; background: var(--surface-1); }
+    .value-table-header { display: grid; grid-template-columns: minmax(160px,2fr) 130px 24px 130px; padding: 9px 18px; border-bottom: 1px solid var(--border); background: rgba(255,255,255,.02); }
+    .value-table-col { font-family: var(--mono); font-size: 8px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--text-3); }
+    .value-table-col.center { text-align: center; }
+    .value-rows { display: flex; flex-direction: column; }
+    .value-row { display: grid; grid-template-columns: minmax(160px,2fr) 130px 24px 130px; padding: 11px 18px; border-bottom: 1px solid var(--border); align-items: center; gap: 8px; transition: background .11s ease; }
+    .value-row:last-child { border-bottom: none; }
+    .value-row:hover { background: rgba(255,255,255,.02); }
+    .value-key { font-size: 12px; color: rgba(255,255,255,.7); display: flex; align-items: center; gap: 8px; min-width: 0; padding-right: 8px; }
+    .value-key-text { white-space: normal; word-break: break-word; line-height: 1.4; }
+    .param-num { font-family: var(--mono); font-size: 9px; font-weight: 700; color: var(--amber); background: rgba(245,158,11,.07); border: 1px solid rgba(245,158,11,.2); border-radius: 4px; padding: 2px 6px; flex-shrink: 0; letter-spacing: .04em; align-self: flex-start; margin-top: 1px; }
+    .value-cell { font-family: var(--mono); font-size: 12px; font-weight: 500; color: var(--slate); }
+    .value-cell.is-new { color: var(--blue); font-weight: 600; }
+    .value-sep  { font-family: var(--mono); font-size: 11px; color: var(--text-3); text-align: center; opacity: .4; }
+
+    /* player */
+    .player-wrap { display: grid; grid-template-columns: 1fr 268px; gap: 14px; align-items: start; }
+    .player-main { border: 1px solid var(--border); border-radius: 13px; background: var(--surface-1); overflow: hidden; position: relative; }
+    .player-main::before { content:''; position:absolute; inset:0; background: linear-gradient(135deg,rgba(255,255,255,.012) 0%,transparent 50%); pointer-events:none; }
+    .player-top-bar { padding: 11px 22px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,.02); }
+    .player-counter { font-family: var(--mono); font-size: 10px; color: var(--text-3); letter-spacing: .12em; flex-shrink: 0; }
+    .player-progress-track { flex: 1; height: 2px; border-radius: 1px; background: rgba(255,255,255,.06); margin: 0 18px; overflow: hidden; position: relative; }
+    .player-progress-fill { height: 100%; background: linear-gradient(90deg, rgba(245,158,11,.5), var(--amber)); border-radius: 1px; transition: width .32s cubic-bezier(.16,1,.3,1); box-shadow: 0 0 8px var(--amber-glow); position: relative; }
+    .player-progress-fill::after { content:''; position:absolute; right:0; top:-2px; bottom:-2px; width:4px; background:#fff; border-radius:2px; box-shadow:0 0 6px var(--amber); opacity:.7; }
+    .player-body { padding: 32px; }
+    .player-key { font-family: var(--mono); font-size: 9px; font-weight: 700; letter-spacing: .24em; text-transform: uppercase; color: var(--text-3); margin-bottom: 9px; }
+    .player-label { font-size: 24px; font-weight: 700; color: var(--text); letter-spacing: -.04em; line-height: 1.15; margin-bottom: 30px; display: flex; align-items: center; gap: 13px; flex-wrap: wrap; }
+    .player-num { font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--amber); background: rgba(245,158,11,.08); border: 1px solid rgba(245,158,11,.22); border-radius: 5px; padding: 3px 9px; flex-shrink: 0; }
+    .player-values { display: flex; align-items: flex-start; gap: 14px; flex-wrap: wrap; }
+    .player-val-block { flex: 1; min-width: 110px; }
+    .player-val-label { font-family: var(--mono); font-size: 8px; font-weight: 700; letter-spacing: .24em; text-transform: uppercase; color: var(--text-3); margin-bottom: 7px; }
+    .player-val-box { border: 1px solid var(--border-2); border-radius: 8px; background: rgba(255,255,255,.02); padding: 14px 18px; font-family: var(--mono); font-size: 18px; font-weight: 600; color: rgba(255,255,255,.6); min-height: 56px; display: flex; align-items: center; gap: 9px; transition: all .18s ease; }
+    .player-val-box.new-val { border-color: rgba(59,130,246,.22); background: rgba(59,130,246,.06); color: var(--blue); }
+    .player-arrow-sep { font-family: var(--mono); font-size: 15px; color: var(--text-3); flex-shrink: 0; margin-top: 24px; opacity: .4; }
+    .player-controls { padding: 13px 22px; border-top: 1px solid var(--border); display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,.01); }
+    .player-sidebar { border: 1px solid var(--border); border-radius: 13px; background: var(--surface-1); overflow: hidden; }
+    .player-sidebar-header { padding: 10px 14px; border-bottom: 1px solid var(--border); background: rgba(255,255,255,.02); }
+    .player-sidebar-title { font-family: var(--mono); font-size: 8px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--text-3); }
+    .mini-list { display: flex; flex-direction: column; max-height: 420px; overflow-y: auto; }
+    .mini-list::-webkit-scrollbar { width: 2px; }
+    .mini-list::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 1px; }
+    .mini-row { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-bottom: 1px solid var(--border); cursor: pointer; transition: background .1s; }
+    .mini-row:last-child { border-bottom: none; }
+    .mini-row:hover { background: var(--surface-2); }
+    .mini-row.active { background: rgba(245,158,11,.05); border-left: 2px solid var(--amber); padding-left: 10px; }
+    .mini-num { font-family: var(--mono); font-size: 9px; color: var(--text-3); width: 18px; flex-shrink: 0; }
+    .mini-row.active .mini-num { color: var(--amber); }
+    .mini-key { font-size: 11px; color: rgba(255,255,255,.4); flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .mini-row.active .mini-key { color: rgba(255,255,255,.85); font-weight: 600; }
+    .mini-check { font-size: 9px; color: var(--green); }
+
+    /* rich values */
+    .richValue  { display: inline-flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+    .richText   { font-weight: 600; }
+    .colorDots  { display: inline-flex; gap: 4px; align-items: center; }
+    .colorDot   { width: 10px; height: 10px; border-radius: 50%; border: 1px solid rgba(255,255,255,.1); display: inline-block; }
+    .colorDot.wit   { border-color: rgba(255,255,255,.4); }
+    .colorDot.grijs { border-color: rgba(255,255,255,.2); }
+    .colorDot.blauw { background: #3b82f6 !important; border-color: rgba(59,130,246,.5); }
+
+    /* loading */
+    .loading-screen { display: flex; align-items: center; justify-content: center; flex: 1; padding: 80px; flex-direction: column; gap: 14px; }
+    .loading-bar-wrap { width: 180px; height: 2px; background: var(--border-2); border-radius: 1px; overflow: hidden; }
+    .loading-bar-fill { height: 100%; width: 40%; background: linear-gradient(90deg, transparent, var(--amber), transparent); border-radius: 1px; animation: sweep 1.6s ease-in-out infinite; }
+    @keyframes sweep { 0%{transform:translateX(-200%)} 100%{transform:translateX(500%)} }
+    .loading-label { font-family: var(--mono); font-size: 9px; color: var(--text-3); letter-spacing: .24em; text-transform: uppercase; }
+
+    .emptyNote { padding: 60px 40px; text-align: center; color: var(--text-3); font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+    .emptyNote::before { content:''; display:block; width:36px; height:1px; background: var(--border-2); }
+
+    /* ═══════════════════════════════════════════
+       CHECK MODE STYLES
+    ═══════════════════════════════════════════ */
+
+    /* check header bar */
+    .check-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 24px; gap: 14px; flex-wrap: wrap;
+    }
+    .check-header-left  { display: flex; align-items: center; gap: 13px; }
+    .check-header-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .check-title { font-size: 19px; font-weight: 700; color: var(--text); letter-spacing: -.03em; }
+
+    .check-summary-bar {
+      display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px;
+    }
+    .check-stat {
+      display: flex; align-items: center; gap: 7px;
+      padding: 5px 12px; border-radius: 20px;
+      border: 1px solid; font-family: var(--mono); font-size: 10px; font-weight: 700;
+      letter-spacing: .06em;
+    }
+    .check-stat.green  { border-color: rgba(34,197,94,.25);  background: rgba(34,197,94,.07);  color: var(--green); }
+    .check-stat.amber  { border-color: rgba(245,158,11,.25); background: rgba(245,158,11,.07); color: var(--amber); }
+    .check-stat.red    { border-color: rgba(239,68,68,.25);  background: rgba(239,68,68,.07);  color: var(--red); }
+    .check-stat.slate  { border-color: rgba(100,116,139,.25); background: rgba(100,116,139,.07); color: var(--slate); }
+    .check-stat.blue   { border-color: rgba(59,130,246,.25); background: rgba(59,130,246,.07); color: var(--blue); }
+    .check-stat-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+
+    /* check player card */
+    .check-player {
+      border: 1px solid var(--border); border-radius: 14px;
+      background: var(--surface-1); overflow: hidden; position: relative;
+      margin-bottom: 14px;
+    }
+    .check-player-top {
+      padding: 12px 22px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(255,255,255,.02);
+    }
+    .check-player-body { padding: 32px; }
+    .check-param-label { font-family: var(--mono); font-size: 9px; font-weight: 700; letter-spacing: .24em; text-transform: uppercase; color: var(--text-3); margin-bottom: 9px; }
+    .check-param-name {
+      font-size: 26px; font-weight: 700; color: var(--text); letter-spacing: -.04em;
+      line-height: 1.15; margin-bottom: 30px;
+      display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    }
+    .check-values-grid {
+      display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px;
+      align-items: start; margin-bottom: 28px;
+    }
+    .check-val-block { display: flex; flex-direction: column; gap: 7px; }
+    .check-val-label { font-family: var(--mono); font-size: 8px; font-weight: 700; letter-spacing: .24em; text-transform: uppercase; color: var(--text-3); }
+    .check-val-box {
+      border: 1px solid var(--border-2); border-radius: 8px;
+      padding: 16px 20px; font-family: var(--mono); font-size: 22px; font-weight: 700;
+      display: flex; align-items: center; gap: 10px; min-height: 62px;
+      transition: all .2s ease;
+    }
+    .check-val-box.expected { background: rgba(255,255,255,.02); color: rgba(255,255,255,.7); }
+    .check-val-box.actual   { background: rgba(255,255,255,.02); color: rgba(255,255,255,.9); }
+
+    /* status variants for actual box */
+    .check-val-box.status-match    { border-color: rgba(34,197,94,.3);  background: rgba(34,197,94,.06);  color: var(--green); }
+    .check-val-box.status-mismatch { border-color: rgba(239,68,68,.3);  background: rgba(239,68,68,.06);  color: var(--red); }
+    .check-val-box.status-saved    { border-color: rgba(6,182,212,.3);  background: rgba(6,182,212,.06);  color: #06b6d4; }
+
+    .check-arrow { font-family: var(--mono); font-size: 16px; color: var(--text-3); opacity: .4; margin-top: 28px; align-self: center; }
+
+    /* actual input */
+    .check-input-wrap { position: relative; }
+    .check-input {
+      width: 100%; border: none; border-radius: 0;
+      background: transparent; color: inherit;
+      font-family: var(--mono); font-size: 22px; font-weight: 700;
+      padding: 0; outline: none; caret-color: #06b6d4;
+    }
+    .check-input::placeholder { color: var(--text-3); font-size: 16px; font-weight: 400; }
+    /* The box around the input gets focused border when input is focused */
+    .check-val-box:focus-within { border-color: rgba(6,182,212,.35) !important; box-shadow: 0 0 0 3px rgba(6,182,212,.07); }
+
+    /* ── STATUS BADGE (compact, top-right of card) ── */
+    .check-status-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 11px; border-radius: 20px; border: 1px solid;
+      font-family: var(--mono); font-size: 9px; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+    .check-status-badge.match    { border-color: rgba(34,197,94,.3);  background: rgba(34,197,94,.08);  color: var(--green); }
+    .check-status-badge.mismatch { border-color: rgba(239,68,68,.3);  background: rgba(239,68,68,.08);  color: var(--red); }
+    .check-status-badge.saved    { border-color: rgba(6,182,212,.3);  background: rgba(6,182,212,.08);  color: #06b6d4; }
+    .check-status-badge.pending  { border-color: var(--border-2); background: var(--surface-1); color: var(--text-3); }
+    .check-status-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+
+    /* ── CONFIRM DIALOG (overlay when Volgende on mismatch) ── */
+    .check-confirm-overlay {
+      position: fixed; inset: 0; z-index: 500;
+      background: rgba(0,0,0,.75); backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center;
+      animation: fadeUp .18s cubic-bezier(.16,1,.3,1) both;
+    }
+    .check-confirm-box {
+      background: #0d0d0d; border: 1px solid var(--border-2); border-radius: 16px;
+      padding: 32px 32px 28px; max-width: 420px; width: 90%;
+      display: flex; flex-direction: column; gap: 20px;
+      box-shadow: 0 24px 80px rgba(0,0,0,.8);
+    }
+    .check-confirm-title { font-size: 18px; font-weight: 700; color: var(--text); letter-spacing: -.03em; }
+    .check-confirm-body  { font-size: 13px; color: var(--text-2); line-height: 1.65; }
+    .check-confirm-vals  { display: flex; align-items: center; gap: 12px; padding: 14px 18px; border-radius: 9px; border: 1px solid var(--border-2); background: rgba(255,255,255,.025); }
+    .check-confirm-val   { font-family: var(--mono); font-size: 16px; font-weight: 700; }
+    .check-confirm-val.old { color: var(--slate); }
+    .check-confirm-val.new { color: var(--blue); }
+    .check-confirm-arr   { font-family: var(--mono); font-size: 13px; color: var(--text-3); opacity: .5; }
+    .check-confirm-actions { display: flex; gap: 8px; }
+    .btn-confirm-save {
+      flex: 1; font-size: 13px; font-weight: 700; padding: 10px 18px; border-radius: 9px;
+      background: var(--blue); color: #fff; border: none;
+      transition: all .15s ease; display: flex; align-items: center; justify-content: center; gap: 7px;
+    }
+    .btn-confirm-save:hover { background: #5b9ef8; box-shadow: 0 0 22px rgba(59,130,246,.3); }
+    .btn-confirm-skip {
+      font-size: 13px; font-weight: 500; padding: 10px 18px; border-radius: 9px;
+      border: 1px solid var(--border-2); background: transparent; color: var(--text-2);
+      transition: all .14s ease;
+    }
+    .btn-confirm-skip:hover { background: var(--surface-2); color: var(--text); }
+
+    /* color parameter confirm buttons */
+    .check-color-btn {
+      flex: 1; padding: 12px 10px; border-radius: 8px; border: 1px solid var(--border-2);
+      background: var(--surface-1); font-family: var(--mono); font-size: 11px; font-weight: 700;
+      letter-spacing: .08em; text-transform: uppercase; cursor: pointer;
+      transition: all .15s ease; display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .check-color-btn.match { color: var(--green); }
+    .check-color-btn.match:hover { background: rgba(34,197,94,.12); border-color: rgba(34,197,94,.4); box-shadow: 0 0 14px rgba(34,197,94,.18); }
+    .check-color-btn.miss  { color: var(--red); }
+    .check-color-btn.miss:hover  { background: rgba(239,68,68,.12);  border-color: rgba(239,68,68,.4);  box-shadow: 0 0 14px rgba(239,68,68,.18); }
+    .check-player-nav {
+      padding: 13px 22px; border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(255,255,255,.01);
+    }
+
+    /* ── CHECK SIDEBAR ── */
+    .check-sidebar { border: 1px solid var(--border); border-radius: 13px; background: var(--surface-1); overflow: hidden; }
+    .check-sidebar-header { padding: 10px 14px; border-bottom: 1px solid var(--border); background: rgba(255,255,255,.02); display: flex; align-items: center; justify-content: space-between; }
+    .check-mini-row { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-bottom: 1px solid var(--border); cursor: pointer; transition: background .1s; }
+    .check-mini-row:last-child { border-bottom: none; }
+    .check-mini-row:hover { background: var(--surface-2); }
+    .check-mini-row.active { background: rgba(255,255,255,.03); border-left: 2px solid rgba(255,255,255,.2); padding-left: 10px; }
+    .check-mini-num  { font-family: var(--mono); font-size: 9px; color: var(--text-3); width: 18px; flex-shrink: 0; }
+    .check-mini-key  { font-size: 11px; color: rgba(255,255,255,.4); flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .check-mini-row.active .check-mini-key { color: rgba(255,255,255,.8); font-weight: 600; }
+    .check-mini-status { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .check-mini-status.match    { background: var(--green); box-shadow: 0 0 5px rgba(34,197,94,.5); }
+    .check-mini-status.mismatch { background: var(--red);   box-shadow: 0 0 5px rgba(239,68,68,.5); }
+    .check-mini-status.saved    { background: var(--blue);  box-shadow: 0 0 5px rgba(59,130,246,.5); }
+    .check-mini-status.pending  { background: var(--border-2); }
+
+    /* ── CHECK WRAP LAYOUT ── */
+    .check-wrap { display: grid; grid-template-columns: 1fr 264px; gap: 14px; align-items: start; }
+
+    /* ── SUMMARY SCREEN (shown at end of check) ── */
+    .check-summary-screen { animation: fadeUp .22s cubic-bezier(.16,1,.3,1) both; }
+    .check-summary-hero { font-size: 22px; font-weight: 700; letter-spacing: -.03em; color: var(--text); margin-bottom: 6px; }
+    .check-summary-sub  { font-size: 13px; color: var(--text-2); margin-bottom: 28px; }
+    .check-summary-stats { display: flex; gap: 10px; margin-bottom: 28px; flex-wrap: wrap; }
+    .check-stat-pill {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 7px 14px; border-radius: 20px; border: 1px solid;
+      font-family: var(--mono); font-size: 11px; font-weight: 700;
+    }
+    .check-stat-pill.ok   { border-color: rgba(34,197,94,.3);  background: rgba(34,197,94,.07);  color: var(--green); }
+    .check-stat-pill.miss { border-color: rgba(239,68,68,.3);  background: rgba(239,68,68,.07);  color: var(--red); }
+    .check-stat-pill.save { border-color: rgba(59,130,246,.3); background: rgba(59,130,246,.07); color: var(--blue); }
+    .check-stat-pill .sn  { font-size: 15px; }
+    .check-changes-title { font-family: var(--mono); font-size: 9px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: var(--text-3); margin-bottom: 12px; }
+    .check-changes-list  { display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; background: var(--surface-1); margin-bottom: 24px; }
+    .check-changes-row   { display: grid; grid-template-columns: minmax(130px,2fr) 110px 22px 110px 28px; gap: 10px; padding: 12px 18px; border-bottom: 1px solid var(--border); align-items: center; }
+    .check-changes-row:last-child { border-bottom: none; }
+    .check-changes-row.row-match { background: rgba(34,197,94,.025); }
+    .check-changes-row.row-miss  { background: rgba(239,68,68,.03); }
+    .check-changes-row.row-saved { background: rgba(6,182,212,.03); }
+    .check-changes-key   { font-size: 12px; color: rgba(255,255,255,.7); display: flex; align-items: center; gap: 8px; }
+    .check-changes-from  { font-family: var(--mono); font-size: 12px; color: var(--slate); }
+    .check-changes-to    { font-family: var(--mono); font-size: 12px; font-weight: 700; }
+    .check-changes-to.match    { color: var(--green); }
+    .check-changes-to.mismatch { color: var(--red); }
+    .check-changes-to.saved    { color: #06b6d4; }
+    .check-changes-to.pending  { color: var(--text-3); }
+    .check-changes-sep   { font-family: var(--mono); font-size: 11px; color: var(--text-3); opacity: .4; text-align: center; }
+    .check-changes-status { font-family: var(--mono); font-size: 12px; font-weight: 700; text-align: center; }
+    .check-changes-status.match    { color: var(--green); }
+    .check-changes-status.mismatch { color: var(--red); }
+    .check-changes-status.saved    { color: #06b6d4; }
+    .check-stat-pill.skip { border-color: rgba(100,116,139,.25); background: rgba(100,116,139,.06); color: var(--slate); }
+    .check-summary-actions { display: flex; gap: 10px; }
+    .btn-save-finish {
+      font-size: 13px; font-weight: 700; padding: 10px 22px; border-radius: 9px;
+      background: var(--green); color: #000; border: none;
+      transition: all .15s ease; display: inline-flex; align-items: center; gap: 7px;
+    }
+    .btn-save-finish:hover { box-shadow: 0 0 22px rgba(34,197,94,.3); transform: translateY(-1px); }
+
+    /* ═══════════════════════════════════════════
+       HISTORY / AUDIT STYLES
+    ═══════════════════════════════════════════ */
+    .tab-bar { display: flex; gap: 3px; margin-bottom: 22px; border-bottom: 1px solid var(--border); padding-bottom: 0; }
+    .tab-btn {
+      font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+      padding: 8px 16px; border-radius: 6px 6px 0 0; border: 1px solid transparent; border-bottom: none;
+      background: transparent; color: var(--text-3); cursor: pointer; transition: all .14s ease;
+      margin-bottom: -1px;
+    }
+    .tab-btn:hover { color: var(--text-2); }
+    .tab-btn.active { background: var(--surface-2); border-color: var(--border-2); border-bottom-color: var(--surface-2); color: var(--text); }
+
+    /* version cards */
+    .version-list { display: flex; flex-direction: column; gap: 10px; }
+    .version-card {
+      border: 1px solid var(--border); border-radius: 11px; background: var(--surface-1);
+      overflow: hidden; transition: border-color .15s;
+    }
+    .version-card:hover { border-color: var(--border-2); }
+    .version-card-header {
+      padding: 11px 18px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 12px;
+      background: rgba(255,255,255,.02); cursor: pointer;
+    }
+    .version-badge { font-family: var(--mono); font-size: 9px; font-weight: 700; padding: 3px 8px; border-radius: 4px; background: rgba(245,158,11,.1); border: 1px solid rgba(245,158,11,.2); color: var(--amber); letter-spacing: .08em; flex-shrink: 0; }
+    .version-badge.latest { background: rgba(34,197,94,.1); border-color: rgba(34,197,94,.2); color: var(--green); }
+    .version-meta { font-family: var(--mono); font-size: 10px; color: var(--text-2); flex: 1; }
+    .version-date { font-family: var(--mono); font-size: 10px; color: var(--text-3); flex-shrink: 0; }
+    .version-change-count { font-family: var(--mono); font-size: 9px; padding: 2px 8px; border-radius: 3px; background: var(--surface-2); border: 1px solid var(--border-2); color: var(--text-3); flex-shrink: 0; }
+    .version-body { padding: 14px 18px; display: none; }
+    .version-body.open { display: block; }
+    .version-param-list { display: flex; flex-direction: column; gap: 2px; }
+    .version-param-row { display: grid; grid-template-columns: 1fr 100px 20px 100px; gap: 8px; padding: 7px 10px; border-radius: 6px; align-items: center; }
+    .version-param-row:hover { background: rgba(255,255,255,.02); }
+    .version-param-name { font-size: 12px; color: rgba(255,255,255,.6); display: flex; align-items: center; gap: 7px; }
+    .version-param-val  { font-family: var(--mono); font-size: 11px; color: var(--slate); }
+    .version-param-val.new { color: var(--blue); font-weight: 600; }
+    .version-param-sep  { font-family: var(--mono); font-size: 10px; color: var(--text-3); opacity: .4; text-align: center; }
+
+    /* audit trail */
+    .audit-list { display: flex; flex-direction: column; gap: 8px; }
+    .audit-entry {
+      border: 1px solid var(--border); border-radius: 10px; background: var(--surface-1);
+      padding: 14px 18px; display: grid; grid-template-columns: auto 1fr auto;
+      gap: 14px; align-items: start;
+      transition: border-color .14s;
+    }
+    .audit-entry:hover { border-color: var(--border-2); }
+    .audit-icon { width: 32px; height: 32px; border-radius: 7px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 13px; }
+    .audit-icon.match    { background: rgba(34,197,94,.1);  border: 1px solid rgba(34,197,94,.2); }
+    .audit-icon.mismatch { background: rgba(239,68,68,.1);  border: 1px solid rgba(239,68,68,.2); }
+    .audit-icon.saved    { background: rgba(59,130,246,.1); border: 1px solid rgba(59,130,246,.2); }
+    .audit-icon.warn     { background: rgba(245,158,11,.1); border: 1px solid rgba(245,158,11,.2); }
+    .audit-icon.skipped  { background: rgba(100,116,139,.1); border: 1px solid rgba(100,116,139,.2); }
+    .audit-body { min-width: 0; }
+    .audit-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+    .audit-meta { font-family: var(--mono); font-size: 10px; color: var(--text-3); line-height: 1.6; }
+    .audit-change { display: inline-flex; align-items: center; gap: 5px; font-family: var(--mono); font-size: 11px; margin-top: 4px; }
+    .audit-old { color: var(--slate); }
+    .audit-arr { color: var(--text-3); opacity: .5; }
+    .audit-new { color: var(--blue); font-weight: 700; }
+    .audit-note { margin-top: 5px; font-size: 12px; color: var(--text-2); font-style: italic; padding: 5px 9px; border-radius: 5px; background: rgba(255,255,255,.03); border-left: 2px solid var(--border-2); }
+    .audit-timestamp { font-family: var(--mono); font-size: 9px; color: var(--text-3); white-space: nowrap; flex-shrink: 0; letter-spacing: .04em; }
+
+    .empty-state { padding: 48px 32px; text-align: center; color: var(--text-3); font-family: var(--mono); font-size: 10px; letter-spacing: .16em; text-transform: uppercase; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    .empty-state::before { content:''; display:block; width:32px; height:1px; background: var(--border-2); }
+
+    /* responsive */
+    @media (max-width: 900px) {
+      .body { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .panel-grid, .section-grid { display: flex; flex-direction: column; gap: 8px; }
+      .player-wrap, .check-wrap { grid-template-columns: 1fr; }
+      .player-sidebar, .check-sidebar { display: none; }
+      .value-table-header, .value-row { grid-template-columns: minmax(120px,2fr) 80px 20px 80px; }
+      .version-param-row { grid-template-columns: 1fr 80px 18px 80px; }
+      .content { padding: 24px 18px 40px; }
+      .topbar, .breadcrumb { padding: 0 18px; }
+    }
+  </style>
+</head>
+<body>
+<div id="pally-error-box" style="display:none;position:fixed;bottom:12px;left:12px;right:12px;z-index:9999;background:#1a0000;border:1px solid #ef4444;border-radius:8px;padding:10px 14px;font-family:monospace;font-size:11px;color:#ef4444;white-space:pre-wrap;max-height:120px;overflow:auto"
+  onclick="this.style.display='none'"></div>
+
+<div class="shell" id="app-shell"></div>
+<script>
+(function(){
+
+  /* ═══════════════════════════════════════
+     ORIGINAL CONSTANTS & HELPERS (untouched)
+  ═══════════════════════════════════════ */
+  const BISCUITS = [
+    { id:'richtea',    label:'Rich Tea',   formats:['5x6','3x6'], color:'blauw' },
+    { id:'koffiekoek', label:'Koffiekoek', formats:['4x4','5x4','5x5'], color:'bruin' },
+    { id:'theekokos',  label:'Thee/Kokos', formats:['5x5'], color:'wit' }
+  ];
+
+  const FILES = {
+    cavanna9:   './data/cavanna9.json',
+    cavanna10:  './data/cavanna10.json',
+    robertpack: './data/robertpack.json',
+    dozen:      './data/dozen.json',
+    dekselaar:  './data/dekselaar.json'
+  };
+
+  const state = {
+    loading:true, error:'', data:null,
+    stage:1,
+    fromBiscuit:null, fromFormat:null,
+    toBiscuit:null,   toFormat:null,
+    section:null,
+    cavannaLine:'9', robertpackLine:'9',
+    viewMode:null, onlyChanges:true, stepIndex:0
+  };
+
+  const COLOR_MAP = {
+    rood:'#ef4444', grijs:'#64748b', bruin:'#7a4a21',
+    wit:'#ffffff',  blauw:'#3b82f6', zwart:'#111', groen:'#22c55e'
+  };
+
+  const LINE_COLORS = { '9':'rood', '10':'grijs' };
+
+  const biscuitLabel      = id => { const _b = BISCUITS.find(b=>b.id===id); return _b ? _b.label || '' : ''; };
+  const formatsForBiscuit = id => { const _b = BISCUITS.find(b=>b.id===id); return _b ? _b.formats || [] : []; };
+  const getBiscuitMeta    = id => BISCUITS.find(b=>b.id===id) || null;
+
+  function buildFlowRows(fromObj, toObj){
+    const keys = Array.from(new Set([...Object.keys(fromObj||{}), ...Object.keys(toObj||{})]));
+    return keys.map(k => [k, fromObj && fromObj[k] != null ? fromObj[k] : '—', toObj && toObj[k] != null ? toObj[k] : '—']);
+  }
+
+  function escapeHtml(v){
+    return String(v != null ? v : '')
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  }
+
+  function cleanNumberToken(token){
+    let s = String(token).trim();
+    if(!s) return s;
+    if(!/^[-+]?\d+[\.,]?\d*$/.test(s)) return s;
+    const hasComma=s.includes(','), hasDot=s.includes('.');
+    const sep = hasComma?',':(hasDot?'.':'');
+    let parts = sep ? s.split(sep) : [s];
+    let intPart = parts[0].replace(/^0+(\d)/,'$1');
+    if(intPart==='') intPart='0';
+    if(parts.length===1) return intPart;
+    let decPart = parts[1].replace(/0+$/,'');
+    if(decPart==='') return intPart;
+    return intPart+','+decPart;
+  }
+
+  function normalizeDisplayValue(value){
+    return String(value != null ? value : '').replace(/\u0392/g,'B')
+      .split('/').map(p=>cleanNumberToken(p.trim())).join(' / ');
+  }
+
+  function normalizeCompareValue(value){
+    return normalizeDisplayValue(value).toLowerCase().replace(/\s+/g,' ').trim();
+  }
+
+  const filterRows = (rows, onlyChanges) =>
+    onlyChanges ? rows.filter(r=>normalizeCompareValue(r[1])!==normalizeCompareValue(r[2])) : rows;
+
+  const isColorToken = t => Object.prototype.hasOwnProperty.call(COLOR_MAP, String(t).trim().toLowerCase());
+
+  function renderColorDot(token){
+    const name = String(token).trim().toLowerCase();
+    const color = COLOR_MAP[name];
+    if(!color) return '';
+    return `<span class="colorDot ${name}" style="background:${color}"></span>`;
+  }
+
+  function renderRichValue(value){
+    const norm  = normalizeDisplayValue(value);
+    const parts = norm.split('/').map(p=>p.trim()).filter(Boolean);
+    if(parts.length && parts.every(isColorToken))
+      return `<span class="richValue"><span class="colorDots">${parts.map(renderColorDot).join('')}</span></span>`;
+    const html = parts.map(p=>
+      isColorToken(p) ? renderColorDot(p) : `<span class="richText">${escapeHtml(p)}</span>`
+    );
+    return `<span class="richValue">${html.join('<span class="richText">/</span>')}</span>`;
+  }
+
+  function renderParamKey(key){
+    const m = String(key).match(/^(\d+[A-Z]?)\s+(.+)$/);
+    if(!m) return `<span class="value-key-text">${escapeHtml(key)}</span>`;
+    return `<span class="param-num">${escapeHtml(m[1])}</span><span class="value-key-text">${escapeHtml(m[2])}</span>`;
+  }
+
+  function renderPlayerLabel(key){
+    const m = String(key).match(/^(\d+[A-Z]?)\s+(.+)$/);
+    if(!m) return `<span>${escapeHtml(key)}</span>`;
+    return `<span class="player-num">${escapeHtml(m[1])}</span><span>${escapeHtml(m[2])}</span>`;
+  }
+
+  const SECTION_LOGOS = {
+    cavanna:    './cavanna-logo.png',
+    robertpack: './robertpack-logo.png',
+    dozen:      './dozen-logo.png',
+    dekselaar:  './dekselaar-logo.png'
+  };
+
+    const SECTION_ICONS = {
+    cavanna: `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>`,
+    robertpack: `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><path d="M10 6.5h4M14 4v5"/><path d="M14 6.5c2 0 3 .5 4 2l1 2"/><path d="M19 10.5v4a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-4"/><rect x="7" y="16" width="10" height="5" rx="1"/><path d="M10 16v-2M14 16v-2"/></svg>`,
+    dozen: `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5M12 22V12"/></svg>`,
+    dekselaar: `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="12" width="18" height="9" rx="1"/><path d="M3 12l2.5-6h13L21 12"/><path d="M2 12h20"/><path d="M9 12V9M15 12V9"/></svg>`
+  };
+
+  const SECTION_DESCS = {
+    cavanna:    'Instellingen voor Cavanna 9 en 10',
+    robertpack: 'Instellingen voor RobertPack 9 en 10',
+    dozen:      'Instellingen voor Dozen Opzetter',
+    dekselaar:  'Instellingen voor Dekselaar Opzetter'
+  };
+
+  /* ═══════════════════════════════════════
+     CHECK MODE STATE
+  ═══════════════════════════════════════ */
+  const checkState = {
+    active: false,
+    stepIndex: 0,
+    results: {},      // paramKey → { status:'match'|'mismatch'|'saved', actual }
+    showSummary: false,
+    pendingSave: null // { paramKey, expectedVal, actualVal } — waiting for confirm dialog
+  };
+
+  // Persistent store (sessionStorage so it survives render cycles)
+  function loadStore(){ try{ return JSON.parse(sessionStorage.getItem('pally_store')||'{}'); }catch(e){return {};} }
+  function saveStore(s){ try{ sessionStorage.setItem('pally_store', JSON.stringify(s)); }catch(e){} }
+
+  function getStore(){
+    const s = loadStore();
+    if(!s.versions) s.versions = {};  // key: "section|fromFormat|toFormat|line" → [{ts, changes, snapshot}]
+    if(!s.auditLog) s.auditLog = [];  // [{ts, section, line, fromFormat, toFormat, param, old, new_, note, action}]
+    if(!s.currentValues) s.currentValues = {}; // key → value (overrides for JSON values)
+    return s;
+  }
+
+  function buildStoreKey(){
+    const line = state.section==='cavanna' ? state.cavannaLine :
+                 state.section==='robertpack' ? state.robertpackLine : '';
+    return `${state.section}|${state.toBiscuit}|${state.toFormat}|${line}`;
+  }
+
+  function nowStr(){ return new Date().toLocaleString('nl-NL',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}); }
+
+  /* ═══════════════════════════════════════
+     ORIGINAL DATA LOADERS (untouched)
+  ═══════════════════════════════════════ */
+  async function loadData(){
+    try{
+      const entries = await Promise.all(
+        Object.entries(FILES).map(async([key,path])=>{
+          const res = await fetch(path,{cache:'no-store'});
+          if(!res.ok) throw new Error('Failed: '+path);
+          return [key, await res.json()];
+        })
+      );
+      state.data = Object.fromEntries(entries);
+    } catch(err){
+      state.error = err.message||'Failed to load data.';
+    } finally{
+      state.loading = false;
+      render();
+    }
+  }
+
+  function setState(patch){ Object.assign(state,patch); render(); }
+
+  function resetAll(){
+    Object.assign(state,{
+      stage:1, fromBiscuit:null, fromFormat:null,
+      toBiscuit:null, toFormat:null, section:null,
+      cavannaLine:'9', robertpackLine:'9',
+      viewMode:null, onlyChanges:true, stepIndex:0
+    });
+    checkState.active = false; checkState.stepIndex = 0; checkState.results = {}; checkState.tab = 'check';
+    render();
+  }
+
+  function getRobertPackValuesForFormat(format,col){
+    var rp = state.data && state.data.robertpack;
+    var byFormat = rp && rp.values && rp.values[format] ? rp.values[format] : {};
+    return (byFormat[col]) || {};
+  }
+
+  function getRows(){
+    if(!state.data) return [];
+    if(state.section==='cavanna'){
+      const src = state.cavannaLine==='10' ? state.data.cavanna10 : state.data.cavanna9;
+      return buildFlowRows((src && src.values && src.values[state.fromFormat])||{}, (src && src.values && src.values[state.toFormat])||{});
+    }
+    if(state.section==='robertpack')
+      return buildFlowRows(
+        getRobertPackValuesForFormat(state.fromFormat, state.robertpackLine),
+        getRobertPackValuesForFormat(state.toFormat,   state.robertpackLine)
+      );
+    if(state.section==='dozen')
+      return buildFlowRows((state.data.dozen && state.data.dozen.values && state.data.dozen.values[state.fromFormat] || {}), (state.data.dozen && state.data.dozen.values && state.data.dozen.values[state.toFormat] || {}));
+    if(state.section==='dekselaar')
+      return buildFlowRows((state.data.dekselaar && state.data.dekselaar.values && state.data.dekselaar.values[state.fromFormat] || {}), (state.data.dekselaar && state.data.dekselaar.values && state.data.dekselaar.values[state.toFormat] || {}));
+    return [];
+  }
+
+  /* ── get effective expected value (may have been saved-new) ── */
+  function getExpectedValue(paramKey, originalExpected){
+    const store = getStore();
+    const sk = buildStoreKey();
+    const cv = store.currentValues && store.currentValues[sk]; return (cv && cv[paramKey]) || originalExpected;
+  }
+
+  function getCheckRows(){
+    // getCheckRows is not used — check mode uses getRows() directly
+    return [];
+  }
+
+  function openCheckMode(){
+    checkState.active = true;
+    checkState.stepIndex = 0;
+    checkState.results = {};
+    checkState.showSummary = false;
+    checkState.pendingSave = null;
+    checkState._finishAfterSave = false;
+    render();
+  }
+
+  function closeCheckMode(){
+    checkState.active = false;
+    checkState.showSummary = false;
+    checkState.pendingSave = null;
+    render();
+  }
+
+  /* Called when operator presses Volgende */
+  function handleCheckNext(paramKey, expectedVal, liveStatus){
+    const inp = document.getElementById('check-actual-input');
+    const actual = inp ? inp.value.trim() : ((checkState.results[paramKey] && checkState.results[paramKey].actual) || '');
+
+    if(liveStatus === 'mismatch'){
+      // Show confirm overlay — save or skip?
+      checkState.pendingSave = { paramKey, expectedVal, actualVal: actual };
+      renderConfirmOverlay();
+      return;
+    }
+
+    // match or pending (empty) → just mark and advance
+    const status = liveStatus === 'match' ? 'match' : 'pending';
+    if(status === 'match'){
+      checkState.results[paramKey] = { status:'match', actual };
+    }
+    advanceCheck();
+  }
+
+  function advanceCheck(){
+    checkState.pendingSave = null;
+    if(checkState._finishAfterSave){
+      checkState._finishAfterSave = false;
+      checkState.showSummary = true;
+      render();
+      return;
+    }
+    const rows = getRows();
+    if(checkState.stepIndex < rows.length - 1){
+      checkState.stepIndex++;
+      render();
+    } else {
+      checkState.showSummary = true;
+      render();
+    }
+  }
+
+  function handleCheckFinish(paramKey, expectedVal){
+    const inp = document.getElementById('check-actual-input');
+    const actual = inp ? inp.value.trim() : ((checkState.results[paramKey] && checkState.results[paramKey].actual) || '');
+    const liveStatus = actual && normalizeCompareValue(expectedVal)===normalizeCompareValue(actual) ? 'match' : actual ? 'mismatch' : 'pending';
+    if(liveStatus === 'mismatch'){
+      checkState.pendingSave = { paramKey, expectedVal, actualVal: actual };
+      renderConfirmOverlay();
+      return;
+    }
+    if(liveStatus === 'match') checkState.results[paramKey] = { status:'match', actual };
+    checkState.showSummary = true;
+    render();
+  }
+
+  function confirmSave(){
+    const p = checkState.pendingSave;
+    if(!p) return;
+    const store = getStore();
+    const sk = buildStoreKey();
+    if(!store.currentValues[sk]) store.currentValues[sk] = {};
+    store.currentValues[sk][p.paramKey] = p.actualVal;
+    store.auditLog.unshift({
+      ts: nowStr(),
+      section: getSectionTitle(state.section),
+      line: state.section==='cavanna'?state.cavannaLine:state.section==='robertpack'?state.robertpackLine:'',
+      toBiscuit: biscuitLabel(state.toBiscuit), toFormat: state.toFormat,
+      param: p.paramKey,
+      old: normalizeDisplayValue(String(p.expectedVal)),
+      new_: normalizeDisplayValue(String(p.actualVal)),
+      note: '', action: 'saved'
+    });
+    if(!store.versions[sk]) store.versions[sk] = [];
+    const last = store.versions[sk][0];
+    const changeEntry = { param:p.paramKey, old:normalizeDisplayValue(String(p.expectedVal)), new_:normalizeDisplayValue(String(p.actualVal)), note:'' };
+    if(!last || last.locked){
+      store.versions[sk].unshift({ v:(store.versions[sk].length+1), ts:nowStr(), changes:[changeEntry], locked:false });
+    } else {
+      const idx = last.changes.findIndex(c=>c.param===p.paramKey);
+      if(idx>=0) last.changes[idx]=changeEntry; else last.changes.push(changeEntry);
+      last.ts = nowStr();
+    }
+    saveStore(store);
+    checkState.results[p.paramKey] = { status:'saved', actual:p.actualVal };
+    removeConfirmOverlay();
+    const finishAfter = checkState._finishAfterSave;
+    checkState._finishAfterSave = false;
+    if(finishAfter){ checkState.showSummary = true; render(); }
+    else { advanceCheck(); }
+  }
+
+  function confirmSkip(){
+    const p = checkState.pendingSave;
+    if(!p) return;
+    checkState.results[p.paramKey] = { status:'mismatch', actual:p.actualVal };
+    removeConfirmOverlay();
+    const finishAfter = checkState._finishAfterSave;
+    checkState._finishAfterSave = false;
+    if(finishAfter){ checkState.showSummary = true; render(); }
+    else { advanceCheck(); }
+  }
+
+  function renderConfirmOverlay(){
+    const p = checkState.pendingSave;
+    if(!p) return;
+    const existing = document.getElementById('check-confirm-overlay');
+    if(existing) existing.remove();
+    const div = document.createElement('div');
+    div.className = 'check-confirm-overlay';
+    div.id = 'check-confirm-overlay';
+    div.innerHTML = `
+      <div class="check-confirm-box">
+        <div class="check-confirm-title">Waarde verschilt</div>
+        <div class="check-confirm-body">De machine-waarde verschilt van de lijst. Wil je de nieuwe waarde opslaan als de geldende waarde?</div>
+        <div class="check-confirm-vals">
+          <span class="check-confirm-val old">${escapeHtml(normalizeDisplayValue(String(p.expectedVal)))}</span>
+          <span class="check-confirm-arr">→</span>
+          <span class="check-confirm-val new">${escapeHtml(normalizeDisplayValue(String(p.actualVal)))}</span>
+        </div>
+        <div class="check-confirm-actions">
+          <button class="btn-confirm-save" id="confirm-save-btn">↑ Ja, opslaan als nieuwe waarde</button>
+          <button class="btn-confirm-skip" id="confirm-skip-btn">Nee, doorgaan</button>
+        </div>
+      </div>`;
+    document.body.appendChild(div);
+    document.getElementById('confirm-save-btn').addEventListener('click', confirmSave);
+    document.getElementById('confirm-skip-btn').addEventListener('click', confirmSkip);
+  }
+
+  function removeConfirmOverlay(){
+    const el = document.getElementById('check-confirm-overlay');
+    if(el) el.remove();
+  }
+
+  /* Commit saved changes to store and close check */
+  function commitAndClose(){
+    const store = getStore();
+    const sk = buildStoreKey();
+    if((store.versions[sk] && store.versions[sk][0]) && !store.versions[sk][0].locked){
+      store.versions[sk][0].locked = true;
+      saveStore(store);
+    }
+    closeCheckMode();
+  }
+
+  /* ═══════════════════════════════════════
+     RENDERING HELPERS
+  ═══════════════════════════════════════ */
+  function statusIcon(s){
+    return s==='match'    ? '✓' :
+           s==='warn'     ? '!' :
+           s==='mismatch' ? '✕' :
+           s==='saved'    ? '↑' :
+           s==='skipped'  ? '—' : '·';
+  }
+
+  function renderChipGroup(items, value, onClick, formatter=x=>x){
+    return `<div class="chipRow">${items.map(item=>`
+      <button class="chip${value===item?' active':''}" data-action="${onClick}" data-value="${item}">
+        <span class="chipInner">${formatter(item)}</span>
+      </button>`).join('')}</div>`;
+  }
+
+  function renderValueList(rows){
+    if(!rows.length) return `<div class="emptyNote">Geen data gevonden</div>`;
+    return `
+      <div class="value-table">
+        <div class="value-table-header">
+          <span class="value-table-col">Parameter</span>
+          <span class="value-table-col">Huidig</span>
+          <span class="value-table-col center"></span>
+          <span class="value-table-col">Nieuw</span>
+        </div>
+        <div class="value-rows">
+          ${rows.map(r=>`
+            <div class="value-row">
+              <span class="value-key">${renderParamKey(r[0])}</span>
+              <span class="value-cell">${renderRichValue(r[1])}</span>
+              <span class="value-sep">→</span>
+              <span class="value-cell is-new">${renderRichValue(r[2])}</span>
+            </div>`).join('')}
+        </div>
+      </div>`;
+  }
+
+  function renderStepPlayer(rows){
+    const total = rows.length;
+    const cur   = rows[state.stepIndex];
+    if(!total||!cur) return `<div class="emptyNote">Geen data gevonden</div>`;
+    const pct    = ((state.stepIndex+1)/total*100).toFixed(1);
+    const isLast = state.stepIndex >= total-1;
+    const miniRows = rows.map((r,i)=>`
+      <div class="mini-row${i===state.stepIndex?' active':''}" data-action="jump-step" data-value="${i}">
+        <span class="mini-num">${String(i+1).padStart(2,'0')}</span>
+        <span class="mini-key">${escapeHtml(r[0])}</span>
+        ${i<state.stepIndex?'<span class="mini-check">✓</span>':''}
+      </div>`).join('');
+    return `
+      <div class="player-wrap">
+        <div class="player-main">
+          <div class="player-top-bar">
+            <span class="player-counter">${state.stepIndex+1} / ${total}</span>
+            <div class="player-progress-track"><div class="player-progress-fill" style="width:${pct}%"></div></div>
+            <span class="player-counter">${pct}%</span>
+          </div>
+          <div class="player-body">
+            <div class="player-key">PARAMETER</div>
+            <div class="player-label">${renderPlayerLabel(cur[0])}</div>
+            <div class="player-values">
+              <div class="player-val-block">
+                <div class="player-val-label">Huidig</div>
+                <div class="player-val-box">${renderRichValue(cur[1])}</div>
+              </div>
+              <div class="player-arrow-sep">→</div>
+              <div class="player-val-block">
+                <div class="player-val-label">Nieuw</div>
+                <div class="player-val-box new-val">${renderRichValue(cur[2])}</div>
+              </div>
+            </div>
+          </div>
+          <div class="player-controls">
+            <button class="btn-ghost" data-action="prev-step" ${state.stepIndex===0?'disabled':''}>← Vorige</button>
+            <button class="btn-primary" data-action="next-step">${isLast ? 'Afronden ✓' : 'Volgende →'}</button>
+          </div>
+        </div>
+        <div class="player-sidebar">
+          <div class="player-sidebar-header"><div class="player-sidebar-title">Stappen overzicht</div></div>
+          <div class="mini-list">${miniRows}</div>
+        </div>
+      </div>`;
+  }
+
+  /* ── CHECK MODE RENDERER ── */
+  function buildActualArea(colorMode, boxClass, liveStatus, curKey, actualVal, expectedVal){
+    if(colorMode){
+      const matchStyle   = liveStatus==='match'    ? 'background:rgba(34,197,94,.18);border-color:rgba(34,197,94,.5);'    : '';
+      const mismatchStyle= liveStatus==='mismatch' ? 'background:rgba(239,68,68,.18);border-color:rgba(239,68,68,.5);'  : '';
+      return '<div class="check-val-box color-confirm ' + boxClass + '" style="flex-direction:column;gap:12px;padding:20px;">'
+        + '<div style="font-family:var(--mono);font-size:11px;color:var(--text-3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px">Klopt dit op de machine?</div>'
+        + '<div style="display:flex;gap:10px;width:100%">'
+        + '<button class="check-color-btn match" data-action="check-color-confirm" data-key="' + escapeHtml(curKey) + '" data-value="match" style="' + matchStyle + '">✓ Ja, klopt</button>'
+        + '<button class="check-color-btn miss"  data-action="check-color-confirm" data-key="' + escapeHtml(curKey) + '" data-value="mismatch" style="' + mismatchStyle + '">✕ Nee, afwijking</button>'
+        + '</div></div>';
+    }
+    return '<div class="check-val-box ' + boxClass + '">'
+      + '<input class="check-input" id="check-actual-input"'
+      + ' placeholder="Voer waarde in\u2026"'
+      + ' value="' + escapeHtml(actualVal) + '"'
+      + ' type="text" autocomplete="off"'
+      + ' data-param="' + escapeHtml(curKey) + '"'
+      + ' data-expected="' + escapeHtml(String(expectedVal)) + '">'
+      + '</div>';
+  }
+
+  /* checkRows = [[paramKey, fromVal, toVal], ...] from getRows() — toVal (r[2]) is the expected/target value */
+  function renderCheckMode(checkRows){
+    const total = checkRows.length;
+    if(!total){
+      // Debug: show what data is available
+      const dataKeys = state.data ? Object.keys(state.data) : [];
+      const secData  = state.section==='cavanna' ? (state.data && state.data.cavanna9) :
+                       state.section==='robertpack' ? (state.data && state.data.robertpack) :
+                       state.section==='dozen' ? (state.data && state.data.dozen) :
+                       (state.data && state.data.dekselaar);
+      const fmtKeys  = (secData && secData.values) ? Object.keys(secData.values) : [];
+      return `<div class="emptyNote">
+        Geen parameters gevonden<br>
+        <span style="font-size:10px;margin-top:8px;display:block">
+          Sectie: ${state.section} · Format: ${state.toFormat}<br>
+          Beschikbare formats: ${fmtKeys.join(', ')||'—'}
+        </span>
+      </div>`;
+    }
+
+    if(checkState.showSummary) return renderCheckSummary(checkRows);
+
+    const done  = checkRows.filter(r=>(checkState.results[r[0]] && checkState.results[r[0]].status) && (checkState.results[r[0]] && checkState.results[r[0]].status)!=='pending').length;
+    const pct   = Math.round(done/total*100);
+
+    /* sidebar list */
+    const miniList = checkRows.map(([key],i)=>{
+      const s = (checkState.results[key] && checkState.results[key].status) || 'pending';
+      return `
+        <div class="check-mini-row${i===checkState.stepIndex?' active':''}" data-action="check-jump" data-value="${i}">
+          <span class="check-mini-num">${String(i+1).padStart(2,'0')}</span>
+          <span class="check-mini-key">${escapeHtml(key)}</span>
+          <span class="check-mini-status ${s}"></span>
+        </div>`;
+    }).join('');
+
+    /* current card — r[2] is the toFormat (expected/target) value */
+    const cur = checkRows[checkState.stepIndex];
+    if(!cur) return `<div class="emptyNote">Geen parameter</div>`;
+    const [curKey, , curExpRaw] = cur;   // [paramKey, fromValue, toValue]
+
+    const curResult  = checkState.results[curKey] || {};
+    const expectedVal= getExpectedValue(curKey, curExpRaw);
+    const actualVal  = curResult.actual || '';
+    const isLast     = checkState.stepIndex >= total-1;
+
+    const liveStatus = curResult.status || (
+      actualVal.trim()
+        ? (normalizeCompareValue(String(expectedVal))===normalizeCompareValue(actualVal) ? 'match' : 'mismatch')
+        : 'pending'
+    );
+
+    const isColorValue = v => {
+      const norm  = normalizeDisplayValue(String(v));
+      const parts = norm.split('/').map(p=>p.trim()).filter(Boolean);
+      return parts.length > 0 && parts.every(isColorToken);
+    };
+    const colorMode = isColorValue(expectedVal);
+
+    /* For color params: status comes from button press, not text comparison */
+    const boxClass    = liveStatus==='match' ? 'status-match' : liveStatus==='mismatch' ? 'status-mismatch' : liveStatus==='saved' ? 'status-saved' : 'actual';
+    const badgeLabel  = { match:'✓ Match', mismatch:'✕ Mismatch', saved:'↑ Opgeslagen', pending:'Wacht…' };
+    const badgeCls    = { match:'match', mismatch:'mismatch', saved:'saved', pending:'pending' };
+
+    /* Actual area built via function to avoid nested backtick parser issues */
+    const actualArea = buildActualArea(colorMode, boxClass, liveStatus, curKey, actualVal, expectedVal);
+
+    const paramCard = `
+      <div class="check-player">
+        <div class="check-player-top">
+          <span class="player-counter">${checkState.stepIndex+1} / ${total}</span>
+          <div class="player-progress-track" style="flex:1;margin:0 18px">
+            <div class="player-progress-fill" style="width:${pct}%"></div>
+          </div>
+          <span class="check-status-badge ${badgeCls[liveStatus]||'pending'}">
+            <span class="check-status-dot"></span>${badgeLabel[liveStatus]||'Wacht…'}
+          </span>
+        </div>
+
+        <div class="check-player-body">
+          <div class="check-param-label">PARAMETER</div>
+          <div class="check-param-name">${renderPlayerLabel(curKey)}</div>
+
+          <div class="check-values-grid">
+            <div class="check-val-block">
+              <div class="check-val-label">Expected (lijst)</div>
+              <div class="check-val-box expected">${renderRichValue(String(expectedVal))}</div>
+            </div>
+            <div class="check-arrow">→</div>
+            <div class="check-val-block">
+              <div class="check-val-label">Actual (machine)</div>
+              ${actualArea}
+            </div>
+          </div>
+        </div>
+
+        <div class="check-player-nav">
+          <button class="btn-ghost" data-action="check-prev" ${checkState.stepIndex===0?'disabled':''}>← Vorige</button>
+          <div style="display:flex;gap:8px;align-items:center">
+            <span class="player-counter-done" style="font-family:var(--mono);font-size:10px;color:var(--text-3)">${done}/${total}</span>
+            ${isLast
+              ? `<button class="btn-primary" data-action="check-finish" data-param="${escapeHtml(curKey)}" data-expected="${escapeHtml(String(expectedVal))}" data-status="${liveStatus}">Afronden ✓</button>`
+              : `<button class="btn-primary" data-action="check-next"  data-param="${escapeHtml(curKey)}" data-expected="${escapeHtml(String(expectedVal))}" data-status="${liveStatus}">Volgende →</button>`
+            }
+          </div>
+        </div>
+      </div>`;
+
+    return `
+      <div class="check-wrap">
+        <div>${paramCard}</div>
+        <div class="check-sidebar">
+          <div class="check-sidebar-header">
+            <span class="player-sidebar-title">Parameters</span>
+            <span style="font-family:var(--mono);font-size:9px;color:var(--text-3)">${pct}%</span>
+          </div>
+          <div class="mini-list">${miniList}</div>
+        </div>
+      </div>`;
+  }
+
+  /* ── SUMMARY SCREEN ── */
+  function renderCheckSummary(checkRows){
+    const saved      = checkRows.filter(([k])=>(checkState.results[k] && checkState.results[k].status)==='saved');
+    const mismatches = checkRows.filter(([k])=>(checkState.results[k] && checkState.results[k].status)==='mismatch');
+    const matches    = checkRows.filter(([k])=>(checkState.results[k] && checkState.results[k].status)==='match');
+    const pending    = checkRows.filter(([k])=>!(checkState.results[k] && checkState.results[k].status) || (checkState.results[k] && checkState.results[k].status)==='pending');
+
+    const allChecked = [...saved, ...mismatches, ...matches];
+
+    const changeRows = allChecked.map(([key, , expRaw]) => {   // [paramKey, fromValue, toValue]
+      const r = checkState.results[key];
+      const status = (r && r.status) || 'pending';
+      const expectedDisp = normalizeDisplayValue(String(getExpectedValue(key, expRaw)));
+      const expParts = expectedDisp.split('/').map(p=>p.trim()).filter(Boolean);
+      const isColor  = expParts.length > 0 && expParts.every(isColorToken);
+
+      /* For color params show the rich dots; for text params show the typed value */
+      const actualDisplay = isColor
+        ? renderRichValue(expectedDisp)   // colors don't change, just confirmed/not
+        : escapeHtml(normalizeDisplayValue(String(r && r.actual ? r.actual : '—')));
+
+      const statusIcon = status==='match'?'✓':status==='saved'?'↑':status==='mismatch'?'✕':'·';
+      const rowCls = status==='match'?'row-match':status==='saved'?'row-saved':status==='mismatch'?'row-miss':'';
+      return `
+        <div class="check-changes-row ${rowCls}">
+          <span class="check-changes-key">${renderParamKey(key)}</span>
+          <span class="check-changes-from">${renderRichValue(expectedDisp)}</span>
+          <span class="check-changes-sep">→</span>
+          <span class="check-changes-to ${status}">${actualDisplay}</span>
+          <span class="check-changes-status ${status}">${statusIcon}</span>
+        </div>`;
+    }).join('');
+
+    return `
+      <div class="check-summary-screen">
+        <div class="check-summary-hero">Check afgerond</div>
+        <div class="check-summary-sub">${getSectionTitle(state.section)} · ${escapeHtml(biscuitLabel(state.toBiscuit))} ${escapeHtml(state.toFormat||'')}</div>
+        <div class="check-summary-stats">
+          <span class="check-stat-pill ok">  <span class="sn">${matches.length}</span> Match</span>
+          <span class="check-stat-pill miss"><span class="sn">${mismatches.length}</span> Mismatch</span>
+          <span class="check-stat-pill save"><span class="sn">${saved.length}</span> Opgeslagen</span>
+          ${pending.length ? `<span class="check-stat-pill skip"><span class="sn">${pending.length}</span> Niet gecheckt</span>` : ''}
+        </div>
+        ${allChecked.length ? `
+          <div class="check-changes-title">Gecheckte parameters</div>
+          <div class="check-changes-list">${changeRows}</div>
+        ` : `<div class="emptyNote" style="padding:32px;margin-bottom:24px">Geen parameters gecheckt</div>`}
+        <div class="check-summary-actions">
+          ${saved.length ? `<button class="btn-save-finish" data-action="check-commit">✓ Opslaan &amp; sluiten</button>` : ''}
+          <button class="btn-ghost" data-action="close-check">Sluiten</button>
+        </div>
+      </div>`;
+  }
+
+  /* ── HISTORY / AUDIT RENDERER ── */
+  function renderHistory(){
+    const store = getStore();
+    const sk    = buildStoreKey();
+    const versions = store.versions[sk] || [];
+
+    if(!versions.length) return `<div class="empty-state">Geen versies gevonden — nog geen waarden opgeslagen</div>`;
+
+    return `<div class="version-list">
+      ${versions.map((v,vi)=>`
+        <div class="version-card">
+          <div class="version-card-header" data-action="toggle-version" data-value="${vi}">
+            <span class="version-badge${vi===0?' latest':''}">v${v.v}</span>
+            <span class="version-meta">${biscuitLabel(state.toBiscuit)} ${state.toFormat} · ${getSectionTitle(state.section)}</span>
+            <span class="version-change-count">${v.changes.length} wijziging${v.changes.length!==1?'en':''}</span>
+            <span class="version-date">${v.ts}</span>
+          </div>
+          <div class="version-body${vi===0?' open':''}" id="version-body-${vi}">
+            <div class="version-param-list">
+              ${v.changes.map(c=>`
+                <div class="version-param-row">
+                  <span class="version-param-name">${renderParamKey(c.param)}</span>
+                  <span class="version-param-val">${escapeHtml(c.old)}</span>
+                  <span class="version-param-sep">→</span>
+                  <span class="version-param-val new">${escapeHtml(c.new_)}</span>
+                </div>
+                ${c.note ? `<div style="padding:0 10px 6px 10px"><span style="font-family:var(--mono);font-size:10px;color:var(--text-3);font-style:italic">"${escapeHtml(c.note)}"</span></div>` : ''}
+              `).join('')}
+            </div>
+          </div>
+        </div>`).join('')}
+    </div>`;
+  }
+
+  function renderAudit(){
+    const store = getStore();
+    const sk    = buildStoreKey();
+    // filter audit to current section+format
+    const logs = store.auditLog.filter(e=>
+      e.section===getSectionTitle(state.section) &&
+      e.toBiscuit===biscuitLabel(state.toBiscuit) &&
+      e.toFormat===state.toFormat
+    );
+
+    if(!logs.length) return `<div class="empty-state">Geen wijzigingen gelogd voor deze combinatie</div>`;
+
+    const iconMap = { match:'✓', warn:'!', mismatch:'✕', saved:'↑', skipped:'—' };
+    return `<div class="audit-list">
+      ${logs.map(e=>`
+        <div class="audit-entry">
+          <div class="audit-icon ${e.action}">${iconMap[e.action]||'·'}</div>
+          <div class="audit-body">
+            <div class="audit-title">${escapeHtml(e.param)}</div>
+            <div class="audit-meta">${escapeHtml(e.section)}${e.line?' · Lijn '+e.line:''} · ${escapeHtml(e.toBiscuit)} ${escapeHtml(e.toFormat)}</div>
+            <div class="audit-change">
+              <span class="audit-old">${escapeHtml(e.old)}</span>
+              <span class="audit-arr">→</span>
+              <span class="audit-new">${escapeHtml(e.new_)}</span>
+            </div>
+            ${e.note ? `<div class="audit-note">"${escapeHtml(e.note)}"</div>` : ''}
+          </div>
+          <div class="audit-timestamp">${escapeHtml(e.ts)}</div>
+        </div>`).join('')}
+    </div>`;
+  }
+
+  /* ── SIDEBAR ── */
+  function renderSidebar(){
+    const canContinue = state.fromBiscuit&&state.fromFormat&&state.toBiscuit&&state.toFormat;
+    const fromLabel   = state.fromBiscuit ? biscuitLabel(state.fromBiscuit) : '—';
+    const toLabel     = state.toBiscuit   ? biscuitLabel(state.toBiscuit)   : '—';
+    const fromFmt     = state.fromFormat  || '—';
+    const toFmt       = state.toFormat    || '—';
+    const sectionLabel = !state.section ? null :
+      state.section==='cavanna'    ? `Cavanna · L${state.cavannaLine}` :
+      state.section==='robertpack' ? `Robert Pack · L${state.robertpackLine}` :
+      state.section==='dozen'      ? 'Dozen Opzetter' : 'Dekselaar Opzetter';
+
+    const steps = [
+      { label:'Product & Formaat', done: canContinue,                          active: state.stage===1 },
+      { label:'Sectie & Ombouw',   done: state.stage===2 && !!state.section,   active: state.stage===2 && !checkState.active },
+      { label:'Check & Verify',    done: false,                                 active: checkState.active, checkActive: checkState.active }
+    ];
+
+    return `
+      <div class="sidebar">
+        <div class="sidebar-section">
+          <div class="sidebar-label">Ombouw sessie</div>
+          <div class="flow-card">
+            <div class="flow-card-row">
+              <div class="flow-block">
+                <div class="flow-block-label">Van</div>
+                <div class="flow-block-value ${state.fromBiscuit?'':'dim'}">${fromLabel}${state.fromFormat?` · ${fromFmt}`:''}</div>
+              </div>
+              <div class="flow-arrow-col">→</div>
+              <div class="flow-block">
+                <div class="flow-block-label">Naar</div>
+                <div class="flow-block-value ${state.toBiscuit?'amber':'dim'}">${toLabel}${state.toFormat?` · ${toFmt}`:''}</div>
+              </div>
+            </div>
+          </div>
+          ${sectionLabel?`<div class="section-tag"><div class="tag-dot"></div>${escapeHtml(sectionLabel)}</div>`:''}
+        </div>
+        <div class="sidebar-sep"></div>
+        <div class="step-list">
+          <div class="sidebar-label" style="padding:0 2px;margin-bottom:10px">Workflow</div>
+          ${steps.map((s,i)=>`
+            <div class="step-item${s.done?' done':''}${s.active&&!s.done?' active':''}${s.checkActive?' check-active':''}">
+              <div class="step-num">${s.done?'✓':i+1}</div>
+              <div class="step-text">${s.label}</div>
+            </div>`).join('')}
+        </div>
+      </div>`;
+  }
+
+  const getSectionTitle = s =>
+    s==='cavanna'?'Cavanna':s==='robertpack'?'Robert Pack':s==='dozen'?'Dozen Opzetter':'Dekselaar Opzetter';
+
+  /* ═══════════════════════════════════════
+     MAIN RENDER
+  ═══════════════════════════════════════ */
+  function render(){
+    const shell       = document.getElementById('app-shell');
+    const canContinue = state.fromBiscuit&&state.fromFormat&&state.toBiscuit&&state.toFormat;
+    const rows        = getRows();
+    const visibleRows = filterRows(rows, state.onlyChanges);
+
+    // breadcrumb
+    let bcParts = [];
+    if(state.stage>=1) bcParts.push(`<span class="bc-item${state.stage===1&&!checkState.active?' active':''}">Configuratie</span>`);
+    if(state.stage>=2) bcParts.push(`<span class="bc-sep"> › </span><span class="bc-item${state.stage===2&&!checkState.active&&!state.section?' active':''}">Sectie kiezen</span>`);
+    if(state.stage===2&&state.section) bcParts.push(`<span class="bc-sep"> › </span><span class="bc-item${!checkState.active?' active':''}">${getSectionTitle(state.section)}</span>`);
+    if(checkState.active) bcParts.push(`<span class="bc-sep"> › </span><span class="bc-item active" style="color:#06b6d4">Check Mode</span>`);
+    const bc = bcParts.join('');
+
+    let mainContent = '';
+
+    if(state.loading){
+      mainContent = `<div class="loading-screen"><div class="loading-bar-wrap"><div class="loading-bar-fill"></div></div><div class="loading-label">Systeem initialiseren</div></div>`;
+    }
+    else if(state.error){
+      mainContent = `<div class="content"><div class="emptyNote">${escapeHtml(state.error)}</div></div>`;
+    }
+    /* ── CHECK MODE ── */
+    else if(checkState.active && state.stage===2 && state.section){
+      // Use ALL rows (not filtered) so check covers every parameter of toFormat
+      const checkRows = getRows();
+      const tabContent =
+        checkState.tab==='check'   ? renderCheckMode(checkRows) :
+        checkState.tab==='history' ? renderHistory() :
+        renderAudit();
+
+      mainContent = `
+        <div class="content">
+          <div class="check-header">
+            <div class="check-header-left">
+              <button class="btn-back" data-action="close-check">‹</button>
+              <div class="check-title">Check Mode <span style="font-family:var(--mono);font-size:12px;color:var(--text-3);font-weight:400;margin-left:4px">— ${getSectionTitle(state.section)}</span></div>
+            </div>
+            <div class="check-header-right">
+              <div class="pill">${renderColorDot((getBiscuitMeta(state.toBiscuit) && getBiscuitMeta(state.toBiscuit).color))} ${escapeHtml(biscuitLabel(state.toBiscuit))} ${escapeHtml(state.toFormat||'')}</div>
+              ${state.section==='cavanna'?`<div class="pill">Lijn ${state.cavannaLine}</div>`:''}
+              ${state.section==='robertpack'?`<div class="pill">Lijn ${state.robertpackLine}</div>`:''}
+            </div>
+          </div>
+
+          <div class="tab-bar">
+            <button class="tab-btn${checkState.tab==='check'?' active':''}" data-action="check-tab" data-value="check">⊙ Check</button>
+            <button class="tab-btn${checkState.tab==='history'?' active':''}" data-action="check-tab" data-value="history">◷ Versies</button>
+            <button class="tab-btn${checkState.tab==='audit'?' active':''}" data-action="check-tab" data-value="audit">≡ Logboek</button>
+          </div>
+
+          ${tabContent}
+        </div>`;
+    }
+    /* ── STAGE 1 ── */
+    else if(state.stage===1){
+      mainContent = `
+        <div class="content">
+          <div class="content-header">
+            <div class="content-title">Configureer ombouw</div>
+            <div class="content-sub">Selecteer van welk product je komt en naar welk product je gaat.</div>
+          </div>
+          <div class="panel-grid">
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">Van</span>
+                ${state.fromBiscuit&&state.fromFormat?'<span class="panel-badge">GEREED</span>':''}
+              </div>
+              <div class="panel-body">
+                <div class="field-label">Product</div>
+                ${renderChipGroup(BISCUITS.map(b=>b.id), state.fromBiscuit, 'from-product',
+                  id=>`${renderColorDot((getBiscuitMeta(id) && getBiscuitMeta(id).color))}<span>${escapeHtml(biscuitLabel(id))}</span>`)}
+                ${state.fromBiscuit?`<div class="field-label">Formaat</div>${renderChipGroup(formatsForBiscuit(state.fromBiscuit), state.fromFormat, 'from-format')}`:''}
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">Naar</span>
+                ${state.toBiscuit&&state.toFormat?'<span class="panel-badge">GEREED</span>':''}
+              </div>
+              <div class="panel-body">
+                <div class="field-label">Product</div>
+                ${renderChipGroup(BISCUITS.map(b=>b.id), state.toBiscuit, 'to-product',
+                  id=>`${renderColorDot((getBiscuitMeta(id) && getBiscuitMeta(id).color))}<span>${escapeHtml(biscuitLabel(id))}</span>`)}
+                ${state.toBiscuit?`<div class="field-label">Formaat</div>${renderChipGroup(formatsForBiscuit(state.toBiscuit), state.toFormat, 'to-format')}`:''}
+              </div>
+            </div>
+          </div>
+          <div class="actions-bar">
+            <button class="btn-ghost" data-action="reset-all">Reset</button>
+            <button class="btn-primary" data-action="go-sections" ${canContinue?'':'disabled'}>Volgende stap →</button>
+          </div>
+        </div>`;
+    }
+    /* ── STAGE 2 — section picker ── */
+    else if(state.stage===2&&!state.section){
+      const cards = ['cavanna','robertpack','dozen','dekselaar'].map(id=>{
+        const logoSrc = SECTION_LOGOS[id];
+        const title   = getSectionTitle(id);
+        const desc    = SECTION_DESCS[id];
+        const icon    = SECTION_ICONS[id];
+        return '<button class="section-card" data-action="open-section" data-value="'+id+'">'
+          + '<div class="section-card-logo-wrap">'
+          + '<img class="section-card-logo" src="'+logoSrc+'" alt="'+escapeHtml(title)+'">'
+          + '<div class="section-card-logo-fallback">'+icon+'</div>'
+          + '</div>'
+          + '<div class="section-card-desc">'+escapeHtml(desc)+'</div>'
+          + '<div class="section-card-footer">'
+          + '<span class="section-card-arrow">→</span>'
+          + '</div>'
+          + '</button>';
+      }).join('');
+      mainContent = `
+        <div class="content">
+          <div class="view-header">
+            <div class="view-header-left">
+              <button class="btn-back" data-action="back-setup">‹</button>
+              <div class="view-title">Kies sectie</div>
+            </div>
+          </div>
+          <div class="section-grid">${cards}</div>
+        </div>`;
+    }
+    /* ── STAGE 2 — section detail ── */
+    else if(state.stage===2&&state.section){
+      mainContent = `
+        <div class="content">
+          <div class="view-header">
+            <div class="view-header-left">
+              <button class="btn-back" data-action="close-section">‹</button>
+              <img src="${SECTION_LOGOS[state.section]}" alt="${getSectionTitle(state.section)}" class="section-header-logo" onerror="this.style.display='none'">
+            </div>
+            <div class="view-header-right">
+              <div class="pill">${renderColorDot((getBiscuitMeta(state.fromBiscuit) && getBiscuitMeta(state.fromBiscuit).color))} ${escapeHtml(biscuitLabel(state.fromBiscuit))} ${escapeHtml(state.fromFormat||'')}</div>
+              <span style="color:var(--text-3);font-family:var(--mono);font-size:11px">→</span>
+              <div class="pill">${renderColorDot((getBiscuitMeta(state.toBiscuit) && getBiscuitMeta(state.toBiscuit).color))} ${escapeHtml(biscuitLabel(state.toBiscuit))} ${escapeHtml(state.toFormat||'')}</div>
+              <button class="view-action-btn check-btn" data-action="open-check" style="margin-left:6px">⊙ Check &amp; Verify</button>
+            </div>
+          </div>
+
+          <div class="toggle-row">
+            ${state.section==='cavanna'?`
+              <button class="toggleBtn lineToggle ${state.cavannaLine==='9'?'active':''}" data-action="cav-line" data-value="9">${renderColorDot('rood')}<span>Lijn 9</span></button>
+              <button class="toggleBtn lineToggle ${state.cavannaLine==='10'?'active':''}" data-action="cav-line" data-value="10">${renderColorDot('grijs')}<span>Lijn 10</span></button>
+            `:''}
+            ${state.section==='robertpack'?`
+              <button class="toggleBtn lineToggle ${state.robertpackLine==='9'?'active':''}" data-action="rp-line" data-value="9">${renderColorDot('rood')}<span>Lijn 9</span></button>
+              <button class="toggleBtn lineToggle ${state.robertpackLine==='10'?'active':''}" data-action="rp-line" data-value="10">${renderColorDot('grijs')}<span>Lijn 10</span></button>
+            `:''}
+          </div>
+
+          <div class="mode-bar">
+            <div class="view-actions">
+              <button class="view-action-btn${state.viewMode==='start'?' active':''}" data-action="view-mode" data-value="start">▶ Stap voor stap</button>
+              <button class="view-action-btn${state.viewMode==='list'?' active':''}" data-action="view-mode" data-value="list">☰ Lijst</button>
+            </div>
+            ${state.viewMode?`
+              <div class="mode-pills">
+                <button class="mode-btn${!state.onlyChanges?' active':''}" data-action="show-mode" data-value="all">Alles</button>
+                <button class="mode-btn${state.onlyChanges?' active':''}" data-action="show-mode" data-value="changes">Wijzigingen</button>
+              </div>`:''
+            }
+          </div>
+
+          ${state.viewMode==='start' ? renderStepPlayer(visibleRows) : ''}
+          ${state.viewMode==='list'  ? renderValueList(visibleRows) : ''}
+          ${!state.viewMode ? `<div class="emptyNote">Kies hierboven hoe je de informatie wilt weergeven.</div>` : ''}
+        </div>`;
+    }
+
+    shell.innerHTML = `
+      <div class="topbar">
+        <div class="topbar-brand">
+          <div class="topbar-logo"><img src="./pally-logo.png" alt="Pally" onerror="this.style.display='none'"></div>
+          <span class="topbar-name">Pally Biscuits</span>
+          <div class="topbar-sep"></div>
+          <span class="topbar-module">${checkState.active ? 'Check Mode' : 'Ombouwen'}</span>
+        </div>
+        <div class="topbar-right">
+          <div class="sys-readout">SYS v4.0</div>
+          <div class="status-pill"><div class="status-dot"></div><span class="status-label">Online</span></div>
+        </div>
+      </div>
+      <div class="body">
+        ${renderSidebar()}
+        <div class="main">
+          <div class="breadcrumb">${bc}</div>
+          ${mainContent}
+        </div>
+      </div>`;
+
+    bindActions();
+  }
+
+  /* ═══════════════════════════════════════
+     HELPERS: save current input value before navigating
+  ═══════════════════════════════════════ */
+  function saveCurrentInput(){
+    const inp  = document.getElementById('check-actual-input');
+    const rows = getRows();
+    const cur  = rows[checkState.stepIndex];
+    if(!cur) return;
+    const key    = cur[0];
+    const expRaw = cur[2];
+    /* Color params are handled by button press — don't overwrite with empty text */
+    const normExp  = normalizeDisplayValue(String(expRaw));
+    const expParts = normExp.split('/').map(p=>p.trim()).filter(Boolean);
+    const isColor  = expParts.length > 0 && expParts.every(isColorToken);
+    if(isColor) return; // already saved via check-color-confirm button
+    const val    = inp ? inp.value : (checkState.results[key] && checkState.results[key].actual ? checkState.results[key].actual : '');
+    const exp    = getExpectedValue(key, expRaw);
+    const status = val.trim()
+      ? (normalizeCompareValue(String(exp)) === normalizeCompareValue(val) ? 'match' : 'mismatch')
+      : ((checkState.results[key] && checkState.results[key].status) || 'pending');
+    checkState.results[key] = { ...(checkState.results[key]||{}), actual: val, status };
+  }
+
+  /* ═══════════════════════════════════════
+     EVENT BINDING
+  ═══════════════════════════════════════ */
+  function bindActions(){
+    /* ── CLICK delegation ── */
+    document.querySelectorAll('[data-action]').forEach(el=>{
+      if(el.tagName==='INPUT'||el.tagName==='TEXTAREA') return;
+      el.addEventListener('click', ()=>{
+        const action = el.dataset.action;
+        const value  = el.dataset.value;
+
+        /* original actions */
+        if(action==='from-product')  setState({fromBiscuit:value, fromFormat:null});
+        if(action==='to-product')    setState({toBiscuit:value,   toFormat:null});
+        if(action==='from-format')   setState({fromFormat:value});
+        if(action==='to-format')     setState({toFormat:value});
+        if(action==='reset-all')     resetAll();
+        if(action==='go-sections' && state.fromBiscuit&&state.fromFormat&&state.toBiscuit&&state.toFormat) setState({stage:2});
+        if(action==='back-setup')    setState({stage:1});
+        if(action==='open-section')  setState({section:value, viewMode:null, stepIndex:0});
+        if(action==='close-section') setState({section:null, viewMode:null, stepIndex:0});
+        if(action==='cav-line')      setState({cavannaLine:value, stepIndex:0});
+        if(action==='rp-line')       setState({robertpackLine:value, stepIndex:0});
+        if(action==='show-mode')     setState({onlyChanges:value==='changes', stepIndex:0});
+        if(action==='jump-step')     setState({stepIndex:parseInt(value)});
+        if(action==='prev-step' && state.stepIndex>0) setState({stepIndex:state.stepIndex-1});
+        if(action==='view-mode')     setState({viewMode: state.viewMode===value ? null : value, stepIndex:0});
+        if(action==='next-step'){
+          const vr = filterRows(getRows(), state.onlyChanges);
+          if(state.stepIndex < vr.length-1) setState({stepIndex:state.stepIndex+1});
+          else setState({viewMode:null, stepIndex:0});
+        }
+
+        /* check mode — open / close / tabs */
+        if(action==='open-check')  openCheckMode();
+        if(action==='close-check') closeCheckMode();
+        if(action==='check-commit'){ commitAndClose(); }
+        if(action==='check-tab')   { checkState.tab = value; render(); }
+
+        /* check mode — sidebar jump (save first) */
+        if(action==='check-jump'){
+          saveCurrentInput();
+          checkState.stepIndex = parseInt(value);
+          render();
+        }
+
+        /* check mode — Vorige (save + go back) */
+        if(action==='check-prev'){
+          saveCurrentInput();
+          if(checkState.stepIndex > 0){ checkState.stepIndex--; render(); }
+        }
+
+        /* check mode — Volgende (save + check status + maybe dialog) */
+        if(action==='check-next'){
+          saveCurrentInput();
+          const rows = getRows();                      // [key, fromVal, toVal]
+          const cur  = rows[checkState.stepIndex];
+          if(!cur) return;
+          const curKey = cur[0], expRaw = cur[2];
+          const res = checkState.results[curKey] || {};
+          if(res.status === 'mismatch'){
+            checkState.pendingSave = {
+              paramKey: curKey,
+              expectedVal: getExpectedValue(curKey, expRaw),
+              actualVal: res.actual || ''
+            };
+            renderConfirmOverlay();
+          } else {
+            advanceCheck();
+          }
+        }
+
+        /* check mode — Afronden (last step) */
+        if(action==='check-finish'){
+          saveCurrentInput();
+          const rows = getRows();
+          const cur  = rows[checkState.stepIndex];
+          if(!cur) return;
+          const curKey = cur[0], expRaw = cur[2];
+          const res = checkState.results[curKey] || {};
+          if(res.status === 'mismatch'){
+            checkState.pendingSave = {
+              paramKey: curKey,
+              expectedVal: getExpectedValue(curKey, expRaw),
+              actualVal: res.actual || ''
+            };
+            checkState._finishAfterSave = true;
+            renderConfirmOverlay();
+          } else {
+            checkState.showSummary = true;
+            render();
+          }
+        }
+
+        /* color param: operator taps Ja/Nee — set status directly, no input needed */
+        if(action==='check-color-confirm'){
+          const key    = el.dataset.key;
+          const status = el.dataset.value; // 'match' or 'mismatch'
+          checkState.results[key] = { ...(checkState.results[key]||{}), actual: status==='match' ? '✓' : '✕', status };
+          /* update badge without full re-render so button stays visible */
+          updateCheckCardColors(status);
+          /* highlight active button */
+          document.querySelectorAll('.check-color-btn').forEach(b=>{
+            b.style.background = '';
+            b.style.borderColor = '';
+          });
+          if(status==='match'){
+            el.style.background = 'rgba(34,197,94,.18)';
+            el.style.borderColor = 'rgba(34,197,94,.5)';
+          } else {
+            el.style.background = 'rgba(239,68,68,.18)';
+            el.style.borderColor = 'rgba(239,68,68,.5)';
+          }
+        }
+          if(action==='toggle-version' || action==='toggle-history'){
+            const body = document.getElementById('version-body-' + value);
+            if(body) body.classList.toggle('open');
+          }
+      });
+    });
+
+    /* ── LIVE INPUT: only for text params (color params use button press) ── */
+    const inp = document.getElementById('check-actual-input');
+    if(inp){
+      inp.addEventListener('input', ()=>{
+        const rows = getRows();
+        const cur  = rows[checkState.stepIndex];
+        if(!cur) return;
+        const key    = cur[0];
+        const expRaw = cur[2];
+        const val    = inp.value;
+        const exp    = getExpectedValue(key, expRaw);
+        const status = val.trim()
+          ? (normalizeCompareValue(String(exp))===normalizeCompareValue(val) ? 'match' : 'mismatch')
+          : 'pending';
+        checkState.results[key] = { ...(checkState.results[key]||{}), actual: val, status };
+        updateCheckCardColors(status);
+      });
+      inp.focus();
+      const len = inp.value.length;
+      inp.setSelectionRange(len, len);
+    }
+  } /* end bindActions */
+
+  /* lightweight visual update — only changes classes & badge, no DOM rebuild */
+  function updateCheckCardColors(status){
+    const inp = document.getElementById('check-actual-input');
+    if(inp){
+      const box = inp.closest('.check-val-box');
+      if(box){
+        box.className = 'check-val-box ' +
+          (status==='match'    ? 'status-match'    :
+           status==='mismatch' ? 'status-mismatch' :
+           status==='saved'    ? 'status-saved'    : 'actual');
+      }
+    }
+    const badge = document.querySelector('.check-status-badge');
+    if(badge){
+      const labels = { match:'✓ Match', mismatch:'✕ Mismatch', saved:'↑ Opgeslagen', pending:'Wacht…' };
+      const cls    = { match:'match',   mismatch:'mismatch',    saved:'saved',         pending:'pending' };
+      badge.className = 'check-status-badge ' + (cls[status]||'pending');
+      badge.innerHTML = `<span class="check-status-dot"></span>${labels[status]||'Wacht…'}`;
+    }
+    /* sync Volgende/Afronden button */
+    const btn = document.querySelector('[data-action="check-next"]') ||
+                document.querySelector('[data-action="check-finish"]');
+    if(btn) btn.dataset.status = status;
+
+    /* update progress */
+    const rows  = getRows();
+    const done  = rows.filter(([k]) => {
+      const s = (checkState.results[k] && checkState.results[k].status);
+      return s && s !== 'pending';
+    }).length;
+    const total = rows.length;
+    const pct   = total ? Math.round(done / total * 100) : 0;
+    const fill  = document.querySelector('.check-player-top .player-progress-fill');
+    if(fill) fill.style.width = pct + '%';
+  }
+
+  render();
+  loadData();
+
+})();
+</script>
+</body>
+</html>
