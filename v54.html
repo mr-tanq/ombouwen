@@ -833,7 +833,6 @@
     const cv = store.currentValues && store.currentValues[sk]; return (cv && cv[paramKey]) || originalExpected;
   }
 
-      return buildFlowRows((state.data.dozen && state.data.dozen.values && state.data.dozen.values[state.fromFormat]) || {}, (state.data.dozen && state.data.dozen.values && state.data.dozen.values[state.toFormat]) || {});
   function getCheckRows(){
     // getCheckRows is not used — check mode uses getRows() directly
     return [];
