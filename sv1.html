@@ -1873,9 +1873,9 @@ async function confirmSave(){
     const ts = new Date().toISOString();
     const payload = {
       action:'saved',
-      section:getSectionTitle(state.section),
+      section:state.section,
       line:currentLineValue(),
-      toBiscuit:biscuitLabel(state.toBiscuit),
+      toBiscuit:state.toBiscuit,
       toFormat:state.toFormat,
       param:p.paramKey,
       old:normalizeDisplayValue(String(p.expectedVal)),
@@ -2418,7 +2418,7 @@ function renderHistory(){
         <div class="version-card">
           <div class="version-card-header" data-action="toggle-version" data-value="${vi}">
             <span class="version-badge${vi === 0 ? ' latest' : ''}">v${escapeHtml(v.v || (versions.length - vi))}</span>
-            <span class="version-meta">${escapeHtml(biscuitLabel(state.toBiscuit))} ${escapeHtml(state.toFormat || '')} · ${escapeHtml(getSectionTitle(state.section))}${currentLineValue() ? ' · Lijn ' + escapeHtml(currentLineValue()) : ''}</span>
+            <span class="version-meta">${escapeHtml(biscuitLabel(v.toBiscuit || state.toBiscuit))} ${escapeHtml(v.toFormat || state.toFormat || '')} · ${escapeHtml(getSectionTitle(v.section || state.section))}${(v.line || '') ? ' · Lijn ' + escapeHtml(v.line) : ''}</span>
             <span class="version-change-count">${(v.changes || []).length} wijziging${(v.changes || []).length === 1 ? '' : 'en'}</span>
             <span class="version-date">${escapeHtml(v.ts || '')}</span>
           </div>
@@ -2469,7 +2469,7 @@ function renderAudit(){
             <div class="audit-icon ${escapeHtml(action)}">${icon}</div>
             <div class="audit-body">
               <div class="audit-title">${escapeHtml(e.param || '')}</div>
-              <div class="audit-meta">${escapeHtml(e.section || '')}${e.line ? ' · Lijn ' + escapeHtml(e.line) : ''} · ${escapeHtml(e.toBiscuit || '')} ${escapeHtml(e.toFormat || '')}</div>
+              <div class="audit-meta">${escapeHtml(getSectionTitle(e.section || ''))}${e.line ? ' · Lijn ' + escapeHtml(e.line) : ''} · ${escapeHtml(biscuitLabel(e.toBiscuit || ''))} ${escapeHtml(e.toFormat || '')}</div>
               <div class="audit-change">
                 <span class="audit-old">${escapeHtml(e.old || '')}</span>
                 <span class="audit-arr">→</span>
