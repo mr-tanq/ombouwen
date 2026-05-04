@@ -495,16 +495,57 @@
     .empty-state { padding: 48px 32px; text-align: center; color: var(--text-3); font-family: var(--mono); font-size: 10px; letter-spacing: .16em; text-transform: uppercase; display: flex; flex-direction: column; align-items: center; gap: 10px; }
     .empty-state::before { content:''; display:block; width:32px; height:1px; background: var(--border-2); }
 
+/* ── TABLET ── */
     @media (max-width: 900px) {
       .body { grid-template-columns: 1fr; }
       .sidebar { display: none; }
-      .panel-grid, .section-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+      .panel-grid { grid-template-columns: 1fr; gap: 12px; }
+      .section-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
       .player-wrap, .check-wrap { grid-template-columns: 1fr; }
       .player-sidebar, .check-sidebar { display: none; }
       .value-table-header, .value-row { grid-template-columns: minmax(120px,2fr) 80px 20px 80px; }
       .version-param-row { grid-template-columns: 1fr 80px 18px 80px; }
-      .content { padding: 24px 18px 40px; }
-      .topbar, .breadcrumb { padding: 0 18px; }
+      .content { padding: 24px 16px 40px; }
+      .topbar, .breadcrumb { padding: 0 14px; }
+      .topbar { gap: 8px; }
+      .topbar-brand { gap: 8px; min-width: 0; flex: 1; }
+      .topbar-name { font-size: 11px; letter-spacing: .08em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .topbar-sep, .topbar-module { display: none; }
+      .topbar-right { gap: 6px; flex-shrink: 0; }
+      .status-pill { display: none; }
+      .sync-indicator { padding: 3px 7px; font-size: 8px; }
+      .role-badge { padding: 4px 8px; font-size: 8px; letter-spacing: .08em; }
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 600px) {
+      .content { padding: 18px 12px 32px; }
+      .content-title { font-size: 19px; }
+      .content-sub { font-size: 12px; }
+      .topbar, .breadcrumb { padding: 0 10px; }
+      .panel-grid { grid-template-columns: 1fr; }
+      .section-grid { grid-template-columns: 1fr; }
+      .view-header { gap: 8px; }
+      .view-header-right { width: 100%; gap: 6px; }
+      .pill { font-size: 10px; padding: 3px 9px; }
+      .actions-bar { flex-wrap: wrap; gap: 8px; }
+      .check-header-right { width: 100%; }
+      .check-values-grid { grid-template-columns: 1fr; }
+      .check-arrow { display: none; }
+      .check-param-name { font-size: 20px; }
+      .check-val-box { font-size: 18px; padding: 14px 16px; }
+      .preset-btn { min-width: 70px; font-size: 14px; padding: 14px 10px; }
+      .player-body { padding: 22px 18px; }
+      .player-label { font-size: 19px; }
+      .player-val-box { font-size: 15px; padding: 12px 14px; }
+      .player-values { flex-direction: column; gap: 12px; }
+      .player-arrow-sep { display: none; }
+      .check-summary-stats { gap: 6px; }
+      .check-stat-pill { font-size: 10px; padding: 5px 10px; }
+      .check-changes-row { grid-template-columns: minmax(90px,2fr) 70px 16px 70px 22px; padding: 10px 12px; gap: 6px; font-size: 11px; }
+      .tab-btn { padding: 7px 11px; font-size: 9px; letter-spacing: .08em; }
+      .login-box { padding: 24px 22px; }
+      .check-confirm-box { padding: 24px 22px; }
     }
 
     .check-values-stacked { display: flex; flex-direction: column; gap: 14px; margin-bottom: 0; }
