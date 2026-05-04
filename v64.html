@@ -721,8 +721,7 @@
   const BISCUITS = [
     { id:'richtea',    label:'Rich Tea',   formats:['5x6','3x6'], color:'blauw' },
     { id:'koffiekoek', label:'Koffiekoek', formats:['4x4','5x4','5x5'], color:'bruin' },
-    { id:'theekokos',  label:'Thee/Kokos', formats:['5x5'], color:'wit' }
-  ];
+{ id:'theekokos',  label:'Thee/Kokos', formats:['4x4'], color:'wit', formatMap:{'4x4':'5x5'} }  ];
 
   const FILES = {
     cavanna9:   './data/cavanna9.json',
@@ -749,8 +748,15 @@
 
   const biscuitLabel      = id => { const _b = BISCUITS.find(b=>b.id===id); return _b ? _b.label || '' : ''; };
   const formatsForBiscuit = id => { const _b = BISCUITS.find(b=>b.id===id); return _b ? _b.formats || [] : []; };
-  const getBiscuitMeta    = id => BISCUITS.find(b=>b.id===id) || null;
+const getBiscuitMeta    = id => BISCUITS.find(b=>b.id===id) || null;
 
+  /* Resolves a UI format label to the internal data key.
+     E.g. for Thee/Kokos, "4x4" maps to "5x5" in the JSON files. */
+  function resolveDataFormat(biscuitId, uiFormat){
+    const meta = getBiscuitMeta(biscuitId);
+    if(meta && meta.formatMap && meta.formatMap[uiFormat]) return meta.formatMap[uiFormat];
+    return uiFormat;
+  }
   function buildFlowRows(fromObj, toObj){
     const keys = Array.from(new Set([...Object.keys(fromObj||{}), ...Object.keys(toObj||{})]));
     return keys.map(k => [k, fromObj && fromObj[k] != null ? fromObj[k] : '—', toObj && toObj[k] != null ? toObj[k] : '—']);
