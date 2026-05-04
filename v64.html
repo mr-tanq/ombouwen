@@ -523,9 +523,15 @@
       .content-title { font-size: 19px; }
       .content-sub { font-size: 12px; }
       .topbar, .breadcrumb { padding: 0 10px; }
-      .panel-grid { grid-template-columns: 1fr; }
-      .section-grid { grid-template-columns: 1fr; }
-      .view-header { gap: 8px; }
+      .panel-grid { grid-templatecolumns: 1fr; }
+.section-grid { grid-template-columns: 1fr; gap: 8px; }
+      .section-card { padding: 14px 16px; flex-direction: row; align-items: center; gap: 14px; }
+      .section-card-logo-wrap { width: 56px; height: 56px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+      .section-card-logo { max-width: 100%; max-height: 100%; object-fit: contain; }
+      .section-card-title { font-size: 15px; }
+      .section-card-desc { font-size: 11px; }
+      .section-card > div:nth-child(2), .section-card > div:nth-child(3) { flex: 1; min-width: 0; }
+      .section-card-footer { display: none; }      .view-header { gap: 8px; }
       .view-header-right { width: 100%; gap: 6px; }
       .pill { font-size: 10px; padding: 3px 9px; }
       .actions-bar { flex-wrap: wrap; gap: 8px; }
