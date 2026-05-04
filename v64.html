@@ -919,19 +919,21 @@ const getBiscuitMeta    = id => BISCUITS.find(b=>b.id===id) || null;
 
   function getRows(){
     if(!state.data) return [];
+    const fromKey = resolveDataFormat(state.fromBiscuit, state.fromFormat);
+    const toKey   = resolveDataFormat(state.toBiscuit,   state.toFormat);
     if(state.section==='cavanna'){
       const src = state.cavannaLine==='10' ? state.data.cavanna10 : state.data.cavanna9;
-      return buildFlowRows((src && src.values && src.values[state.fromFormat])||{}, (src && src.values && src.values[state.toFormat])||{});
+      return buildFlowRows((src && src.values && src.values[fromKey])||{}, (src && src.values && src.values[toKey])||{});
     }
     if(state.section==='robertpack')
       return buildFlowRows(
-        getRobertPackValuesForFormat(state.fromFormat, state.robertpackLine),
-        getRobertPackValuesForFormat(state.toFormat,   state.robertpackLine)
+        getRobertPackValuesForFormat(fromKey, state.robertpackLine),
+        getRobertPackValuesForFormat(toKey,   state.robertpackLine)
       );
     if(state.section==='dozen')
-      return buildFlowRows((state.data.dozen && state.data.dozen.values && state.data.dozen.values[state.fromFormat] || {}), (state.data.dozen && state.data.dozen.values && state.data.dozen.values[state.toFormat] || {}));
+      return buildFlowRows((state.data.dozen && state.data.dozen.values && state.data.dozen.values[fromKey] || {}), (state.data.dozen && state.data.dozen.values && state.data.dozen.values[toKey] || {}));
     if(state.section==='dekselaar')
-      return buildFlowRows((state.data.dekselaar && state.data.dekselaar.values && state.data.dekselaar.values[state.fromFormat] || {}), (state.data.dekselaar && state.data.dekselaar.values && state.data.dekselaar.values[state.toFormat] || {}));
+      return buildFlowRows((state.data.dekselaar && state.data.dekselaar.values && state.data.dekselaar.values[fromKey] || {}), (state.data.dekselaar && state.data.dekselaar.values && state.data.dekselaar.values[toKey] || {}));
     return [];
   }
 
