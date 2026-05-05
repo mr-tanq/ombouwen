@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cavanna instellijst</title>
+<style>
+  /* ---------- Page ---------- */
+  * { box-sizing: border-box; }
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 16px;
+    background: #f5f5f5;
+    color: #000;
+    font-size: 11px;
+  }
+
+  /* ---------- Toolbar ---------- */
+  .toolbar {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 14px;
+    padding: 10px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  .toolbar label { font-weight: bold; }
+  .toolbar select, .toolbar button {
+    padding: 6px 12px;
+    font-size: 13px;
+    font-family: Arial, sans-serif;
+    border: 1px solid #999;
+    border-radius: 3px;
+    background: #fff;
+    cursor: pointer;
+  }
+  .toolbar button.primary {
+    background: #d35400;
+    color: #fff;
+    border-color: #b34800;
+    font-weight: bold;
+  }
+  .toolbar button.primary:hover { background: #b34800; }
+  #status { color: #666; font-style: italic; margin-left: auto; }
+
+  /* ---------- Sheet ---------- */
+  .sheet {
+    background: #fff;
+    border: 1px solid #000;
+    padding: 0;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .sheet h1 {
+    margin: 0;
+    padding: 8px 12px;
+    font-size: 16px;
+    background: #1f4e79;
+    color: #fff;
+    border-bottom: 2px solid #000;
+  }
+
+  /* ---------- Table ---------- */
+  table.instellijst {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+  table.instellijst th, table.instellijst td {
+    border: 1px solid #000;
+    padding: 3px 5px;
+    vertical-align: middle;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  /* Column widths */
+  col.col-nr      { width: 28px; }
+  col.col-label   { width: 200px; }
+  col.col-unit    { width: 70px; }
+  col.col-product { width: auto; }
+
+  /* Header rows: product zones (orange) */
+  tr.zone-row th {
+    background: #f4b183;
+    color: #000;
+    font-weight: bold;
+    text-align: center;
+    font-size: 11px;
+    padding: 4px;
+  }
+  tr.zone-row th.empty { background: #fff; border: none; }
+
+  tr.subzone-row th {
+    background: #fce4d6;
+    color: #000;
+    font-weight: normal;
+    text-align: center;
+    font-size: 10px;
+    font-style: italic;
+    padding: 2px;
+  }
+  tr.subzone-row th.empty { background: #fff; border: none; }
+
+  /* Section title rows (blue bar across) */
+  tr.section-row td {
+    background: #1f4e79;
+    color: #fff;
+    font-weight: bold;
+    text-align: left;
+    font-size: 12px;
+    padding: 4px 8px;
+    letter-spacing: 0.5px;
+  }
+
+  /* Data rows */
+  tr.data-row td.cell-nr    { text-align: center; font-weight: bold; background: #fff2cc; }
+  tr.data-row td.cell-label { text-align: left;   padding-left: 6px; }
+  tr.data-row td.cell-unit  { text-align: center; background: #e7e6e6; font-style: italic; color: #333; }
+  tr.data-row td.cell-value { text-align: center; font-weight: bold; }
+
+  /* Alternating row tint for readability (only data rows) */
+  tr.data-row:nth-child(even) td.cell-label { background: #fafafa; }
+
+  /* ---------- Print ---------- */
+  @media print {
+    body { background: #fff; padding: 0; font-size: 9px; }
+    .toolbar { display: none !important; }
+    .sheet { border: none; max-width: none; }
+    table.instellijst { page-break-inside: auto; }
+    tr { page-break-inside: avoid; }
+    @page { size: A4 landscape; margin: 8mm; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="toolbar no-print">
+    <label for="machineSelect">Machine:</label>
+    <select id="machineSelect">
+      <option value="cavanna_9">Cavanna 9</option>
+      <option value="cavanna_10">Cavanna 10</option>
+    </select>
+    <button id="reloadBtn" type="button">↻ Vernieuwen</button>
+    <button id="printBtn" type="button" class="primary">🖨 Print / PDF</button>
+    <span id="status">Laden…</span>
+  </div>
+
+  <div class="sheet" id="sheet">
+    <h1 id="sheetTitle">Cavanna instellijst</h1>
+    <table class="instellijst" id="instellijstTable">
+      <colgroup>
+        <col class="col-nr" />
+        <col class="col-label" />
+        <col class="col-unit" />
+        <col class="col-product" />
+        <col class="col-product" />
+        <col class="col-product" />
+        <col class="col-product" />
+      </colgroup>
+      <thead id="tableHead"></thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+
+<script>
+  // ============================================================
+  // CONFIG
+  // ------------------------------------------------------------
+  // Στο μέλλον, αντί για loadJSON() θα καλούμε Supabase εδώ.
+  // ============================================================
+  const DATA_SOURCES = {
+    cavanna_9:  'cavanna_9.json',
+    cavanna_10: 'cavanna_10.json'
+  };
+
+  const $ = id => document.getElementById(id);
+
+  async function loadData(machineKey) {
+    const url = DATA_SOURCES[machineKey];
+    const res = await fetch(url, { cache: 'no-store' });
+    if (!res.ok) throw new Error(`Kan ${url} niet laden (${res.status})`);
+    return res.json();
+  }
+
+  function renderHead(data) {
+    const head = $('tableHead');
+    head.innerHTML = '';
+
+    // Row 1: product names
+    const r1 = document.createElement('tr');
+    r1.className = 'zone-row';
+    const empty1 = document.createElement('th');
+    empty1.colSpan = 3;
+    empty1.className = 'empty';
+    r1.appendChild(empty1);
+    data.products.forEach(p => {
+      const th = document.createElement('th');
+      th.textContent = p.size ? `${p.label}  ${p.size}` : p.label;
+      r1.appendChild(th);
+    });
+    head.appendChild(r1);
+
+    // Row 2: paklengte sub-headers
+    const r2 = document.createElement('tr');
+    r2.className = 'subzone-row';
+    const empty2 = document.createElement('th');
+    empty2.colSpan = 3;
+    empty2.className = 'empty';
+    r2.appendChild(empty2);
+    data.products.forEach(p => {
+      const th = document.createElement('th');
+      th.textContent = p.paklengte || '';
+      r2.appendChild(th);
+    });
+    head.appendChild(r2);
+  }
+
+  function renderBody(data) {
+    const body = $('tableBody');
+    body.innerHTML = '';
+
+    data.sections.forEach(section => {
+      // Section title row spanning all 7 columns
+      const trSec = document.createElement('tr');
+      trSec.className = 'section-row';
+      const tdSec = document.createElement('td');
+      tdSec.colSpan = 3 + data.products.length;
+      tdSec.textContent = section.name;
+      trSec.appendChild(tdSec);
+      body.appendChild(trSec);
+
+      // Data rows
+      section.rows.forEach(row => {
+        const tr = document.createElement('tr');
+        tr.className = 'data-row';
+
+        const tdNr = document.createElement('td');
+        tdNr.className = 'cell-nr';
+        tdNr.textContent = row.nr || '';
+        tr.appendChild(tdNr);
+
+        const tdLabel = document.createElement('td');
+        tdLabel.className = 'cell-label';
+        tdLabel.textContent = row.label || '';
+        tr.appendChild(tdLabel);
+
+        const tdUnit = document.createElement('td');
+        tdUnit.className = 'cell-unit';
+        tdUnit.textContent = row.unit || '';
+        tr.appendChild(tdUnit);
+
+        data.products.forEach(p => {
+          const td = document.createElement('td');
+          td.className = 'cell-value';
+          const v = row.values && row.values[p.key];
+          td.textContent = (v === undefined || v === null) ? '' : v;
+          tr.appendChild(td);
+        });
+
+        body.appendChild(tr);
+      });
+    });
+  }
+
+  async function refresh() {
+    const machineKey = $('machineSelect').value;
+    $('status').textContent = 'Laden…';
+    try {
+      const data = await loadData(machineKey);
+      $('sheetTitle').textContent = `Instellijst — ${data.machine}`;
+      document.title = `Instellijst — ${data.machine}`;
+      renderHead(data);
+      renderBody(data);
+      $('status').textContent = 'Klaar';
+    } catch (e) {
+      $('status').textContent = 'Fout: ' + e.message;
+      $('tableBody').innerHTML = `<tr><td colspan="7" style="padding:16px;color:#b00">
+        Kon data niet laden. Open dit bestand via een (lokale) webserver,
+        niet rechtstreeks via file://, anders blokkeert de browser fetch().
+        Bv:  python3 -m http.server  &nbsp; in deze map.
+      </td></tr>`;
+      console.error(e);
+    }
+  }
+
+  $('machineSelect').addEventListener('change', refresh);
+  $('reloadBtn').addEventListener('click', refresh);
+  $('printBtn').addEventListener('click', () => window.print());
+
+  refresh();
+</script>
+</body>
+</html>
