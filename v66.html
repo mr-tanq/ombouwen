@@ -12,25 +12,22 @@
 
   <style>
     :root {
-      --black: #000;
+      --black: #000000;
       --surface-1: rgba(255,255,255,.03);
       --surface-2: rgba(255,255,255,.055);
       --surface-3: rgba(255,255,255,.08);
       --border: rgba(255,255,255,.07);
       --border-2: rgba(255,255,255,.12);
       --border-3: rgba(255,255,255,.18);
-
       --amber: #f59e0b;
       --amber-glow: rgba(245,158,11,.3);
       --blue: #3b82f6;
       --green: #22c55e;
       --red: #ef4444;
       --slate: #64748b;
-
-      --text: #fff;
+      --text: #ffffff;
       --text-2: #94a3b8;
       --text-3: #475569;
-
       --mono: 'Geist Mono', monospace;
       --sans: 'Geist', system-ui, sans-serif;
     }
@@ -70,14 +67,13 @@
       inset: 0;
       z-index: 0;
       pointer-events: none;
-      background:
-        repeating-linear-gradient(
-          0deg,
-          transparent,
-          transparent 2px,
-          rgba(255,255,255,.007) 2px,
-          rgba(255,255,255,.007) 4px
-        );
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(255,255,255,.007) 2px,
+        rgba(255,255,255,.007) 4px
+      );
     }
 
     .shell {
@@ -87,8 +83,6 @@
       position: relative;
       z-index: 1;
     }
-
-    /* TOPBAR */
 
     .topbar {
       height: 56px;
@@ -194,9 +188,11 @@
       background: var(--surface-1);
     }
 
-    .role-badge.operator:hover {
+    .role-badge.operator:hover,
+    .btn-print:hover {
       color: var(--text);
       background: var(--surface-2);
+      border-color: var(--border-3);
     }
 
     .role-badge.admin {
@@ -213,12 +209,6 @@
       border-color: var(--border-2);
       background: var(--surface-1);
       color: var(--text-2);
-    }
-
-    .btn-print:hover {
-      background: var(--surface-2);
-      color: var(--text);
-      border-color: var(--border-3);
     }
 
     .status-pill {
@@ -242,7 +232,7 @@
     }
 
     @keyframes pulse {
-      0%,100% { opacity: 1; }
+      0%, 100% { opacity: 1; }
       50% { opacity: .4; }
     }
 
@@ -253,8 +243,6 @@
       letter-spacing: .12em;
       opacity: .8;
     }
-
-    /* LAYOUT */
 
     .body {
       display: grid;
@@ -273,12 +261,6 @@
       align-self: start;
       max-height: calc(100vh - 56px);
       overflow-y: auto;
-    }
-
-    .sidebar::-webkit-scrollbar { width: 2px; }
-    .sidebar::-webkit-scrollbar-thumb {
-      background: var(--border-2);
-      border-radius: 1px;
     }
 
     .sidebar-section {
@@ -434,7 +416,6 @@
       border: 1px solid var(--border-2);
       color: var(--text-3);
       background: var(--surface-1);
-      transition: all .18s ease;
     }
 
     .step-item.done .step-num {
@@ -536,7 +517,7 @@
       font-size: 13px;
       color: var(--text-2);
       line-height: 1.6;
-      max-width: 480px;
+      max-width: 520px;
     }
 
     .panel-grid {
@@ -631,465 +612,46 @@
     .field-label:first-child {
       margin-top: 0;
     }
-    .chip-group {
+
+    .chipRow {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 7px;
     }
 
     .chip {
+      font-size: 12px;
+      font-weight: 500;
       padding: 7px 13px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
+      border-radius: 7px;
+      border: 1px solid var(--border-2);
       background: var(--surface-1);
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: .08em;
       color: var(--text-2);
-      cursor: pointer;
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 6px;
-      transition: all .15s ease;
-      white-space: nowrap;
+      gap: 8px;
+      transition: all .14s cubic-bezier(.16,1,.3,1);
+      position: relative;
+      overflow: hidden;
     }
 
     .chip:hover {
-      border-color: var(--border-2);
-      background: var(--surface-2);
+      background: var(--surface-3);
       color: var(--text);
+      border-color: var(--border-3);
+      transform: translateY(-1px);
     }
 
     .chip.active {
-      border-color: rgba(245,158,11,.35);
-      background: rgba(245,158,11,.08);
+      background: rgba(245,158,11,.09);
+      border-color: rgba(245,158,11,.28);
       color: var(--amber);
+      box-shadow: 0 0 0 3px rgba(245,158,11,.07);
     }
 
-    .dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      display: inline-block;
-      flex-shrink: 0;
-    }
-
-    .actions-bar {
-      display: flex;
-      justify-content: space-between;
+    .chipInner {
+      display: inline-flex;
       align-items: center;
-      padding-top: 14px;
+      gap: 8px;
     }
-
-    .btn-ghost {
-      padding: 9px 16px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background: var(--surface-1);
-      color: var(--text-2);
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      transition: all .15s ease;
-    }
-
-    .btn-ghost:hover {
-      background: var(--surface-2);
-      color: var(--text);
-      border-color: var(--border-2);
-    }
-
-    .btn-primary {
-      padding: 10px 18px;
-      border-radius: 8px;
-      border: 1px solid rgba(245,158,11,.4);
-      background: rgba(245,158,11,.12);
-      color: var(--amber);
-      font-family: var(--mono);
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      transition: all .15s ease;
-    }
-
-    .btn-primary:hover:not(:disabled) {
-      background: rgba(245,158,11,.18);
-      border-color: rgba(245,158,11,.55);
-    }
-
-    .btn-primary:disabled {
-      opacity: .35;
-      cursor: default;
-    }
-
-    /* ───────── PRINT EXCEL STYLE ───────── */
-
-    .print-wrap {
-      background: white;
-      color: black;
-      padding: 20px;
-      font-family: Arial, sans-serif;
-    }
-
-    .excel-sheet {
-      width: 100%;
-      border-collapse: collapse;
-      table-layout: fixed;
-      font-size: 11px;
-    }
-
-    .excel-sheet td,
-    .excel-sheet th {
-      border: 1px solid #999;
-      padding: 3px 4px;
-      text-align: center;
-      vertical-align: middle;
-    }
-
-    .excel-header {
-      background: #e5e5e5;
-      font-weight: bold;
-      font-size: 13px;
-    }
-
-    .excel-subheader {
-      background: #f2f2f2;
-      font-weight: bold;
-    }
-
-    .excel-yellow {
-      background: #fff200;
-      font-weight: bold;
-    }
-
-    .excel-red {
-      background: #ff0000;
-      color: white;
-      font-weight: bold;
-    }
-
-    .excel-green {
-      background: #92d050;
-      font-weight: bold;
-    }
-
-    .excel-blue {
-      background: #00b0f0;
-      color: white;
-    }
-
-    .excel-black {
-      background: black;
-      color: white;
-    }
-
-    .excel-gray {
-      background: #d9d9d9;
-    }
-
-    .excel-brown {
-      background: #7f3f00;
-      color: white;
-    }
-
-    @media print {
-      body * {
-        visibility: hidden;
-      }
-
-      #print-area, #print-area * {
-        visibility: visible;
-      }
-
-      #print-area {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-      }
-    }
-  </style>
-</head>
-
-<body>
-  <div class="shell" id="app-shell"></div>
-
-  <!-- PRINT AREA -->
-  <div id="print-area" style="display:none"></div>
-
-<script>
-(function(){
-
-/* ───────── STATE ───────── */
-
-const state = {
-  fromBiscuit: null,
-  fromFormat: null,
-  toBiscuit: null,
-  toFormat: null,
-  stage: 1,
-  section: null
-};
-
-/* ───────── DATA (placeholder - μετά θα το συνδέσουμε full) ───────── */
-
-const cavannaData = [
-  ["Fotocel baanbreedte", "NR", "141.3"],
-  ["Luchtverdeler", "POS", "3A"],
-  ["Druk", "BAR", "1.5"],
-  ["Geleiders", "Switch", "Grijs"],
-];
-
-/* ───────── RENDER PRINT EXCEL ───────── */
-
-function renderPrintPageCavannaExcel(){
-
-  let html = `
-  <div class="print-wrap">
-    <table class="excel-sheet">
-
-      <tr>
-        <td colspan="6" class="excel-header">Cavanna 10</td>
-      </tr>
-
-      <tr>
-        <td colspan="2" class="excel-subheader">Parameter</td>
-        <td class="excel-subheader">Type</td>
-        <td class="excel-subheader">Value</td>
-        <td class="excel-subheader">Note</td>
-        <td class="excel-subheader">Status</td>
-      </tr>
-  `;
-
-  cavannaData.forEach(row=>{
-    html += `
-      <tr>
-        <td colspan="2">${row[0]}</td>
-        <td>${row[1]}</td>
-        <td class="${getColorClass(row[2])}">${row[2]}</td>
-        <td>-</td>
-        <td>✓</td>
-      </tr>
-    `;
-  });
-
-  html += `
-      <tr>
-        <td colspan="6" class="excel-yellow">INLEGGER</td>
-      </tr>
-
-      <tr>
-        <td colspan="3">Instelling</td>
-        <td colspan="3" class="excel-green">Geheel ingeschoven</td>
-      </tr>
-
-    </table>
-  </div>
-  `;
-
-  return html;
-}
-
-/* ───────── COLOR LOGIC ───────── */
-
-function getColorClass(val){
-  if(val === "Grijs") return "excel-gray";
-  if(val === "Blauw") return "excel-blue";
-  if(val === "Groen") return "excel-green";
-  if(val === "Rood") return "excel-red";
-  if(val === "Zwart") return "excel-black";
-  return "";
-}
-
-/* ───────── PRINT ACTION ───────── */
-
-function openPrint(){
-
-  const area = document.getElementById("print-area");
-  area.innerHTML = renderPrintPageCavannaExcel();
-  area.style.display = "block";
-
-  setTimeout(()=>{
-    window.print();
-    area.style.display = "none";
-  }, 200);
-}
-
-/* ───────── UI ───────── */
-
-function render(){
-
-  document.getElementById("app-shell").innerHTML = `
-    <div class="topbar">
-      <div>Pally · Print Test</div>
-      <button class="btn-primary" onclick="openPrint()">PRINT</button>
-    </div>
-
-    <div class="content">
-      <div class="content-title">Test Cavanna Excel Print</div>
-      <div class="content-sub">Πάτα print για να δεις layout τύπου Excel</div>
-    </div>
-  `;
-}
-/* ───────── REAL CAVANNA PRINT FROM JSON ───────── */
-
-function resolveDataFormat(biscuit, format){
-  if(biscuit === 'theekokos') return '5x5'; // mapping hack όπως ήδη κάνεις
-  return format;
-}
-
-function getCavannaSource(){
-  return state.cavannaLine === '10'
-    ? state.data?.cavanna10
-    : state.data?.cavanna9;
-}
-
-/* columns όπως στο excel */
-function getCavannaColumns(){
-  return [
-    { biscuit: 'richtea',    format: '5x6', label: 'Rich Tea\n5x6' },
-    { biscuit: 'richtea',    format: '3x6', label: 'Rich Tea\n3x6' },
-    { biscuit: 'koffiekoek', format: '4x4', label: 'Koffiekoek\n4x4' },
-    { biscuit: 'koffiekoek', format: '4x5', label: 'Koffiekoek\n4x5' },
-    { biscuit: 'koffiekoek', format: '5x5', label: 'Koffiekoek\n5x5' },
-    { biscuit: 'theekokos',  format: '4x4', label: 'Thee/Kokos\n4x4' }
-  ];
-}
-
-/* SECTION STRUCTURE (από excel) */
-const CAVANNA_STRUCTURE = [
-  {
-    title: 'BANEN',
-    params: [
-      ['1', 'breedte_baan'],
-      ['2', 'fotocel'],
-      ['3', 'luchtverdeler']
-    ]
-  },
-  {
-    title: 'INLEGGER',
-    params: [
-      ['4', 'geleider_links'],
-      ['5', 'geleider_rechts'],
-      ['6', 'hoogte']
-    ]
-  },
-  {
-    title: 'SPIL',
-    params: [
-      ['7', 'stand'],
-      ['8', 'snelheid'],
-      ['9', 'druk']
-    ]
-  }
-];
-
-/* VALUE COLOR LOGIC */
-function excelValueClass(v){
-  const s = String(v).toLowerCase();
-
-  if(s.includes('grijs')) return 'excel-gray';
-  if(s.includes('blauw')) return 'excel-blue';
-  if(s.includes('groen')) return 'excel-green';
-  if(s.includes('rood')) return 'excel-red';
-  if(s.includes('zwart')) return 'excel-black';
-  if(s.includes('open')) return 'excel-green';
-  if(s.includes('dicht')) return 'excel-red';
-
-  return '';
-}
-
-/* MAIN RENDER */
-function renderPrintPageCavannaExcel(){
-
-  const src = getCavannaSource();
-  const cols = getCavannaColumns();
-
-  if(!src || !src.values){
-    return `<div class="print-wrap">⚠ Geen data geladen</div>`;
-  }
-
-  let html = `
-  <div class="print-wrap">
-    <table class="excel-sheet">
-
-      <tr>
-        <td colspan="8" class="excel-title">
-          CAVANNA ${state.cavannaLine}
-        </td>
-      </tr>
-
-      <tr>
-        <td class="excel-head">Nr</td>
-        <td class="excel-head">Parameter</td>
-        ${cols.map(c=>`<td class="excel-head">${c.label.replace('\n','<br>')}</td>`).join('')}
-      </tr>
-  `;
-
-  CAVANNA_STRUCTURE.forEach(section=>{
-
-    html += `
-      <tr>
-        <td colspan="8" class="excel-section">${section.title}</td>
-      </tr>
-    `;
-
-    section.params.forEach(([nr, key])=>{
-
-      const cells = cols.map(c=>{
-        const dataFormat = resolveDataFormat(c.biscuit, c.format);
-        const val = src.values?.[dataFormat]?.[key] ?? '—';
-
-        return `<td class="${excelValueClass(val)}">
-          ${val}
-        </td>`;
-      }).join('');
-
-      html += `
-        <tr>
-          <td class="excel-num">${nr}</td>
-          <td class="excel-key">${key}</td>
-          ${cells}
-        </tr>
-      `;
-    });
-
-  });
-
-  html += `
-    </table>
-  </div>
-  `;
-
-  return html;
-}
-
-/* ───────── REPLACE PRINT FUNCTION ───────── */
-
-function openPrint(){
-
-  const area = document.getElementById("print-area");
-
-  area.innerHTML = renderPrintPageCavannaExcel();
-  area.style.display = "block";
-
-  setTimeout(()=>{
-    window.print();
-    area.style.display = "none";
-  }, 200);
-}
-  
-/* expose */
-window.openPrint = openPrint;
-
-render();
-
-})();
-</script>
-</body>
-</html>
+    
