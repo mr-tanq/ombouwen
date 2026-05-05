@@ -654,4 +654,262 @@
       align-items: center;
       gap: 8px;
     }
-    
+    .chipDot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      opacity: .6;
+    }
+
+    .table-wrap {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--surface-1);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--mono);
+      font-size: 11px;
+    }
+
+    thead {
+      background: rgba(255,255,255,.02);
+    }
+
+    th, td {
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    th {
+      font-size: 9px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--text-3);
+    }
+
+    tbody tr:hover {
+      background: rgba(255,255,255,.02);
+    }
+
+    td.changed {
+      color: var(--amber);
+      font-weight: 600;
+    }
+
+    .footer-bar {
+      position: sticky;
+      bottom: 0;
+      background: rgba(0,0,0,.9);
+      border-top: 1px solid var(--border);
+      padding: 12px 24px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      z-index: 100;
+    }
+
+    .btn {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .12em;
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--border-2);
+      background: var(--surface-1);
+      color: var(--text-2);
+      transition: all .15s ease;
+    }
+
+    .btn:hover {
+      border-color: var(--border-3);
+      color: var(--text);
+      background: var(--surface-2);
+    }
+
+    .btn.primary {
+      background: rgba(245,158,11,.1);
+      border-color: rgba(245,158,11,.35);
+      color: var(--amber);
+    }
+
+    .btn.primary:hover {
+      background: rgba(245,158,11,.18);
+    }
+
+    /* =========================
+       PRINT MODE (EXCEL STYLE)
+       ========================= */
+
+    @media print {
+      body {
+        background: white;
+        color: black;
+      }
+
+      .shell,
+      .sidebar,
+      .topbar,
+      .footer-bar,
+      .breadcrumb {
+        display: none !important;
+      }
+
+      .main {
+        display: block;
+      }
+
+      .content {
+        padding: 0;
+      }
+
+      .print-sheet {
+        width: 100%;
+        font-family: Arial, sans-serif;
+        font-size: 10px;
+        border-collapse: collapse;
+      }
+
+      .print-sheet table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .print-sheet th,
+      .print-sheet td {
+        border: 1px solid #000;
+        padding: 4px 6px;
+        text-align: center;
+      }
+
+      .print-sheet th {
+        background: #e5e5e5;
+        font-weight: bold;
+      }
+
+      .print-header {
+        font-size: 14px;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      .group-header {
+        background: #d0d0d0;
+        font-weight: bold;
+      }
+
+      .sub-header {
+        background: #f0f0f0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="shell">
+
+    <div class="topbar">
+      <div class="topbar-brand">
+        <div class="topbar-logo">P</div>
+        <div class="topbar-name">PALLY</div>
+        <div class="topbar-sep"></div>
+        <div class="topbar-module">OMBOUWEN</div>
+      </div>
+
+      <div class="topbar-right">
+        <div class="sync-indicator">SYNC</div>
+        <div class="role-badge operator">OPERATOR</div>
+        <button class="btn-print" onclick="printCavanna()">PRINT</button>
+      </div>
+    </div>
+
+    <div class="body">
+      <div class="sidebar">
+        <div class="sidebar-section">
+          <div class="sidebar-label">FLOW</div>
+
+          <div class="flow-card">
+            <div class="flow-card-row">
+              <div class="flow-block">
+                <div class="flow-block-label">FROM</div>
+                <div class="flow-block-value" id="fromLabel">—</div>
+              </div>
+
+              <div class="flow-arrow-col">→</div>
+
+              <div class="flow-block">
+                <div class="flow-block-label">TO</div>
+                <div class="flow-block-value amber" id="toLabel">—</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-tag">
+            <div class="tag-dot"></div>
+            Cavanna Line
+          </div>
+        </div>
+      </div>
+
+      <div class="main">
+        <div class="breadcrumb">
+          <div class="bc-item active">Cavanna</div>
+        </div>
+
+        <div class="content">
+
+          <div class="content-header">
+            <div class="content-title">Cavanna Setup</div>
+            <div class="content-sub">Select format and print machine settings.</div>
+          </div>
+
+          <div class="panel-grid">
+
+            <div class="panel">
+              <div class="panel-header">
+                <div class="panel-title">Line</div>
+              </div>
+
+              <div class="panel-body">
+                <div class="chipRow">
+                  <div class="chip active" onclick="setLine(9)">Line 9</div>
+                  <div class="chip" onclick="setLine(10)">Line 10</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-header">
+                <div class="panel-title">Format</div>
+              </div>
+
+              <div class="panel-body">
+                <div class="chipRow" id="formatChips"></div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="table-wrap">
+            <table id="previewTable">
+              <thead>
+                <tr>
+                  <th>Param</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
