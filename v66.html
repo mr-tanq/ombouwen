@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pally · Ombouwen</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root {
+      --black: #000;
+      --surface-1: rgba(255,255,255,.03);
+      --surface-2: rgba(255,255,255,.055);
+      --surface-3: rgba(255,255,255,.08);
+      --border: rgba(255,255,255,.07);
+      --border-2: rgba(255,255,255,.12);
+      --border-3: rgba(255,255,255,.18);
+
+      --amber: #f59e0b;
+      --amber-glow: rgba(245,158,11,.3);
+      --blue: #3b82f6;
+      --green: #22c55e;
+      --red: #ef4444;
+      --slate: #64748b;
+
+      --text: #fff;
+      --text-2: #94a3b8;
+      --text-3: #475569;
+
+      --mono: 'Geist Mono', monospace;
+      --sans: 'Geist', system-ui, sans-serif;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      background: var(--black);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 14px;
+      line-height: 1.5;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    button {
+      font: inherit;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(255,255,255,.007) 2px,
+          rgba(255,255,255,.007) 4px
+        );
+    }
+
+    .shell {
+      display: grid;
+      grid-template-rows: auto 1fr;
+      min-height: 100vh;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* TOPBAR */
+
+    .topbar {
+      height: 56px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(0,0,0,.9);
+      backdrop-filter: blur(20px) saturate(1.6);
+      -webkit-backdrop-filter: blur(20px) saturate(1.6);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+    }
+
+    .topbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .topbar-logo {
+      width: 30px;
+      height: 30px;
+      border: 1px solid var(--border-2);
+      border-radius: 6px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface-2);
+      flex-shrink: 0;
+    }
+
+    .topbar-name {
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .topbar-sep {
+      width: 1px;
+      height: 18px;
+      background: var(--border-2);
+    }
+
+    .topbar-module {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-3);
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .sync-indicator {
+      font-family: var(--mono);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid #47556940;
+      color: #475569;
+      transition: all .25s ease;
+      white-space: nowrap;
+    }
+
+    .role-badge,
+    .btn-print {
+      font-family: var(--mono);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      padding: 5px 11px;
+      border-radius: 20px;
+      border: 1px solid;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all .15s ease;
+      white-space: nowrap;
+    }
+
+    .role-badge.operator {
+      color: var(--text-2);
+      border-color: var(--border-2);
+      background: var(--surface-1);
+    }
+
+    .role-badge.operator:hover {
+      color: var(--text);
+      background: var(--surface-2);
+    }
+
+    .role-badge.admin {
+      color: var(--amber);
+      border-color: rgba(245,158,11,.3);
+      background: rgba(245,158,11,.08);
+    }
+
+    .role-badge.admin:hover {
+      background: rgba(245,158,11,.14);
+    }
+
+    .btn-print {
+      border-color: var(--border-2);
+      background: var(--surface-1);
+      color: var(--text-2);
+    }
+
+    .btn-print:hover {
+      background: var(--surface-2);
+      color: var(--text);
+      border-color: var(--border-3);
+    }
+
+    .status-pill {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(34,197,94,.2);
+      background: rgba(34,197,94,.06);
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 8px rgba(34,197,94,.35);
+      animation: pulse 3s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes pulse {
+      0%,100% { opacity: 1; }
+      50% { opacity: .4; }
+    }
+
+    .status-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--green);
+      letter-spacing: .12em;
+      opacity: .8;
+    }
+
+    /* LAYOUT */
+
+    .body {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+    }
+
+    .sidebar {
+      border-right: 1px solid var(--border);
+      background: rgba(0,0,0,.6);
+      display: flex;
+      flex-direction: column;
+      padding: 28px 0;
+      min-height: calc(100vh - 56px);
+      position: sticky;
+      top: 56px;
+      align-self: start;
+      max-height: calc(100vh - 56px);
+      overflow-y: auto;
+    }
+
+    .sidebar::-webkit-scrollbar { width: 2px; }
+    .sidebar::-webkit-scrollbar-thumb {
+      background: var(--border-2);
+      border-radius: 1px;
+    }
+
+    .sidebar-section {
+      padding: 0 18px 22px;
+    }
+
+    .sidebar-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: .26em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      margin-bottom: 10px;
+    }
+
+    .flow-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--surface-1);
+      overflow: hidden;
+    }
+
+    .flow-card-row {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: stretch;
+    }
+
+    .flow-block {
+      padding: 11px 13px;
+    }
+
+    .flow-block + .flow-block {
+      border-left: 1px solid var(--border);
+    }
+
+    .flow-block-label {
+      font-family: var(--mono);
+      font-size: 8px;
+      color: var(--text-3);
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .flow-block-value {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .flow-block-value.dim {
+      color: var(--text-3);
+      font-weight: 400;
+    }
+
+    .flow-block-value.amber {
+      color: var(--amber);
+    }
+
+    .flow-arrow-col {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 9px;
+      border-left: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      background: var(--surface-1);
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-3);
+    }
+
+    .section-tag {
+      margin-top: 7px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 11px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--surface-1);
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-3);
+      letter-spacing: .06em;
+    }
+
+    .tag-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--amber);
+      box-shadow: 0 0 6px var(--amber-glow);
+      flex-shrink: 0;
+    }
+
+    .sidebar-sep {
+      height: 1px;
+      background: var(--border);
+      margin: 0 18px 22px;
+    }
+
+    .step-list {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      padding: 0 18px;
+    }
+
+    .step-item {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 9px 11px;
+      border-radius: 8px;
+      cursor: default;
+      border: 1px solid transparent;
+      transition: all .18s ease;
+    }
+
+    .step-item.done {
+      background: rgba(34,197,94,.05);
+      border-color: rgba(34,197,94,.1);
+    }
+
+    .step-item.active {
+      background: rgba(245,158,11,.05);
+      border-color: rgba(245,158,11,.12);
+    }
+
+    .step-item.check-active {
+      background: rgba(6,182,212,.05);
+      border-color: rgba(6,182,212,.15);
+    }
+
+    .step-num {
+      font-family: var(--mono);
+      font-size: 9px;
+      font-weight: 700;
+      width: 21px;
+      height: 21px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border: 1px solid var(--border-2);
+      color: var(--text-3);
+      background: var(--surface-1);
+      transition: all .18s ease;
+    }
+
+    .step-item.done .step-num {
+      background: rgba(34,197,94,.15);
+      border-color: rgba(34,197,94,.3);
+      color: var(--green);
+    }
+
+    .step-item.active .step-num {
+      background: rgba(245,158,11,.1);
+      border-color: rgba(245,158,11,.25);
+      color: var(--amber);
+    }
+
+    .step-item.check-active .step-num {
+      background: rgba(6,182,212,.1);
+      border-color: rgba(6,182,212,.28);
+      color: #06b6d4;
+      box-shadow: 0 0 8px rgba(6,182,212,.2);
+    }
+
+    .step-text {
+      font-size: 12px;
+      color: var(--text-3);
+      font-weight: 500;
+    }
+
+    .step-item.done .step-text {
+      color: rgba(34,197,94,.75);
+    }
+
+    .step-item.active .step-text {
+      color: var(--text);
+    }
+
+    .step-item.check-active .step-text {
+      color: rgba(6,182,212,.9);
+    }
+
+    .main {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .breadcrumb {
+      border-bottom: 1px solid var(--border);
+      padding: 0 32px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0,0,0,.4);
+    }
+
+    .bc-item {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-3);
+      letter-spacing: .08em;
+    }
+
+    .bc-item.active {
+      color: rgba(255,255,255,.6);
+    }
+
+    .bc-sep {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-3);
+      opacity: .4;
+    }
+
+    .content {
+      flex: 1;
+      padding: 36px 36px 56px;
+      animation: fadeUp .22s cubic-bezier(.16,1,.3,1) both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .content-header {
+      margin-bottom: 28px;
+    }
+
+    .content-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -.04em;
+      margin-bottom: 5px;
+      line-height: 1.15;
+    }
+
+    .content-sub {
+      font-size: 13px;
+      color: var(--text-2);
+      line-height: 1.6;
+      max-width: 480px;
+    }
+
+    .panel-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .panel {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface-1);
+      overflow: hidden;
+      position: relative;
+      backdrop-filter: blur(10px);
+      transition: border-color .18s;
+    }
+
+    .panel::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(255,255,255,.02) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .panel:hover {
+      border-color: var(--border-2);
+    }
+
+    .panel-header {
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255,255,255,.015);
+    }
+
+    .panel-title {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.35);
+    }
+
+    .panel-badge {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-family: var(--mono);
+      font-size: 8px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 20px;
+      background: rgba(34,197,94,.1);
+      border: 1px solid rgba(34,197,94,.2);
+      color: var(--green);
+      letter-spacing: .12em;
+    }
+
+    .panel-badge::before {
+      content: '';
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--green);
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    .panel-body {
+      padding: 18px;
+    }
+
+    .field-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      margin-bottom: 10px;
+      margin-top: 16px;
+    }
+
+    .field-label:first-child {
+      margin-top: 0;
+    }
+    .chip-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      padding: 7px 13px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface-1);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: .08em;
+      color: var(--text-2);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all .15s ease;
+      white-space: nowrap;
+    }
+
+    .chip:hover {
+      border-color: var(--border-2);
+      background: var(--surface-2);
+      color: var(--text);
+    }
+
+    .chip.active {
+      border-color: rgba(245,158,11,.35);
+      background: rgba(245,158,11,.08);
+      color: var(--amber);
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    .actions-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 14px;
+    }
+
+    .btn-ghost {
+      padding: 9px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--surface-1);
+      color: var(--text-2);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      transition: all .15s ease;
+    }
+
+    .btn-ghost:hover {
+      background: var(--surface-2);
+      color: var(--text);
+      border-color: var(--border-2);
+    }
+
+    .btn-primary {
+      padding: 10px 18px;
+      border-radius: 8px;
+      border: 1px solid rgba(245,158,11,.4);
+      background: rgba(245,158,11,.12);
+      color: var(--amber);
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all .15s ease;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: rgba(245,158,11,.18);
+      border-color: rgba(245,158,11,.55);
+    }
+
+    .btn-primary:disabled {
+      opacity: .35;
+      cursor: default;
+    }
+
+    /* ───────── PRINT EXCEL STYLE ───────── */
+
+    .print-wrap {
+      background: white;
+      color: black;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+    }
+
+    .excel-sheet {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 11px;
+    }
+
+    .excel-sheet td,
+    .excel-sheet th {
+      border: 1px solid #999;
+      padding: 3px 4px;
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    .excel-header {
+      background: #e5e5e5;
+      font-weight: bold;
+      font-size: 13px;
+    }
+
+    .excel-subheader {
+      background: #f2f2f2;
+      font-weight: bold;
+    }
+
+    .excel-yellow {
+      background: #fff200;
+      font-weight: bold;
+    }
+
+    .excel-red {
+      background: #ff0000;
+      color: white;
+      font-weight: bold;
+    }
+
+    .excel-green {
+      background: #92d050;
+      font-weight: bold;
+    }
+
+    .excel-blue {
+      background: #00b0f0;
+      color: white;
+    }
+
+    .excel-black {
+      background: black;
+      color: white;
+    }
+
+    .excel-gray {
+      background: #d9d9d9;
+    }
+
+    .excel-brown {
+      background: #7f3f00;
+      color: white;
+    }
+
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+
+      #print-area, #print-area * {
+        visibility: visible;
+      }
+
+      #print-area {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="shell" id="app-shell"></div>
+
+  <!-- PRINT AREA -->
+  <div id="print-area" style="display:none"></div>
+
+<script>
+(function(){
+
+/* ───────── STATE ───────── */
+
+const state = {
+  fromBiscuit: null,
+  fromFormat: null,
+  toBiscuit: null,
+  toFormat: null,
+  stage: 1,
+  section: null
+};
+
+/* ───────── DATA (placeholder - μετά θα το συνδέσουμε full) ───────── */
+
+const cavannaData = [
+  ["Fotocel baanbreedte", "NR", "141.3"],
+  ["Luchtverdeler", "POS", "3A"],
+  ["Druk", "BAR", "1.5"],
+  ["Geleiders", "Switch", "Grijs"],
+];
+
+/* ───────── RENDER PRINT EXCEL ───────── */
+
+function renderPrintPageCavannaExcel(){
+
+  let html = `
+  <div class="print-wrap">
+    <table class="excel-sheet">
+
+      <tr>
+        <td colspan="6" class="excel-header">Cavanna 10</td>
+      </tr>
+
+      <tr>
+        <td colspan="2" class="excel-subheader">Parameter</td>
+        <td class="excel-subheader">Type</td>
+        <td class="excel-subheader">Value</td>
+        <td class="excel-subheader">Note</td>
+        <td class="excel-subheader">Status</td>
+      </tr>
+  `;
+
+  cavannaData.forEach(row=>{
+    html += `
+      <tr>
+        <td colspan="2">${row[0]}</td>
+        <td>${row[1]}</td>
+        <td class="${getColorClass(row[2])}">${row[2]}</td>
+        <td>-</td>
+        <td>✓</td>
+      </tr>
+    `;
+  });
+
+  html += `
+      <tr>
+        <td colspan="6" class="excel-yellow">INLEGGER</td>
+      </tr>
+
+      <tr>
+        <td colspan="3">Instelling</td>
+        <td colspan="3" class="excel-green">Geheel ingeschoven</td>
+      </tr>
+
+    </table>
+  </div>
+  `;
+
+  return html;
+}
+
+/* ───────── COLOR LOGIC ───────── */
+
+function getColorClass(val){
+  if(val === "Grijs") return "excel-gray";
+  if(val === "Blauw") return "excel-blue";
+  if(val === "Groen") return "excel-green";
+  if(val === "Rood") return "excel-red";
+  if(val === "Zwart") return "excel-black";
+  return "";
+}
+
+/* ───────── PRINT ACTION ───────── */
+
+function openPrint(){
+
+  const area = document.getElementById("print-area");
+  area.innerHTML = renderPrintPageCavannaExcel();
+  area.style.display = "block";
+
+  setTimeout(()=>{
+    window.print();
+    area.style.display = "none";
+  }, 200);
+}
+
+/* ───────── UI ───────── */
+
+function render(){
+
+  document.getElementById("app-shell").innerHTML = `
+    <div class="topbar">
+      <div>Pally · Print Test</div>
+      <button class="btn-primary" onclick="openPrint()">PRINT</button>
+    </div>
+
+    <div class="content">
+      <div class="content-title">Test Cavanna Excel Print</div>
+      <div class="content-sub">Πάτα print για να δεις layout τύπου Excel</div>
+    </div>
+  `;
+}
+/* ───────── REAL CAVANNA PRINT FROM JSON ───────── */
+
+function resolveDataFormat(biscuit, format){
+  if(biscuit === 'theekokos') return '5x5'; // mapping hack όπως ήδη κάνεις
+  return format;
+}
+
+function getCavannaSource(){
+  return state.cavannaLine === '10'
+    ? state.data?.cavanna10
+    : state.data?.cavanna9;
+}
+
+/* columns όπως στο excel */
+function getCavannaColumns(){
+  return [
+    { biscuit: 'richtea',    format: '5x6', label: 'Rich Tea\n5x6' },
+    { biscuit: 'richtea',    format: '3x6', label: 'Rich Tea\n3x6' },
+    { biscuit: 'koffiekoek', format: '4x4', label: 'Koffiekoek\n4x4' },
+    { biscuit: 'koffiekoek', format: '4x5', label: 'Koffiekoek\n4x5' },
+    { biscuit: 'koffiekoek', format: '5x5', label: 'Koffiekoek\n5x5' },
+    { biscuit: 'theekokos',  format: '4x4', label: 'Thee/Kokos\n4x4' }
+  ];
+}
+
+/* SECTION STRUCTURE (από excel) */
+const CAVANNA_STRUCTURE = [
+  {
+    title: 'BANEN',
+    params: [
+      ['1', 'breedte_baan'],
+      ['2', 'fotocel'],
+      ['3', 'luchtverdeler']
+    ]
+  },
+  {
+    title: 'INLEGGER',
+    params: [
+      ['4', 'geleider_links'],
+      ['5', 'geleider_rechts'],
+      ['6', 'hoogte']
+    ]
+  },
+  {
+    title: 'SPIL',
+    params: [
+      ['7', 'stand'],
+      ['8', 'snelheid'],
+      ['9', 'druk']
+    ]
+  }
+];
+
+/* VALUE COLOR LOGIC */
+function excelValueClass(v){
+  const s = String(v).toLowerCase();
+
+  if(s.includes('grijs')) return 'excel-gray';
+  if(s.includes('blauw')) return 'excel-blue';
+  if(s.includes('groen')) return 'excel-green';
+  if(s.includes('rood')) return 'excel-red';
+  if(s.includes('zwart')) return 'excel-black';
+  if(s.includes('open')) return 'excel-green';
+  if(s.includes('dicht')) return 'excel-red';
+
+  return '';
+}
+
+/* MAIN RENDER */
+function renderPrintPageCavannaExcel(){
+
+  const src = getCavannaSource();
+  const cols = getCavannaColumns();
+
+  if(!src || !src.values){
+    return `<div class="print-wrap">⚠ Geen data geladen</div>`;
+  }
+
+  let html = `
+  <div class="print-wrap">
+    <table class="excel-sheet">
+
+      <tr>
+        <td colspan="8" class="excel-title">
+          CAVANNA ${state.cavannaLine}
+        </td>
+      </tr>
+
+      <tr>
+        <td class="excel-head">Nr</td>
+        <td class="excel-head">Parameter</td>
+        ${cols.map(c=>`<td class="excel-head">${c.label.replace('\n','<br>')}</td>`).join('')}
+      </tr>
+  `;
+
+  CAVANNA_STRUCTURE.forEach(section=>{
+
+    html += `
+      <tr>
+        <td colspan="8" class="excel-section">${section.title}</td>
+      </tr>
+    `;
+
+    section.params.forEach(([nr, key])=>{
+
+      const cells = cols.map(c=>{
+        const dataFormat = resolveDataFormat(c.biscuit, c.format);
+        const val = src.values?.[dataFormat]?.[key] ?? '—';
+
+        return `<td class="${excelValueClass(val)}">
+          ${val}
+        </td>`;
+      }).join('');
+
+      html += `
+        <tr>
+          <td class="excel-num">${nr}</td>
+          <td class="excel-key">${key}</td>
+          ${cells}
+        </tr>
+      `;
+    });
+
+  });
+
+  html += `
+    </table>
+  </div>
+  `;
+
+  return html;
+}
+
+/* ───────── REPLACE PRINT FUNCTION ───────── */
+
+function openPrint(){
+
+  const area = document.getElementById("print-area");
+
+  area.innerHTML = renderPrintPageCavannaExcel();
+  area.style.display = "block";
+
+  setTimeout(()=>{
+    window.print();
+    area.style.display = "none";
+  }, 200);
+}
+  
+/* expose */
+window.openPrint = openPrint;
+
+render();
+
+})();
+</script>
+</body>
+</html>
