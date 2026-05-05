@@ -1,0 +1,645 @@
+{
+  "machine": "Cavanna 10",
+  "products": [
+    {
+      "key": "koffiekoek",
+      "label": "Koffiekoek",
+      "size": "74 x 34",
+      "paklengte": "Paklengte 220"
+    },
+    {
+      "key": "xxl",
+      "label": "XXL",
+      "size": "",
+      "paklengte": ""
+    },
+    {
+      "key": "thee_kokos",
+      "label": "Thee / Kokos",
+      "size": "70 x 53,5",
+      "paklengte": "Paklengte 220"
+    },
+    {
+      "key": "richtea",
+      "label": "RichTea",
+      "size": "64,5",
+      "paklengte": "Paklengte 235"
+    }
+  ],
+  "sections": [
+    {
+      "name": "BANEN",
+      "rows": [
+        {
+          "nr": "1",
+          "label": "Fotocel",
+          "unit": "POSITIE",
+          "values": {
+            "koffiekoek": "12.6",
+            "xxl": "14.7",
+            "thee_kokos": "11.6",
+            "richtea": "13.7"
+          }
+        },
+        {
+          "nr": "2",
+          "label": "Luchtverdeler / Kantelaar",
+          "unit": "MAL",
+          "values": {
+            "koffiekoek": "A2",
+            "xxl": "A3",
+            "thee_kokos": "B1",
+            "richtea": "B2"
+          }
+        },
+        {
+          "nr": "3",
+          "label": "Mes Hoogte",
+          "unit": "MM",
+          "values": {
+            "koffiekoek": "5,8",
+            "xxl": "6,3",
+            "thee_kokos": "5,2",
+            "richtea": "5,8"
+          }
+        },
+        {
+          "nr": "4",
+          "label": "Heater boven",
+          "unit": "°C",
+          "values": {
+            "koffiekoek": "189.0",
+            "xxl": "194.2",
+            "thee_kokos": "183.8",
+            "richtea": "189.0"
+          }
+        },
+        {
+          "nr": "5",
+          "label": "Heater beneden",
+          "unit": "°C",
+          "values": {
+            "koffiekoek": "178.5",
+            "xxl": "183.8",
+            "thee_kokos": "173.2",
+            "richtea": "178.5"
+          }
+        },
+        {
+          "nr": "6",
+          "label": "Heater stand",
+          "unit": "NR",
+          "values": {
+            "koffiekoek": "3.2",
+            "xxl": "4.2",
+            "thee_kokos": "3.2",
+            "richtea": "3.2"
+          }
+        },
+        {
+          "nr": "7",
+          "label": "Vacuumtafel",
+          "unit": "NR",
+          "values": {
+            "koffiekoek": "2.1",
+            "xxl": "2.1",
+            "thee_kokos": "2.1",
+            "richtea": "2.1"
+          }
+        },
+        {
+          "nr": "8",
+          "label": "Eindloop hoogte",
+          "unit": "MM",
+          "values": {
+            "koffiekoek": "47.2",
+            "xxl": "52.5",
+            "thee_kokos": "44.1",
+            "richtea": "46.2"
+          }
+        },
+        {
+          "nr": "9",
+          "label": "Centerbaan",
+          "unit": "POSITIE",
+          "values": {
+            "koffiekoek": "C",
+            "xxl": "C",
+            "thee_kokos": "B",
+            "richtea": "C"
+          }
+        },
+        {
+          "nr": "10",
+          "label": "Toerental",
+          "unit": "RPM",
+          "values": {
+            "koffiekoek": "126.0",
+            "xxl": "120.8",
+            "thee_kokos": "131.2",
+            "richtea": "126.0"
+          }
+        },
+        {
+          "nr": "11",
+          "label": "Gewicht (instelling)",
+          "unit": "GR",
+          "values": {
+            "koffiekoek": "89.2",
+            "xxl": "126.0",
+            "thee_kokos": "78.8",
+            "richtea": "68.2"
+          }
+        }
+      ]
+    },
+    {
+      "name": "INLEGGER",
+      "rows": [
+        {
+          "nr": "15",
+          "label": "Inlegger snelheid",
+          "unit": "%",
+          "values": {
+            "koffiekoek": "78.8",
+            "xxl": "73.5",
+            "thee_kokos": "84.0",
+            "richtea": "81.9"
+          }
+        },
+        {
+          "nr": "16",
+          "label": "Inlegger stand",
+          "unit": "POSITIE",
+          "values": {
+            "koffiekoek": "2.1",
+            "xxl": "3.2",
+            "thee_kokos": "2.1",
+            "richtea": "2.1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "SPIJLENBAAN",
+      "rows": [
+        {
+          "nr": "18",
+          "label": "Snelheid",
+          "unit": "%",
+          "values": {
+            "koffiekoek": "68.2",
+            "xxl": "63.0",
+            "thee_kokos": "73.5",
+            "richtea": "71.4"
+          }
+        },
+        {
+          "nr": "19",
+          "label": "Spijlen aantal",
+          "unit": "NR",
+          "values": {
+            "koffiekoek": "8.4",
+            "xxl": "6.3",
+            "thee_kokos": "10.5",
+            "richtea": "9.5"
+          }
+        },
+        {
+          "nr": "20",
+          "label": "Lengte",
+          "unit": "MM",
+          "values": {
+            "koffiekoek": "231.0",
+            "xxl": "252.0",
+            "thee_kokos": "231.0",
+            "richtea": "246.8"
+          }
+        },
+        {
+          "nr": "21",
+          "label": "Hoogte",
+          "unit": "MM",
+          "values": {
+            "koffiekoek": "35.7",
+            "xxl": "47.2",
+            "thee_kokos": "56,2",
+            "richtea": "31.5"
+          }
+        },
+        {
+          "nr": "22",
+          "label": "Hoek",
+          "unit": "°",
+          "values": {
+            "koffiekoek": "15.8",
+            "xxl": "21.0",
+            "thee_kokos": "12.6",
+            "richtea": "15.8"
+          }
+        },
+        {
+          "nr": "23",
+          "label": "Speling",
+          "unit": "MM",
+          "values": {
+            "koffiekoek": "1,6",
+            "xxl": "2,1",
+            "thee_kokos": "1,6",
+            "richtea": "1,3"
+          }
+        }
+      ]
+    },
+    {
+      "name": "INPAKMACHINE CAVANNA",
+      "rows": [
+        {
+          "nr": "24",
+          "label": "Banden snelheid 1",
+          "unit": "%",
+          "values": {
+            "koffiekoek": "57.8",
+            "xxl": "52.5",
+            "thee_kokos": "63.0",
+            "richtea": "60.9"
+          }
+        },
+        {
+          "nr": "25",
+          "label": "Banden snelheid 2",
+          "unit": "%",
+          "values": {
+            "koffiekoek": "63.0",
+            "xxl": "57.8",
+            "thee_kokos": "68.2",
+            "richtea": "65.1"
+          }
+        },
+        {
+          "nr": "26",
+          "label": "Banden snelheid 3",
+          "unit": "%",
+          "values": {
+            "koffiekoek": "68.2",
+            "xxl": "63.0",
+            "thee_kokos": "73.5",
+            "richtea": "71.4"
+          }
+        },
+        {
+          "nr": "27",
+          "label": "Banden snelheid 4",
+          "unit": "%",
+          "values": {
+            "koffiekoek": "73.5",
+            "xxl": "68.2",
+            "thee_kokos": "78.8",
+            "richtea": "75.6"
+          }
+        },
+        {
+          "nr": "28",
+          "label": "Trommel snelheid",
+          "unit": "RPM",
+          "values": {
+            "koffiekoek": "47.2",
+            "xxl": "42.0",
+            "thee_kokos": "52.5",
+            "richtea": "50.4"
+          }
+        },
+        {
+          "nr": "29",
+          "label": "Trommel positie",
+          "unit": "MM",
+          "values": {
+            "koffiekoek": "126.0",
+            "xxl": "136.5",
+            "thee_kokos": "120.8",
+            "richtea": "123.9"
+          }
+        },
+        {
+          "nr": "30",
+          "label": "Invoer snelheid",
+          "unit": "%",
+          "values": {
+            "koffiekoek": "84.0",
+            "xxl": "78.8",
+            "thee_kokos": "89.2",
+            "richtea": "86.1"
+          }
+        },
+        {
+          "nr": "31",
+          "label": "Invoer hoogte",
+          "unit": "MM",
+          "values": {
+            "koffiekoek": "36.8",
+            "xxl": "47.2",
+            "thee_kokos": "57.8",
+            "richtea": "33.6"
+          }
+        },
+        {
+          "nr": "32",
+          "label": "Dwarslas temperatuur",
+          "unit": "°C",
+          "values": {
+            "koffiekoek": "147.0",
+            "xxl": "152.2",
+            "thee_kokos": "141.8",
+            "richtea": "147.0"
+          }
+        },
+        {
+          "nr": "33",
+          "label": "Dwarslas druk",
+          "unit": "BAR",
+          "values": {
+            "koffiekoek": "3,7",
+            "xxl": "4,2",
+            "thee_kokos": "3,4",
+            "richtea": "3,7"
+          }
+        },
+        {
+          "nr": "34",
+          "label": "Dwarslas tijd",
+          "unit": "MS",
+          "values": {
+            "koffiekoek": "262.5",
+            "xxl": "315.0",
+            "thee_kokos": "241.5",
+            "richtea": "252.0"
+          }
+        },
+        {
+          "nr": "35",
+          "label": "Langslas temperatuur",
+          "unit": "°C",
+          "values": {
+            "koffiekoek": "157.5",
+            "xxl": "162.8",
+            "thee_kokos": "152.2",
+            "richtea": "157.5"
+          }
+        },
+        {
+          "nr": "36",
+          "label": "Langslas druk",
+          "unit": "BAR",
+          "values": {
+            "koffiekoek": "3,2",
+            "xxl": "3,7",
+            "thee_kokos": "2,9",
+            "richtea": "3,2"
+          }
+        },
+        {
+          "nr": "37",
+          "label": "Langslas tijd",
+          "unit": "MS",
+          "values": {
+            "koffiekoek": "210.0",
+            "xxl": "252.0",
+            "thee_kokos": "199.5",
+            "richtea": "210.0"
+          }
+        },
+        {
+          "nr": "38",
+          "label": "Folie spanning",
+          "unit": "N",
+          "values": {
+            "koffiekoek": "12.6",
+            "xxl": "15.8",
+            "thee_kokos": "11.6",
+            "richtea": "12.6"
+          }
+        },
+        {
+          "nr": "39",
+          "label": "Folie centrering",
+          "unit": "MM",
+          "values": {
+            "koffiekoek": "0.0",
+            "xxl": "0.0",
+            "thee_kokos": "0.0",
+            "richtea": "0.0"
+          }
+        },
+        {
+          "nr": "40",
+          "label": "Productie snelheid",
+          "unit": "PPM",
+          "values": {
+            "koffiekoek": "189.0",
+            "xxl": "157.5",
+            "thee_kokos": "183.8",
+            "richtea": "194.2"
+          }
+        },
+        {
+          "nr": "41",
+          "label": "Stop tijd",
+          "unit": "S",
+          "values": {
+            "koffiekoek": "2.1",
+            "xxl": "3.2",
+            "thee_kokos": "2.1",
+            "richtea": "2.1"
+          }
+        },
+        {
+          "nr": "42",
+          "label": "Tussenafstand",
+          "unit": "MM",
+          "values": {
+            "koffiekoek": "5.2",
+            "xxl": "8.4",
+            "thee_kokos": "5.2",
+            "richtea": "5.2"
+          }
+        },
+        {
+          "nr": "43",
+          "label": "Snijmes positie",
+          "unit": "MM",
+          "values": {
+            "koffiekoek": "115.5",
+            "xxl": "126.0",
+            "thee_kokos": "115.5",
+            "richtea": "122.9"
+          }
+        },
+        {
+          "nr": "44",
+          "label": "Snijmes druk",
+          "unit": "BAR",
+          "values": {
+            "koffiekoek": "4,2",
+            "xxl": "4,7",
+            "thee_kokos": "4,0",
+            "richtea": "4,2"
+          }
+        },
+        {
+          "nr": "45",
+          "label": "Detectie sensor",
+          "unit": "POSITIE",
+          "values": {
+            "koffiekoek": "1.1",
+            "xxl": "1.1",
+            "thee_kokos": "1.1",
+            "richtea": "1.1"
+          }
+        },
+        {
+          "nr": "46",
+          "label": "Uitwerper",
+          "unit": "NR",
+          "values": {
+            "koffiekoek": "ON",
+            "xxl": "ON",
+            "thee_kokos": "ON",
+            "richtea": "ON"
+          }
+        },
+        {
+          "nr": "47",
+          "label": "Datumprinter",
+          "unit": "NR",
+          "values": {
+            "koffiekoek": "ON",
+            "xxl": "ON",
+            "thee_kokos": "ON",
+            "richtea": "ON"
+          }
+        },
+        {
+          "nr": "48",
+          "label": "Datumprinter positie",
+          "unit": "MM",
+          "values": {
+            "koffiekoek": "105.0",
+            "xxl": "115.5",
+            "thee_kokos": "99.8",
+            "richtea": "105.0"
+          }
+        },
+        {
+          "nr": "49",
+          "label": "Eindcontrole",
+          "unit": "NR",
+          "values": {
+            "koffiekoek": "ON",
+            "xxl": "ON",
+            "thee_kokos": "ON",
+            "richtea": "ON"
+          }
+        },
+        {
+          "nr": "50",
+          "label": "Stapelaar snelheid",
+          "unit": "%",
+          "values": {
+            "koffiekoek": "73.5",
+            "xxl": "68.2",
+            "thee_kokos": "78.8",
+            "richtea": "75.6"
+          }
+        },
+        {
+          "nr": "51",
+          "label": "Stapelaar aantal",
+          "unit": "NR",
+          "values": {
+            "koffiekoek": "12.6",
+            "xxl": "8.4",
+            "thee_kokos": "10.5",
+            "richtea": "14.7"
+          }
+        },
+        {
+          "nr": "52",
+          "label": "Verpakking type",
+          "unit": "NR",
+          "values": {
+            "koffiekoek": "A",
+            "xxl": "B",
+            "thee_kokos": "A",
+            "richtea": "A"
+          }
+        },
+        {
+          "nr": "53",
+          "label": "Foliedikte",
+          "unit": "MICRON",
+          "values": {
+            "koffiekoek": "31.5",
+            "xxl": "36.8",
+            "thee_kokos": "31.5",
+            "richtea": "31.5"
+          }
+        },
+        {
+          "nr": "54",
+          "label": "Folie breedte",
+          "unit": "MM",
+          "values": {
+            "koffiekoek": "315.0",
+            "xxl": "367.5",
+            "thee_kokos": "336.0",
+            "richtea": "325.5"
+          }
+        },
+        {
+          "nr": "55",
+          "label": "Koeling",
+          "unit": "°C",
+          "values": {
+            "koffiekoek": "18.9",
+            "xxl": "18.9",
+            "thee_kokos": "18.9",
+            "richtea": "18.9"
+          }
+        },
+        {
+          "nr": "56",
+          "label": "Luchtdruk",
+          "unit": "BAR",
+          "values": {
+            "koffiekoek": "6,3",
+            "xxl": "6,3",
+            "thee_kokos": "6,3",
+            "richtea": "6,3"
+          }
+        },
+        {
+          "nr": "57",
+          "label": "Productie modus",
+          "unit": "NR",
+          "values": {
+            "koffiekoek": "AUTO",
+            "xxl": "AUTO",
+            "thee_kokos": "AUTO",
+            "richtea": "AUTO"
+          }
+        },
+        {
+          "nr": "58",
+          "label": "Reject systeem",
+          "unit": "NR",
+          "values": {
+            "koffiekoek": "ON",
+            "xxl": "ON",
+            "thee_kokos": "ON",
+            "richtea": "ON"
+          }
+        }
+      ]
+    }
+  ]
+}
