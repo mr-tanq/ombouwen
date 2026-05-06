@@ -1,645 +1,7764 @@
 {
-  "machine": "Cavanna 10",
-  "products": [
-    {
-      "key": "koffiekoek",
-      "label": "Koffiekoek",
-      "size": "74 x 34",
-      "paklengte": "Paklengte 220"
-    },
-    {
-      "key": "xxl",
-      "label": "XXL",
-      "size": "",
-      "paklengte": ""
-    },
-    {
-      "key": "thee_kokos",
-      "label": "Thee / Kokos",
-      "size": "70 x 53,5",
-      "paklengte": "Paklengte 220"
-    },
-    {
-      "key": "richtea",
-      "label": "RichTea",
-      "size": "64,5",
-      "paklengte": "Paklengte 235"
+ "rows": 61,
+ "cols": 18,
+ "col_widths_px": {
+  "A": 54,
+  "B": 374,
+  "C": 113,
+  "D": 50,
+  "E": 67,
+  "F": 123,
+  "G": 123,
+  "I": 68,
+  "J": 50,
+  "K": 67,
+  "L": 120,
+  "M": 119,
+  "N": 46,
+  "O": 67,
+  "P": 97,
+  "Q": 129,
+  "R": 50,
+  "S": 69
+ },
+ "row_heights_px": {
+  "1": 40,
+  "2": 29,
+  "3": 29,
+  "4": 32,
+  "5": 32,
+  "6": 32,
+  "7": 32,
+  "8": 32,
+  "9": 32,
+  "10": 32,
+  "11": 32,
+  "12": 32,
+  "13": 29,
+  "14": 32,
+  "15": 32,
+  "16": 32,
+  "17": 32,
+  "18": 32,
+  "19": 32,
+  "20": 32,
+  "21": 32,
+  "22": 32,
+  "23": 32,
+  "24": 32,
+  "25": 29,
+  "26": 32,
+  "27": 32,
+  "28": 32,
+  "29": 32,
+  "30": 32,
+  "31": 32,
+  "32": 32,
+  "33": 32,
+  "34": 32,
+  "35": 32,
+  "36": 32,
+  "37": 32,
+  "38": 32,
+  "39": 32,
+  "40": 32,
+  "41": 32,
+  "42": 32,
+  "43": 32,
+  "44": 32,
+  "45": 40,
+  "46": 32,
+  "47": 32,
+  "48": 32,
+  "49": 32,
+  "50": 32,
+  "51": 32,
+  "52": 32,
+  "53": 32,
+  "54": 32,
+  "55": 32,
+  "56": 32,
+  "57": 33,
+  "58": 32,
+  "59": 29,
+  "60": 32,
+  "61": 29
+ },
+ "merges": [
+  {
+   "r": 14,
+   "c": 1,
+   "rowspan": 1,
+   "colspan": 17
+  },
+  {
+   "r": 17,
+   "c": 12,
+   "rowspan": 1,
+   "colspan": 2
+  },
+  {
+   "r": 2,
+   "c": 6,
+   "rowspan": 1,
+   "colspan": 2
+  },
+  {
+   "r": 2,
+   "c": 12,
+   "rowspan": 1,
+   "colspan": 2
+  },
+  {
+   "r": 3,
+   "c": 6,
+   "rowspan": 1,
+   "colspan": 2
+  },
+  {
+   "r": 18,
+   "c": 1,
+   "rowspan": 1,
+   "colspan": 17
+  },
+  {
+   "r": 27,
+   "c": 1,
+   "rowspan": 1,
+   "colspan": 17
+  },
+  {
+   "r": 3,
+   "c": 12,
+   "rowspan": 1,
+   "colspan": 2
+  },
+  {
+   "r": 1,
+   "c": 1,
+   "rowspan": 1,
+   "colspan": 3
+  },
+  {
+   "r": 16,
+   "c": 6,
+   "rowspan": 1,
+   "colspan": 2
+  },
+  {
+   "r": 16,
+   "c": 12,
+   "rowspan": 1,
+   "colspan": 2
+  },
+  {
+   "r": 3,
+   "c": 16,
+   "rowspan": 1,
+   "colspan": 2
+  },
+  {
+   "r": 16,
+   "c": 16,
+   "rowspan": 1,
+   "colspan": 2
+  },
+  {
+   "r": 4,
+   "c": 1,
+   "rowspan": 1,
+   "colspan": 17
+  },
+  {
+   "r": 2,
+   "c": 16,
+   "rowspan": 1,
+   "colspan": 2
+  }
+ ],
+ "grid": [
+  [
+   {
+    "v": "Cavanna 10",
+    "bg": "E7E6E6",
+    "b": true,
+    "sz": 28.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "left": "medium"
     }
+   },
+   null,
+   null,
+   {
+    "b": true,
+    "sz": 28.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "b": true,
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {},
+   {},
+   {
+    "b": true,
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {},
+   {},
+   {},
+   {
+    "b": true,
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {},
+   {},
+   {}
   ],
-  "sections": [
-    {
-      "name": "BANEN",
-      "rows": [
-        {
-          "nr": "1",
-          "label": "Fotocel",
-          "unit": "POSITIE",
-          "values": {
-            "koffiekoek": "12.6",
-            "xxl": "14.7",
-            "thee_kokos": "11.6",
-            "richtea": "13.7"
-          }
-        },
-        {
-          "nr": "2",
-          "label": "Luchtverdeler / Kantelaar",
-          "unit": "MAL",
-          "values": {
-            "koffiekoek": "A2",
-            "xxl": "A3",
-            "thee_kokos": "B1",
-            "richtea": "B2"
-          }
-        },
-        {
-          "nr": "3",
-          "label": "Mes Hoogte",
-          "unit": "MM",
-          "values": {
-            "koffiekoek": "5,8",
-            "xxl": "6,3",
-            "thee_kokos": "5,2",
-            "richtea": "5,8"
-          }
-        },
-        {
-          "nr": "4",
-          "label": "Heater boven",
-          "unit": "°C",
-          "values": {
-            "koffiekoek": "189.0",
-            "xxl": "194.2",
-            "thee_kokos": "183.8",
-            "richtea": "189.0"
-          }
-        },
-        {
-          "nr": "5",
-          "label": "Heater beneden",
-          "unit": "°C",
-          "values": {
-            "koffiekoek": "178.5",
-            "xxl": "183.8",
-            "thee_kokos": "173.2",
-            "richtea": "178.5"
-          }
-        },
-        {
-          "nr": "6",
-          "label": "Heater stand",
-          "unit": "NR",
-          "values": {
-            "koffiekoek": "3.2",
-            "xxl": "4.2",
-            "thee_kokos": "3.2",
-            "richtea": "3.2"
-          }
-        },
-        {
-          "nr": "7",
-          "label": "Vacuumtafel",
-          "unit": "NR",
-          "values": {
-            "koffiekoek": "2.1",
-            "xxl": "2.1",
-            "thee_kokos": "2.1",
-            "richtea": "2.1"
-          }
-        },
-        {
-          "nr": "8",
-          "label": "Eindloop hoogte",
-          "unit": "MM",
-          "values": {
-            "koffiekoek": "47.2",
-            "xxl": "52.5",
-            "thee_kokos": "44.1",
-            "richtea": "46.2"
-          }
-        },
-        {
-          "nr": "9",
-          "label": "Centerbaan",
-          "unit": "POSITIE",
-          "values": {
-            "koffiekoek": "C",
-            "xxl": "C",
-            "thee_kokos": "B",
-            "richtea": "C"
-          }
-        },
-        {
-          "nr": "10",
-          "label": "Toerental",
-          "unit": "RPM",
-          "values": {
-            "koffiekoek": "126.0",
-            "xxl": "120.8",
-            "thee_kokos": "131.2",
-            "richtea": "126.0"
-          }
-        },
-        {
-          "nr": "11",
-          "label": "Gewicht (instelling)",
-          "unit": "GR",
-          "values": {
-            "koffiekoek": "89.2",
-            "xxl": "126.0",
-            "thee_kokos": "78.8",
-            "richtea": "68.2"
-          }
-        }
-      ]
-    },
-    {
-      "name": "INLEGGER",
-      "rows": [
-        {
-          "nr": "15",
-          "label": "Inlegger snelheid",
-          "unit": "%",
-          "values": {
-            "koffiekoek": "78.8",
-            "xxl": "73.5",
-            "thee_kokos": "84.0",
-            "richtea": "81.9"
-          }
-        },
-        {
-          "nr": "16",
-          "label": "Inlegger stand",
-          "unit": "POSITIE",
-          "values": {
-            "koffiekoek": "2.1",
-            "xxl": "3.2",
-            "thee_kokos": "2.1",
-            "richtea": "2.1"
-          }
-        }
-      ]
-    },
-    {
-      "name": "SPIJLENBAAN",
-      "rows": [
-        {
-          "nr": "18",
-          "label": "Snelheid",
-          "unit": "%",
-          "values": {
-            "koffiekoek": "68.2",
-            "xxl": "63.0",
-            "thee_kokos": "73.5",
-            "richtea": "71.4"
-          }
-        },
-        {
-          "nr": "19",
-          "label": "Spijlen aantal",
-          "unit": "NR",
-          "values": {
-            "koffiekoek": "8.4",
-            "xxl": "6.3",
-            "thee_kokos": "10.5",
-            "richtea": "9.5"
-          }
-        },
-        {
-          "nr": "20",
-          "label": "Lengte",
-          "unit": "MM",
-          "values": {
-            "koffiekoek": "231.0",
-            "xxl": "252.0",
-            "thee_kokos": "231.0",
-            "richtea": "246.8"
-          }
-        },
-        {
-          "nr": "21",
-          "label": "Hoogte",
-          "unit": "MM",
-          "values": {
-            "koffiekoek": "35.7",
-            "xxl": "47.2",
-            "thee_kokos": "56,2",
-            "richtea": "31.5"
-          }
-        },
-        {
-          "nr": "22",
-          "label": "Hoek",
-          "unit": "°",
-          "values": {
-            "koffiekoek": "15.8",
-            "xxl": "21.0",
-            "thee_kokos": "12.6",
-            "richtea": "15.8"
-          }
-        },
-        {
-          "nr": "23",
-          "label": "Speling",
-          "unit": "MM",
-          "values": {
-            "koffiekoek": "1,6",
-            "xxl": "2,1",
-            "thee_kokos": "1,6",
-            "richtea": "1,3"
-          }
-        }
-      ]
-    },
-    {
-      "name": "INPAKMACHINE CAVANNA",
-      "rows": [
-        {
-          "nr": "24",
-          "label": "Banden snelheid 1",
-          "unit": "%",
-          "values": {
-            "koffiekoek": "57.8",
-            "xxl": "52.5",
-            "thee_kokos": "63.0",
-            "richtea": "60.9"
-          }
-        },
-        {
-          "nr": "25",
-          "label": "Banden snelheid 2",
-          "unit": "%",
-          "values": {
-            "koffiekoek": "63.0",
-            "xxl": "57.8",
-            "thee_kokos": "68.2",
-            "richtea": "65.1"
-          }
-        },
-        {
-          "nr": "26",
-          "label": "Banden snelheid 3",
-          "unit": "%",
-          "values": {
-            "koffiekoek": "68.2",
-            "xxl": "63.0",
-            "thee_kokos": "73.5",
-            "richtea": "71.4"
-          }
-        },
-        {
-          "nr": "27",
-          "label": "Banden snelheid 4",
-          "unit": "%",
-          "values": {
-            "koffiekoek": "73.5",
-            "xxl": "68.2",
-            "thee_kokos": "78.8",
-            "richtea": "75.6"
-          }
-        },
-        {
-          "nr": "28",
-          "label": "Trommel snelheid",
-          "unit": "RPM",
-          "values": {
-            "koffiekoek": "47.2",
-            "xxl": "42.0",
-            "thee_kokos": "52.5",
-            "richtea": "50.4"
-          }
-        },
-        {
-          "nr": "29",
-          "label": "Trommel positie",
-          "unit": "MM",
-          "values": {
-            "koffiekoek": "126.0",
-            "xxl": "136.5",
-            "thee_kokos": "120.8",
-            "richtea": "123.9"
-          }
-        },
-        {
-          "nr": "30",
-          "label": "Invoer snelheid",
-          "unit": "%",
-          "values": {
-            "koffiekoek": "84.0",
-            "xxl": "78.8",
-            "thee_kokos": "89.2",
-            "richtea": "86.1"
-          }
-        },
-        {
-          "nr": "31",
-          "label": "Invoer hoogte",
-          "unit": "MM",
-          "values": {
-            "koffiekoek": "36.8",
-            "xxl": "47.2",
-            "thee_kokos": "57.8",
-            "richtea": "33.6"
-          }
-        },
-        {
-          "nr": "32",
-          "label": "Dwarslas temperatuur",
-          "unit": "°C",
-          "values": {
-            "koffiekoek": "147.0",
-            "xxl": "152.2",
-            "thee_kokos": "141.8",
-            "richtea": "147.0"
-          }
-        },
-        {
-          "nr": "33",
-          "label": "Dwarslas druk",
-          "unit": "BAR",
-          "values": {
-            "koffiekoek": "3,7",
-            "xxl": "4,2",
-            "thee_kokos": "3,4",
-            "richtea": "3,7"
-          }
-        },
-        {
-          "nr": "34",
-          "label": "Dwarslas tijd",
-          "unit": "MS",
-          "values": {
-            "koffiekoek": "262.5",
-            "xxl": "315.0",
-            "thee_kokos": "241.5",
-            "richtea": "252.0"
-          }
-        },
-        {
-          "nr": "35",
-          "label": "Langslas temperatuur",
-          "unit": "°C",
-          "values": {
-            "koffiekoek": "157.5",
-            "xxl": "162.8",
-            "thee_kokos": "152.2",
-            "richtea": "157.5"
-          }
-        },
-        {
-          "nr": "36",
-          "label": "Langslas druk",
-          "unit": "BAR",
-          "values": {
-            "koffiekoek": "3,2",
-            "xxl": "3,7",
-            "thee_kokos": "2,9",
-            "richtea": "3,2"
-          }
-        },
-        {
-          "nr": "37",
-          "label": "Langslas tijd",
-          "unit": "MS",
-          "values": {
-            "koffiekoek": "210.0",
-            "xxl": "252.0",
-            "thee_kokos": "199.5",
-            "richtea": "210.0"
-          }
-        },
-        {
-          "nr": "38",
-          "label": "Folie spanning",
-          "unit": "N",
-          "values": {
-            "koffiekoek": "12.6",
-            "xxl": "15.8",
-            "thee_kokos": "11.6",
-            "richtea": "12.6"
-          }
-        },
-        {
-          "nr": "39",
-          "label": "Folie centrering",
-          "unit": "MM",
-          "values": {
-            "koffiekoek": "0.0",
-            "xxl": "0.0",
-            "thee_kokos": "0.0",
-            "richtea": "0.0"
-          }
-        },
-        {
-          "nr": "40",
-          "label": "Productie snelheid",
-          "unit": "PPM",
-          "values": {
-            "koffiekoek": "189.0",
-            "xxl": "157.5",
-            "thee_kokos": "183.8",
-            "richtea": "194.2"
-          }
-        },
-        {
-          "nr": "41",
-          "label": "Stop tijd",
-          "unit": "S",
-          "values": {
-            "koffiekoek": "2.1",
-            "xxl": "3.2",
-            "thee_kokos": "2.1",
-            "richtea": "2.1"
-          }
-        },
-        {
-          "nr": "42",
-          "label": "Tussenafstand",
-          "unit": "MM",
-          "values": {
-            "koffiekoek": "5.2",
-            "xxl": "8.4",
-            "thee_kokos": "5.2",
-            "richtea": "5.2"
-          }
-        },
-        {
-          "nr": "43",
-          "label": "Snijmes positie",
-          "unit": "MM",
-          "values": {
-            "koffiekoek": "115.5",
-            "xxl": "126.0",
-            "thee_kokos": "115.5",
-            "richtea": "122.9"
-          }
-        },
-        {
-          "nr": "44",
-          "label": "Snijmes druk",
-          "unit": "BAR",
-          "values": {
-            "koffiekoek": "4,2",
-            "xxl": "4,7",
-            "thee_kokos": "4,0",
-            "richtea": "4,2"
-          }
-        },
-        {
-          "nr": "45",
-          "label": "Detectie sensor",
-          "unit": "POSITIE",
-          "values": {
-            "koffiekoek": "1.1",
-            "xxl": "1.1",
-            "thee_kokos": "1.1",
-            "richtea": "1.1"
-          }
-        },
-        {
-          "nr": "46",
-          "label": "Uitwerper",
-          "unit": "NR",
-          "values": {
-            "koffiekoek": "ON",
-            "xxl": "ON",
-            "thee_kokos": "ON",
-            "richtea": "ON"
-          }
-        },
-        {
-          "nr": "47",
-          "label": "Datumprinter",
-          "unit": "NR",
-          "values": {
-            "koffiekoek": "ON",
-            "xxl": "ON",
-            "thee_kokos": "ON",
-            "richtea": "ON"
-          }
-        },
-        {
-          "nr": "48",
-          "label": "Datumprinter positie",
-          "unit": "MM",
-          "values": {
-            "koffiekoek": "105.0",
-            "xxl": "115.5",
-            "thee_kokos": "99.8",
-            "richtea": "105.0"
-          }
-        },
-        {
-          "nr": "49",
-          "label": "Eindcontrole",
-          "unit": "NR",
-          "values": {
-            "koffiekoek": "ON",
-            "xxl": "ON",
-            "thee_kokos": "ON",
-            "richtea": "ON"
-          }
-        },
-        {
-          "nr": "50",
-          "label": "Stapelaar snelheid",
-          "unit": "%",
-          "values": {
-            "koffiekoek": "73.5",
-            "xxl": "68.2",
-            "thee_kokos": "78.8",
-            "richtea": "75.6"
-          }
-        },
-        {
-          "nr": "51",
-          "label": "Stapelaar aantal",
-          "unit": "NR",
-          "values": {
-            "koffiekoek": "12.6",
-            "xxl": "8.4",
-            "thee_kokos": "10.5",
-            "richtea": "14.7"
-          }
-        },
-        {
-          "nr": "52",
-          "label": "Verpakking type",
-          "unit": "NR",
-          "values": {
-            "koffiekoek": "A",
-            "xxl": "B",
-            "thee_kokos": "A",
-            "richtea": "A"
-          }
-        },
-        {
-          "nr": "53",
-          "label": "Foliedikte",
-          "unit": "MICRON",
-          "values": {
-            "koffiekoek": "31.5",
-            "xxl": "36.8",
-            "thee_kokos": "31.5",
-            "richtea": "31.5"
-          }
-        },
-        {
-          "nr": "54",
-          "label": "Folie breedte",
-          "unit": "MM",
-          "values": {
-            "koffiekoek": "315.0",
-            "xxl": "367.5",
-            "thee_kokos": "336.0",
-            "richtea": "325.5"
-          }
-        },
-        {
-          "nr": "55",
-          "label": "Koeling",
-          "unit": "°C",
-          "values": {
-            "koffiekoek": "18.9",
-            "xxl": "18.9",
-            "thee_kokos": "18.9",
-            "richtea": "18.9"
-          }
-        },
-        {
-          "nr": "56",
-          "label": "Luchtdruk",
-          "unit": "BAR",
-          "values": {
-            "koffiekoek": "6,3",
-            "xxl": "6,3",
-            "thee_kokos": "6,3",
-            "richtea": "6,3"
-          }
-        },
-        {
-          "nr": "57",
-          "label": "Productie modus",
-          "unit": "NR",
-          "values": {
-            "koffiekoek": "AUTO",
-            "xxl": "AUTO",
-            "thee_kokos": "AUTO",
-            "richtea": "AUTO"
-          }
-        },
-        {
-          "nr": "58",
-          "label": "Reject systeem",
-          "unit": "NR",
-          "values": {
-            "koffiekoek": "ON",
-            "xxl": "ON",
-            "thee_kokos": "ON",
-            "richtea": "ON"
-          }
-        }
-      ]
+  [
+   {
+    "v": "versie:",
+    "bg": "E7E6E6",
+    "b": true,
+    "sz": 12.0,
+    "va": "center",
+    "bd": {
+     "bottom": "medium",
+     "left": "medium"
     }
+   },
+   {
+    "v": "01-04-26",
+    "bg": "E7E6E6",
+    "b": true,
+    "sz": 12.0,
+    "ha": "left",
+    "va": "top",
+    "bd": {
+     "bottom": "medium"
+    }
+   },
+   {
+    "bg": "E7E6E6",
+    "b": true,
+    "sz": 20.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "right": "medium",
+     "bottom": "medium"
+    }
+   },
+   {
+    "b": true,
+    "sz": 20.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {},
+   {
+    "v": "Koffiekoek 74 x 34",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   null,
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {},
+   {},
+   {},
+   {
+    "v": "Thee / Kokos 70 x 53,5",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "left": "medium"
+    }
+   },
+   null,
+   {},
+   {},
+   {
+    "v": "RichTea - 64,5",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   null,
+   {}
+  ],
+  [
+   {},
+   {},
+   {},
+   {},
+   {
+    "v": "nieuw",
+    "b": true,
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "Paklengte 220",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   null,
+   {
+    "v": "XXL",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "nieuw",
+    "b": true,
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {},
+   {
+    "v": "nieuw",
+    "b": true,
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "Paklengte 220",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   null,
+   {},
+   {
+    "v": "nieuw",
+    "b": true,
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "Paklengte 235",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   null,
+   {}
+  ],
+  [
+   {
+    "v": "BANEN",
+    "bg": "E7E6E6",
+    "b": true,
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "left": "medium"
+    }
+   },
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   {}
+  ],
+  [
+   {
+    "v": "1",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Fotocel baanbreedte koek lijn 10",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "NR",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "bg": "FFC000",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "bg": "FFC000",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "0,59,5",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "141,3",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {}
+  ],
+  [
+   {
+    "v": 3,
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Luchtverdeler",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "POSITIE",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "3B",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "3B",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "3A",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "3A",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {}
+  ],
+  [
+   {
+    "v": "4",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Stekker luchtverdeler",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "POSITIE",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "4B",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "4B",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "4A",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "4A",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {}
+  ],
+  [
+   {
+    "v": "5",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Luchtslang",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "POSITIE",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "5B",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "5B",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "5A",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "5A",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {}
+  ],
+  [
+   {
+    "v": "6",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Druk luchtverdeler",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "BAR",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "1,5",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "1,5",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "1,5",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "1,5",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {}
+  ],
+  [
+   {
+    "v": "8",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Geleiders afstelling",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Wisselen",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {},
+   {
+    "v": "Grijs",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Bruin",
+    "bg": "ED7D31",
+    "fg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Bruin",
+    "bg": "ED7D31",
+    "fg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {},
+   {},
+   {
+    "v": "Grijs",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Wit",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "v": "Grijs",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Blauw",
+    "bg": "00B0F0",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "v": "9",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Glijgoot groot",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Wisselen",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {},
+   {
+    "v": "Grijs",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Bruin",
+    "bg": "ED7D31",
+    "fg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Bruin",
+    "bg": "ED7D31",
+    "fg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {},
+   {},
+   {
+    "v": "Grijs",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Wit",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "v": "Grijs",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Blauw",
+    "bg": "00B0F0",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "v": "10",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Glijgoot klein",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Wisselen",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {},
+   {
+    "v": "Grijs",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Bruin",
+    "bg": "ED7D31",
+    "fg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Bruin",
+    "bg": "ED7D31",
+    "fg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {},
+   {},
+   {
+    "v": "Grijs",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Wit",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "v": "Grijs",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Blauw",
+    "bg": "00B0F0",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "v": "11",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Recept Banen",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "HMI",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "v": "4",
+    "b": true,
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {},
+   {},
+   {
+    "v": "1 Thee",
+    "b": true,
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "5 Kokos",
+    "b": true,
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "b": true,
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "b": true,
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "3",
+    "b": true,
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {}
+  ],
+  [
+   {
+    "v": "INLEGGER",
+    "bg": "E7E6E6",
+    "b": true,
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "left": "medium"
+    }
+   },
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   {}
+  ],
+  [
+   {
+    "v": "15",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Trilgoten voor inlegger",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium"
+    }
+   },
+   {
+    "v": "Wisselen",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {},
+   {
+    "v": "Grijs",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Bruin",
+    "bg": "ED7D31",
+    "fg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Bruin",
+    "bg": "ED7D31",
+    "fg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "12x",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {},
+   {},
+   {
+    "v": "Grijs",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Wit",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "10x",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {},
+   {
+    "v": "Grijs",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Wit",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "10x",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   }
+  ],
+  [
+   {
+    "v": "16",
+    "bg": "FFFF00",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Inlegger bakken LET OP Verstelbare bakjes",
+    "bg": "FFFF00",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium"
+    }
+   },
+   {
+    "v": "Niet wisselen",
+    "bg": "FFFF00",
+    "sz": 14.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "bg": "FFFF00",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "bg": "FFFF00",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "Geheel ingeschoven",
+    "bg": "FFFF00",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   null,
+   {
+    "v": "Geheel",
+    "bg": "FFFF00",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "12x",
+    "bg": "FFFF00",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "bg": "FFFF00",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "bg": "FFFF00",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "Geheel ingeschoven",
+    "bg": "FFFF00",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   null,
+   {
+    "v": "10x",
+    "bg": "FFFF00",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "bg": "FFFF00",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "Tot merkstreep uitschuiven",
+    "bg": "FFFF00",
+    "sz": 14.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   null,
+   {
+    "v": "9x",
+    "bg": "FFFF00",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   }
+  ],
+  [
+   {
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "left": "medium"
+    }
+   },
+   {
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center"
+   },
+   {
+    "bg": "FFFFFF",
+    "sz": 14.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "uitgeschoven",
+    "bg": "FFFF00",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "Geleideplaten monteren",
+    "bg": "FFFF00",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   null,
+   {
+    "v": "10X",
+    "bg": "FFFF00",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "bg": "FFFF00",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "bg": "FFFFFF",
+    "sz": 14.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "bg": "FFFFFF",
+    "sz": 14.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   }
+  ],
+  [
+   {
+    "v": "SPIJLENBAAN",
+    "bg": "E7E6E6",
+    "b": true,
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "left": "medium"
+    }
+   },
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   {}
+  ],
+  [
+   {
+    "v": "21 A",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Breedte verstelling",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "MAL",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "Wit",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Wit",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "Zwart",
+    "bg": "000000",
+    "fg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "Groen",
+    "bg": "92D050",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "v": "21 B",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Breedte verstelling",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "MAL",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "Wit",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Wit",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "Zwart",
+    "bg": "000000",
+    "fg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "Groen",
+    "bg": "92D050",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "v": "21 F",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Breedte verstelling",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "MAL",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "Blauw",
+    "bg": "00B0F0",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Blauw",
+    "bg": "00B0F0",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "Wit",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "Zwart",
+    "bg": "000000",
+    "fg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "v": "18",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Ketting pennen",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Steek",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "v": "1ste gat",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "1ste gat",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {},
+   {},
+   {},
+   {
+    "v": "1ste gat",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {},
+   {
+    "v": "4de gat",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {}
+  ],
+  [
+   {
+    "v": "19",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Product taster (Bij gebruik 3d camera \"A\")",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "A / B",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "v": "B",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "B",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {},
+   {},
+   {},
+   {
+    "v": "A",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {},
+   {
+    "v": "A",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {}
+  ],
+  [
+   {
+    "v": "20",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Bovengeleiding",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "A / B",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "v": "A",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "A",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {},
+   {},
+   {},
+   {
+    "v": "B",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {},
+   {
+    "v": "B",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {}
+  ],
+  [
+   {
+    "v": "20 A",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Boven geleiding (achter de inlegger)",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "A / B",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "v": "A",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "A",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {},
+   {},
+   {},
+   {
+    "v": "B",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {},
+   {
+    "v": "B",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {}
+  ],
+  [
+   {
+    "v": "23",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Geleiding naar BeckHoff",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Monteren",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "v": "NEE",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "NEE",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {},
+   {},
+   {},
+   {
+    "v": "JA",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "b": true,
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {},
+   {
+    "v": "JA",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {}
+  ],
+  [
+   {
+    "v": "INPAKMACHINE CAVANNA",
+    "bg": "E7E6E6",
+    "b": true,
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "left": "medium"
+    }
+   },
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   {}
+  ],
+  [
+   {
+    "v": "24",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Dekplaten Beckhoff",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Wisselen",
+    "bg": "FF0000",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "bg": "FF0000",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "Grijs",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Wit",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Wit",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "Grijs",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Wit",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "Grijs",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Blauw",
+    "bg": "00B0F0",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "v": "24 A",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Breedte geleidingen boven beckhoff",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "MAL",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "v": "Wit",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "v": "Wit",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {},
+   {
+    "v": "Zwart",
+    "bg": "000000",
+    "fg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {},
+   {
+    "v": "17,5",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {}
+  ],
+  [
+   {
+    "v": "24B",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Breedte geleidingen boven beckhoff",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "MAL",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "v": "Wit",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "v": "Wit",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {},
+   {
+    "v": "Zwart",
+    "bg": "000000",
+    "fg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {},
+   {
+    "v": "15",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {}
+  ],
+  [
+   {
+    "v": "24C",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Breedte geleidingen boven beckhoff",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "MAL",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "v": "Wit",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "v": "Wit",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {},
+   {
+    "v": "Zwart",
+    "bg": "000000",
+    "fg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {}
+  ],
+  [
+   {
+    "v": "25A",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Breedte geleidingen invoer ketting",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "MAL",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "v": "Wit",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "v": "Wit",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {},
+   {
+    "v": "Zwart",
+    "bg": "000000",
+    "fg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {},
+   {
+    "v": "15",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {}
+  ],
+  [
+   {
+    "v": "25B",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Breedte geleidingen invoer ketting",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "MAL",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "v": "Wit",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "v": "Wit",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {},
+   {
+    "v": "Zwart",
+    "bg": "000000",
+    "fg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {},
+   {
+    "v": "15",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {}
+  ],
+  [
+   {
+    "v": "25C",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Breedte geleidingen invoer ketting",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "MAL",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "v": "Wit",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "v": "Wit",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {},
+   {
+    "v": "Zwart",
+    "bg": "000000",
+    "fg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {},
+   {
+    "v": "15",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {}
+  ],
+  [
+   {
+    "v": "25D",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Breedte geleidingen invoer ketting",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "MAL",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "v": "Wit",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "v": "Wit",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {},
+   {
+    "v": "Zwart",
+    "bg": "000000",
+    "fg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {},
+   {
+    "v": "13",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {}
+  ],
+  [
+   {
+    "v": "26",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Hoogtebewaking",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "NR",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "935,2",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "v": "935,2",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "113",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "120",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {}
+  ],
+  [
+   {
+    "v": "29",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Folierolhouder links",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "NR",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "24",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "v": "24",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "28",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "29",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {}
+  ],
+  [
+   {
+    "v": "29",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Folierolhouder rechts",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "NR",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "25",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "v": "25",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "28",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "29",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {}
+  ],
+  [
+   {
+    "v": "30",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Hoek folierollen - 7",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "NR",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "54",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "v": "54",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "65",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "65",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {}
+  ],
+  [
+   {
+    "v": "31",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Positie folierol - 8",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "NR",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "460",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "v": "460",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "460",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "460",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {}
+  ],
+  [
+   {
+    "v": "32",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Positie folierol - 10",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "NR",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "380",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "v": "380",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "360",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "360",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {}
+  ],
+  [
+   {
+    "v": "33",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Foliegeleider",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Wisselen",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "Grijs",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Bruin",
+    "bg": "ED7D31",
+    "fg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Bruin",
+    "bg": "ED7D31",
+    "fg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "Grijs",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Wit",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "Grijs",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Blauw",
+    "bg": "00B0F0",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "v": "34",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Breedtepositie foliecel spotdetectie",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "MM",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "67",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "fg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "67",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "47",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "74",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {}
+  ],
+  [
+   {
+    "v": "38",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Hoogte sensor invoerketting",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "MM",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "17",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "fg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "17",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "20",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "15",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {}
+  ],
+  [
+   {
+    "v": "39",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Gelijde plaat",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Wisselen",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "Grijs",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Bruin",
+    "bg": "ED7D31",
+    "fg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Bruin",
+    "bg": "ED7D31",
+    "fg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "Grijs",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Wit",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "Grijs",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Blauw",
+    "bg": "00B0F0",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "v": "40",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Vulringen zijgeleiding groot",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Wisselen",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "Grijs",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Bruin",
+    "bg": "ED7D31",
+    "fg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Bruin",
+    "bg": "ED7D31",
+    "fg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "Grijs",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Wit",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "Grijs",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Blauw",
+    "bg": "00B0F0",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "v": "41",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Vulringen zijgeleiding klein",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Wisselen",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "Grijs",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Bruin",
+    "bg": "ED7D31",
+    "fg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Bruin",
+    "bg": "ED7D31",
+    "fg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "Grijs",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Wit",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "Grijs",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Blauw",
+    "bg": "00B0F0",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "v": "42",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Breedte instelling geleiders",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Monteren",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "NEE",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "fg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "NEE",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "NEE",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "NEE",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {}
+  ],
+  [
+   {
+    "v": "43",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Zijkettingen",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Wisselen",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "Grijs",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Bruin",
+    "bg": "ED7D31",
+    "fg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Bruin",
+    "bg": "ED7D31",
+    "fg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "Grijs",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Wit",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "Grijs",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Blauw",
+    "bg": "00B0F0",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "v": "44",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Hoogte beitel",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "MM",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "56",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "fg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "56",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "57",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "59",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {}
+  ],
+  [
+   {
+    "v": "45",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Steunwagen dwarsseal",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Wisselen",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "Grijs",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Bruin",
+    "bg": "ED7D31",
+    "fg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Bruin",
+    "bg": "ED7D31",
+    "fg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "Grijs",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Wit",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "Grijs",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Blauw",
+    "bg": "00B0F0",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {}
+  ],
+  [
+   {
+    "v": "46",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Positie intikkers BZ",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "MM",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "80",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "v": "80",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "80",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "80",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {}
+  ],
+  [
+   {
+    "v": "47",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Positie intikkers NBZ",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "MM",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "72",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "v": "72",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "72",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "72",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {}
+  ],
+  [
+   {
+    "v": "48",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Hoogte borstel (tot onderkant as)",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "MM",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "60",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "v": "60",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "81",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "Groen",
+    "bg": "92D050",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {}
+  ],
+  [
+   {
+    "v": "51",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Hoogte beck off systeem",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "NR",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "012,8",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "fg": "FF0000",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "012,8",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "055,0",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "055,0",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {}
+  ],
+  [
+   {
+    "v": "52",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Afstelling trekrollen",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "NR",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "016,0",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "fg": "FF0000",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "016,0",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "8,8",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "009,7",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {}
+  ],
+  [
+   {
+    "v": "53",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Zijketting afstelling inloop",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "NR",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "029,9/ Wit",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "029,9/ Wit",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "021,0/ Zwart",
+    "bg": "000000",
+    "fg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "Groen",
+    "bg": "92D050",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {}
+  ],
+  [
+   {
+    "v": "54",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Zijketting afstelling uit loop",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "NR",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "008,5 Wit",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "v": "008,5 Wit",
+    "bg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "008,5/ Zwart",
+    "bg": "000000",
+    "fg": "FFFFFF",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "Groen",
+    "bg": "92D050",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {}
+  ],
+  [
+   {
+    "v": "55",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Lucht druk",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "BAR",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "3,5",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "v": "3,5",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "3,5",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "3,5",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {}
+  ],
+  [
+   {
+    "v": "56",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Recept",
+    "sz": 16.0,
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "HMI",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "4",
+    "b": true,
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "v": "14",
+    "b": true,
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "1 Thee 16,5m",
+    "b": true,
+    "sz": 16.0,
+    "ha": "center",
+    "va": "top",
+    "wrap": true,
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "5 kokos",
+    "b": true,
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "b": true,
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {
+    "b": true,
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "3",
+    "b": true,
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center"
+   },
+   {}
+  ],
+  [
+   {
+    "v": "58",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "Recept checkweger",
+    "sz": 16.0,
+    "ha": "left",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "v": "NR",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "34",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {
+    "v": "40",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "35    (98 food aid)",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {},
+   {
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "thin",
+     "right": "thin",
+     "bottom": "thin",
+     "left": "thin"
+    }
+   },
+   {
+    "v": "36",
+    "sz": 16.0,
+    "ha": "center",
+    "va": "center",
+    "bd": {
+     "top": "medium",
+     "right": "medium",
+     "bottom": "medium",
+     "left": "medium"
+    }
+   },
+   {},
+   {}
   ]
+ ],
+ "machine": "Cavanna 10"
 }
