@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cavanna instellijst</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: Calibri, "Segoe UI", Arial, sans-serif;
+    background: #e8e8e8;
+    color: #000;
+    padding: 14px;
+  }
+
+  /* Toolbar */
+  .toolbar {
+    display: flex; gap: 10px; align-items: center;
+    margin-bottom: 14px; padding: 10px;
+    background: #fff; border: 1px solid #bbb; border-radius: 4px;
+    max-width: 1400px;
+  }
+  .toolbar label { font-weight: bold; font-size: 13px; }
+  .toolbar select, .toolbar button {
+    padding: 6px 12px; font-size: 13px; font-family: inherit;
+    border: 1px solid #888; border-radius: 3px;
+    background: #fff; cursor: pointer;
+  }
+  .toolbar button.primary {
+    background: #d35400; color: #fff;
+    border-color: #b34800; font-weight: bold;
+  }
+  .toolbar button.primary:hover { background: #b34800; }
+  #status { margin-left: auto; color: #666; font-style: italic; font-size: 12px; }
+
+  /* Sheet wrapper */
+  .sheet-wrap {
+    background: #fff; padding: 16px;
+    border: 1px solid #bbb; border-radius: 4px;
+    overflow-x: auto;
+    display: inline-block;
+  }
+
+  /* Excel-like table */
+  table.excel {
+    border-collapse: collapse;
+    font-size: 11px;
+    table-layout: fixed;
+    background: #fff;
+  }
+  table.excel td {
+    border: 1px solid #b0b0b0;
+    padding: 2px 4px;
+    vertical-align: middle;
+    overflow: hidden;
+    white-space: normal;
+    word-wrap: break-word;
+    line-height: 1.15;
+  }
+  table.excel td.empty { background: transparent; border-color: transparent; }
+
+  /* Print */
+  @media print {
+    body { background: #fff; padding: 0; margin: 0; }
+    .toolbar { display: none !important; }
+    .sheet-wrap { border: none; padding: 0; overflow: visible; display: block; }
+    table.excel { font-size: 9px; }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    tr { page-break-inside: avoid; }
+  }
+  body.print-cav9  @page { size: A4 portrait;  margin: 6mm; }
+  body.print-cav10 @page { size: A3 landscape; margin: 6mm; }
+</style>
+</head>
+<body class="print-cav9">
+
+  <div class="toolbar no-print">
+    <label for="machineSelect">Machine:</label>
+    <select id="machineSelect">
+      <option value="cavanna_9">Cavanna 9</option>
+      <option value="cavanna_10">Cavanna 10</option>
+    </select>
+    <button id="reloadBtn" type="button">↻ Vernieuwen</button>
+    <button id="printBtn" type="button" class="primary">🖨 Print / PDF</button>
+    <span id="status">Laden…</span>
+  </div>
+
+  <div id="sheetContainer"></div>
+
+<script>
+  const DATA_SOURCES = {
+    cavanna_9:  'cavanna_9.json',
+    cavanna_10: 'cavanna_10.json'
+  };
+
+  const $ = id => document.getElementById(id);
+
+  async function loadData(machineKey) {
+    const url = DATA_SOURCES[machineKey];
+    const res = await fetch(url, { cache: 'no-store' });
+    if (!res.ok) throw new Error(`Kan ${url} niet laden (HTTP ${res.status})`);
+    return res.json();
+  }
+
+  function colLetter(n) {
+    let s = '';
+    while (n > 0) { const m = (n - 1) % 26; s = String.fromCharCode(65 + m) + s; n = Math.floor((n - 1) / 26); }
+    return s;
+  }
+
+  function escapeHtml(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/\n/g, '<br>');
+  }
+
+  function renderGrid(data) {
+    const { rows, cols, col_widths_px = {}, row_heights_px = {}, merges = [], grid } = data;
+
+    const mergeAnchor = new Map();
+    const mergedHidden = new Set();
+    merges.forEach(m => {
+      mergeAnchor.set(`${m.r},${m.c}`, { rowspan: m.rowspan, colspan: m.colspan });
+      for (let rr = m.r; rr < m.r + m.rowspan; rr++) {
+        for (let cc = m.c; cc < m.c + m.colspan; cc++) {
+          if (!(rr === m.r && cc === m.c)) mergedHidden.add(`${rr},${cc}`);
+        }
+      }
+    });
+
+    let html = '<table class="excel"><colgroup>';
+    for (let c = 1; c <= cols; c++) {
+      const letter = colLetter(c);
+      const w = col_widths_px[letter] || 60;
+      html += `<col style="width:${w}px">`;
+    }
+    html += '</colgroup>';
+
+    for (let r = 1; r <= rows; r++) {
+      const rh = row_heights_px[r];
+      const heightStyle = rh ? `height:${rh}px` : '';
+      html += `<tr${heightStyle ? ` style="${heightStyle}"` : ''}>`;
+      for (let c = 1; c <= cols; c++) {
+        const key = `${r},${c}`;
+        if (mergedHidden.has(key)) continue;
+
+        const cell = (grid[r-1] && grid[r-1][c-1]) || {};
+        const merge = mergeAnchor.get(key);
+
+        const styles = [];
+        if (cell.bg) styles.push(`background-color:#${cell.bg}`);
+        if (cell.fg) styles.push(`color:#${cell.fg}`);
+        if (cell.b)  styles.push('font-weight:bold');
+        if (cell.i)  styles.push('font-style:italic');
+        if (cell.sz) styles.push(`font-size:${cell.sz}pt`);
+        if (cell.ha) styles.push(`text-align:${cell.ha}`);
+        if (cell.va) {
+          const va = cell.va === 'center' ? 'middle' : cell.va;
+          styles.push(`vertical-align:${va}`);
+        }
+
+        const styleAttr = styles.length ? ` style="${styles.join(';')}"` : '';
+        const spanAttr = merge
+          ? `${merge.rowspan > 1 ? ` rowspan="${merge.rowspan}"` : ''}${merge.colspan > 1 ? ` colspan="${merge.colspan}"` : ''}`
+          : '';
+        const v = cell.v;
+        const content = (v == null || v === '') ? '' : escapeHtml(v);
+        const isEmpty = (Object.keys(cell).length === 0);
+        const cls = isEmpty ? ' class="empty"' : '';
+        html += `<td${cls}${spanAttr}${styleAttr}>${content}</td>`;
+      }
+      html += '</tr>';
+    }
+    html += '</table>';
+    return html;
+  }
+
+  async function refresh() {
+    const machineKey = $('machineSelect').value;
+    $('status').textContent = 'Laden…';
+    document.body.classList.toggle('print-cav9',  machineKey === 'cavanna_9');
+    document.body.classList.toggle('print-cav10', machineKey === 'cavanna_10');
+    try {
+      const data = await loadData(machineKey);
+      document.title = `Instellijst — ${data.machine || machineKey}`;
+      $('sheetContainer').innerHTML = `<div class="sheet-wrap">${renderGrid(data)}</div>`;
+      $('status').textContent = 'Klaar';
+    } catch (e) {
+      $('status').textContent = 'Fout: ' + e.message;
+      $('sheetContainer').innerHTML =
+        `<div style="padding:16px;color:#b00;background:#fff;border:1px solid #b00;border-radius:4px">
+          <b>Kon data niet laden.</b><br>
+          Open dit bestand via een lokale webserver. Bv. <code>python3 -m http.server 8000</code> in deze map.
+        </div>`;
+      console.error(e);
+    }
+  }
+
+  $('machineSelect').addEventListener('change', refresh);
+  $('reloadBtn').addEventListener('click', refresh);
+  $('printBtn').addEventListener('click', () => window.print());
+
+  refresh();
+</script>
+</body>
+</html>
