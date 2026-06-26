@@ -1,0 +1,2711 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pally · Ombouwen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root {
+      --black:       #000000;
+      --surface-1:   rgba(255,255,255,.03);
+      --surface-2:   rgba(255,255,255,.055);
+      --surface-3:   rgba(255,255,255,.08);
+      --border:      rgba(255,255,255,.07);
+      --border-2:    rgba(255,255,255,.12);
+      --border-3:    rgba(255,255,255,.18);
+      --amber:       #f59e0b;
+      --amber-dim:   rgba(245,158,11,.15);
+      --amber-glow:  rgba(245,158,11,.3);
+      --blue:        #3b82f6;
+      --blue-dim:    rgba(59,130,246,.15);
+      --blue-glow:   rgba(59,130,246,.3);
+      --green:       #22c55e;
+      --green-dim:   rgba(34,197,94,.15);
+      --green-glow:  rgba(34,197,94,.35);
+      --red:         #ef4444;
+      --red-dim:     rgba(239,68,68,.15);
+      --red-glow:    rgba(239,68,68,.3);
+      --slate:       #64748b;
+      --text:        #ffffff;
+      --text-2:      #94a3b8;
+      --text-3:      #475569;
+      --mono:        'Geist Mono', monospace;
+      --sans:        'Geist', system-ui, sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      background: var(--black); color: var(--text);
+      font-family: var(--sans); font-size: 14px; line-height: 1.5;
+      min-height: 100vh; -webkit-font-smoothing: antialiased; overflow-x: hidden;
+    }
+    button { font: inherit; cursor: pointer; border: none; background: none; }
+    img { max-width: 100%; display: block; }
+
+    .shell { display: grid; grid-template-rows: auto 1fr; min-height: 100vh; position: relative; z-index: 1; }
+
+    .topbar {
+      height: 56px; border-bottom: 1px solid var(--border);
+      background: rgba(0,0,0,.9); backdrop-filter: blur(20px) saturate(1.6);
+      -webkit-backdrop-filter: blur(20px) saturate(1.6);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 32px; position: sticky; top: 0; z-index: 200;
+    }
+    .topbar-brand { display: flex; align-items: center; gap: 14px; }
+    .topbar-logo {
+      width: 30px; height: 30px; border: 1px solid var(--border-2); border-radius: 6px;
+      overflow: hidden; display: flex; align-items: center; justify-content: center;
+      background: var(--surface-2); flex-shrink: 0;
+    }
+    .topbar-name { font-family: var(--mono); font-size: 12px; font-weight: 600; color: var(--text); letter-spacing: .14em; text-transform: uppercase; }
+    .topbar-sep  { width: 1px; height: 18px; background: var(--border-2); }
+    .topbar-module { font-family: var(--mono); font-size: 11px; color: var(--text-3); letter-spacing: .18em; text-transform: uppercase; }
+    .topbar-right { display: flex; align-items: center; gap: 10px; }
+    .sync-indicator {
+      font-family: var(--mono); font-size: 11px; font-weight: 700;
+      letter-spacing: .06em; padding: 5px 11px; border-radius: 20px;
+      border: 1px solid #47556940; color: #475569;
+      transition: all .25s ease; white-space: nowrap; cursor: pointer;
+    }
+    .sync-indicator:hover { filter: brightness(1.3); }
+    .role-badge {
+      font-family: var(--mono); font-size: 11px; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase;
+      padding: 6px 12px; border-radius: 20px; border: 1px solid;
+      display: inline-flex; align-items: center; gap: 6px;
+      cursor: pointer; transition: all .15s ease;
+    }
+    .role-badge.operator { color: var(--text-2); border-color: var(--border-2); background: var(--surface-1); }
+    .role-badge.operator:hover { color: var(--text); background: var(--surface-2); }
+    .role-badge.admin { color: var(--amber); border-color: rgba(245,158,11,.3); background: rgba(245,158,11,.08); }
+    .role-badge.admin:hover { background: rgba(245,158,11,.14); }
+
+    /* ── LOGIN OVERLAY ── */
+    .login-overlay {
+      position: fixed; inset: 0; z-index: 600;
+      background: rgba(0,0,0,.8); backdrop-filter: blur(10px);
+      display: flex; align-items: center; justify-content: center;
+      animation: fadeUp .2s ease;
+    }
+    .login-box {
+      background: #0d0d0d; border: 1px solid var(--border-2); border-radius: 16px;
+      padding: 32px; max-width: 380px; width: 90%;
+      display: flex; flex-direction: column; gap: 18px;
+      box-shadow: 0 24px 80px rgba(0,0,0,.8);
+    }
+    .login-title { font-size: 18px; font-weight: 700; color: var(--text); letter-spacing: -.03em; }
+    .login-sub   { font-size: 12px; color: var(--text-2); margin-top: -10px; }
+    .login-input {
+      width: 100%; padding: 14px 16px; border-radius: 9px;
+      border: 1px solid var(--border-2); background: rgba(255,255,255,.03);
+      color: var(--text); font-family: var(--mono); font-size: 16px; font-weight: 600;
+      outline: none; letter-spacing: .04em;
+    }
+    .login-input:focus { border-color: rgba(245,158,11,.4); box-shadow: 0 0 0 3px rgba(245,158,11,.08); }
+    .login-error { font-family: var(--mono); font-size: 11px; color: var(--red); padding: 6px 10px; border-radius: 6px; background: rgba(239,68,68,.08); border: 1px solid rgba(239,68,68,.2); }
+    .login-actions { display: flex; gap: 8px; }
+    .btn-login { flex: 1; font-size: 13px; font-weight: 700; padding: 11px 18px; border-radius: 9px; background: var(--amber); color: #000; border: none; transition: all .15s ease; }
+    .btn-login:hover { background: #fbbf24; box-shadow: 0 0 22px var(--amber-glow); }
+    .btn-login-cancel { font-size: 13px; font-weight: 500; padding: 11px 18px; border-radius: 9px; border: 1px solid var(--border-2); background: transparent; color: var(--text-2); transition: all .14s ease; }
+    .btn-login-cancel:hover { background: var(--surface-2); color: var(--text); }
+
+    .body { display: grid; grid-template-columns: 260px 1fr; }
+
+    .sidebar {
+      border-right: 1px solid var(--border); background: rgba(0,0,0,.6);
+      display: flex; flex-direction: column; padding: 28px 0;
+      min-height: calc(100vh - 56px);
+      position: sticky; top: 56px; align-self: start;
+      max-height: calc(100vh - 56px); overflow-y: auto;
+    }
+    .sidebar::-webkit-scrollbar { width: 2px; }
+    .sidebar::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 1px; }
+    .sidebar-section { padding: 0 18px 22px; }
+    .sidebar-label {
+      font-family: var(--mono); font-size: 10px; font-weight: 700;
+      letter-spacing: .22em; text-transform: uppercase; color: var(--text-3); margin-bottom: 10px;
+    }
+    .flow-card { border: 1px solid var(--border); border-radius: 10px; background: var(--surface-1); overflow: hidden; }
+    .flow-card-row { display: grid; grid-template-columns: 1fr auto 1fr; align-items: stretch; }
+    .flow-block { padding: 11px 13px; }
+    .flow-block + .flow-block { border-left: 1px solid var(--border); }
+    .flow-block-label { font-family: var(--mono); font-size: 10px; color: var(--text-3); letter-spacing: .16em; text-transform: uppercase; margin-bottom: 4px; }
+    .flow-block-value { font-family: var(--mono); font-size: 12px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .flow-block-value.dim   { color: var(--text-3); font-weight: 400; }
+    .flow-block-value.amber { color: var(--amber); }
+    .flow-arrow-col { display: flex; align-items: center; justify-content: center; padding: 0 9px; border-left: 1px solid var(--border); border-right: 1px solid var(--border); background: var(--surface-1); font-family: var(--mono); font-size: 11px; color: var(--text-3); }
+    .section-tag { margin-top: 7px; display: flex; align-items: center; gap: 7px; padding: 6px 11px; border-radius: 6px; border: 1px solid var(--border); background: var(--surface-1); font-family: var(--mono); font-size: 11px; color: var(--text-3); letter-spacing: .06em; }
+    .tag-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--amber); box-shadow: 0 0 6px var(--amber-glow); flex-shrink: 0; }
+    .sidebar-sep { height: 1px; background: var(--border); margin: 0 18px 22px; }
+    .step-list { display: flex; flex-direction: column; gap: 3px; padding: 0 18px; }
+    .step-item {
+      display: flex; align-items: center; gap: 11px; padding: 10px 11px;
+      border-radius: 8px; cursor: default; border: 1px solid transparent; transition: all .18s ease;
+    }
+    .step-item.done        { background: rgba(34,197,94,.05);  border-color: rgba(34,197,94,.1); }
+    .step-item.active      { background: rgba(245,158,11,.05); border-color: rgba(245,158,11,.12); }
+    .step-item.check-active{ background: rgba(6,182,212,.05);  border-color: rgba(6,182,212,.15); }
+    .step-num {
+      font-family: var(--mono); font-size: 10px; font-weight: 700;
+      width: 22px; height: 22px; border-radius: 5px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      border: 1px solid var(--border-2); color: var(--text-3); background: var(--surface-1); transition: all .18s ease;
+    }
+    .step-item.done        .step-num { background: rgba(34,197,94,.15);  border-color: rgba(34,197,94,.3);   color: var(--green); }
+    .step-item.active      .step-num { background: rgba(245,158,11,.1);  border-color: rgba(245,158,11,.25); color: var(--amber); }
+    .step-item.check-active .step-num{ background: rgba(6,182,212,.1);   border-color: rgba(6,182,212,.28);  color: #06b6d4; box-shadow: 0 0 8px rgba(6,182,212,.2); }
+    .step-text { font-size: 13px; color: var(--text-3); font-weight: 500; }
+    .step-item.done        .step-text { color: rgba(34,197,94,.75); }
+    .step-item.active      .step-text { color: var(--text); }
+    .step-item.check-active .step-text{ color: rgba(6,182,212,.9); }
+
+    .main { display: flex; flex-direction: column; min-width: 0; }
+    .breadcrumb {
+      border-bottom: 1px solid var(--border); padding: 0 32px; height: 38px;
+      display: flex; align-items: center; gap: 8px; background: rgba(0,0,0,.4);
+    }
+    .bc-item { font-family: var(--mono); font-size: 11px; color: var(--text-3); letter-spacing: .06em; }
+    .bc-item.active { color: rgba(255,255,255,.6); }
+    .bc-sep { font-family: var(--mono); font-size: 11px; color: var(--text-3); opacity: .4; }
+
+    /* ── MOBILE FLOW BAR (samenvatting Van → Naar als sidebar verborgen is) ── */
+    .mobile-flowbar {
+      display: none; font-family: var(--mono); font-size: 12px; color: var(--text-2);
+      padding: 9px 14px; border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,.02); letter-spacing: .03em;
+      gap: 7px; align-items: center; flex-wrap: wrap;
+    }
+    .mobile-flowbar b { color: var(--amber); font-weight: 700; }
+    .mobile-flowbar .mf-sep { color: var(--text-3); }
+
+    .content { flex: 1; padding: 36px 36px 56px; animation: fadeUp .22s cubic-bezier(.16,1,.3,1) both; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+    .content-header { margin-bottom: 28px; }
+    .content-title  { font-size: 24px; font-weight: 700; color: var(--text); letter-spacing: -.04em; margin-bottom: 5px; line-height: 1.15; }
+    .content-sub    { font-size: 13px; color: var(--text-2); line-height: 1.6; max-width: 480px; }
+
+    .panel-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 24px; }
+    .panel {
+      border: 1px solid var(--border); border-radius: 12px; background: var(--surface-1);
+      overflow: hidden; position: relative; backdrop-filter: blur(10px); transition: border-color .18s;
+    }
+    .panel::before { content:''; position:absolute; inset:0; border-radius:12px; background: linear-gradient(135deg,rgba(255,255,255,.02) 0%,transparent 60%); pointer-events:none; }
+    .panel:hover { border-color: var(--border-2); }
+    .panel-header { padding: 12px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,.015); }
+    .panel-title { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.4); }
+    .panel-badge { margin-left: auto; display: flex; align-items: center; gap: 5px; font-family: var(--mono); font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 20px; background: rgba(34,197,94,.1); border: 1px solid rgba(34,197,94,.2); color: var(--green); letter-spacing: .1em; }
+    .panel-badge::before { content:''; width:4px; height:4px; border-radius:50%; background: var(--green); display:inline-block; flex-shrink:0; }
+    .panel-body { padding: 18px; }
+    .field-label { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--text-3); margin-bottom: 10px; margin-top: 16px; }
+    .field-label:first-child { margin-top: 0; }
+
+    .chip-row, .chipRow { display: flex; flex-wrap: wrap; gap: 7px; }
+    .chip {
+      font-size: 13px; font-weight: 500; padding: 9px 14px; border-radius: 7px;
+      border: 1px solid var(--border-2); background: var(--surface-1); color: var(--text-2);
+      display: inline-flex; align-items: center; gap: 8px;
+      transition: all .14s cubic-bezier(.16,1,.3,1); position: relative; overflow: hidden;
+    }
+    .chip:hover { background: var(--surface-3); color: var(--text); border-color: var(--border-3); transform: translateY(-1px); }
+    .chip.active { background: rgba(245,158,11,.09); border-color: rgba(245,158,11,.28); color: var(--amber); box-shadow: 0 0 0 3px rgba(245,158,11,.07); }
+    .chipInner { display: inline-flex; align-items: center; gap: 8px; }
+
+    .actions-bar { display: flex; align-items: center; justify-content: flex-end; gap: 10px; padding-top: 22px; border-top: 1px solid var(--border); }
+    .btn-ghost { font-size: 13px; font-weight: 500; padding: 9px 17px; border-radius: 8px; border: 1px solid var(--border-2); background: transparent; color: var(--text-2); transition: all .14s ease; }
+    .btn-ghost:hover { background: var(--surface-2); color: var(--text); border-color: var(--border-3); }
+    .btn-ghost:disabled { opacity: .25; cursor: not-allowed; }
+    .btn-primary { font-size: 13px; font-weight: 700; padding: 9px 20px; border-radius: 8px; color: #000; background: var(--amber); border: none; transition: all .16s cubic-bezier(.16,1,.3,1); }
+    .btn-primary:hover:not(:disabled) { background: #fbbf24; box-shadow: 0 0 22px var(--amber-glow); transform: translateY(-1px); }
+    .btn-primary:disabled { opacity: .18; cursor: not-allowed; }
+
+    .section-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .section-card {
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: var(--surface-1);
+      padding: 18px 16px 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+      cursor: pointer;
+      transition: all .18s cubic-bezier(.16,1,.3,1);
+      position: relative;
+      overflow: hidden;
+    }
+    .section-card::before { content:""; position:absolute; inset:0; background:linear-gradient(90deg,rgba(255,255,255,.015) 0%,transparent 60%); pointer-events:none; }
+    .section-card:hover { border-color: var(--border-3); background: var(--surface-2); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,.5); }
+    .section-card-title { font-size: 14px; font-weight: 700; color: var(--text); letter-spacing: -.02em; }
+    .section-card-desc { font-size: 12px; color: var(--text-3); line-height: 1.4; }
+    .section-card-footer { width: 100%; display: flex; align-items: center; justify-content: flex-end; padding-top: 8px; border-top: 1px solid var(--border); margin-top: auto; }
+    .section-header-logo { height: 32px; width: auto; object-fit: contain; opacity: .9; filter: brightness(1.15); }
+    .section-card-arrow { font-size: 14px; color: var(--text-3); transition: color .14s, transform .14s; }
+
+    /* Logo + SVG fallback: fallback is verborgen tot het logo faalt */
+    .section-card-logo-wrap { width: 48px; height: 48px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+    .section-card-logo { max-width: 100%; max-height: 100%; object-fit: contain; }
+    .section-card-logo-fallback { display: none; width: 40px; height: 40px; border: 1px solid var(--border-2); border-radius: 9px; background: var(--surface-2); align-items: center; justify-content: center; }
+    .section-card-logo-fallback svg { width: 18px; height: 18px; stroke: rgba(255,255,255,.4); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+    .section-card-logo-wrap.logo-failed .section-card-logo { display: none; }
+    .section-card-logo-wrap.logo-failed .section-card-logo-fallback { display: flex; }
+
+    .toggle-row { display: flex; gap: 6px; margin-bottom: 20px; }
+    .toggleBtn { font-family: var(--mono); font-size: 11px; font-weight: 700; padding: 8px 14px; border-radius: 7px; border: 1px solid var(--border-2); background: var(--surface-1); color: var(--text-3); letter-spacing: .1em; text-transform: uppercase; display: inline-flex; align-items: center; gap: 7px; transition: all .14s ease; }
+    .toggleBtn:hover { color: var(--text-2); background: var(--surface-2); }
+    .toggleBtn.active { background: rgba(245,158,11,.08); border-color: rgba(245,158,11,.22); color: var(--amber); }
+    .lineToggle { display: inline-flex; align-items: center; gap: 7px; }
+
+    .view-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; gap: 14px; flex-wrap: wrap; }
+    .view-header-left  { display: flex; align-items: center; gap: 13px; }
+    .view-header-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .btn-back { width: 36px; height: 36px; border-radius: 7px; border: 1px solid var(--border-2); background: var(--surface-1); color: rgba(255,255,255,.4); display: flex; align-items: center; justify-content: center; font-size: 16px; transition: all .14s ease; flex-shrink: 0; }
+    .btn-back:hover { background: var(--surface-3); color: var(--text); }
+    .view-title { font-size: 19px; font-weight: 700; color: var(--text); letter-spacing: -.03em; }
+    .pill { display: inline-flex; align-items: center; gap: 7px; padding: 5px 11px; border-radius: 20px; border: 1px solid var(--border-2); background: var(--surface-1); font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--text-2); letter-spacing: .02em; }
+
+    .mode-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; gap: 12px; flex-wrap: wrap; }
+    .view-actions { display: flex; gap: 5px; flex-wrap: wrap; }
+    .view-action-btn { font-family: var(--mono); font-size: 11px; font-weight: 700; padding: 9px 14px; border-radius: 7px; border: 1px solid var(--border-2); background: var(--surface-1); color: var(--text-3); display: inline-flex; align-items: center; gap: 7px; transition: all .14s ease; letter-spacing: .08em; text-transform: uppercase; }
+    .view-action-btn:hover { background: var(--surface-3); color: var(--text); }
+    .view-action-btn.active { background: rgba(59,130,246,.08); border-color: rgba(59,130,246,.22); color: var(--blue); }
+    .view-action-btn.check-btn.active { background: rgba(34,197,94,.08); border-color: rgba(34,197,94,.22); color: var(--green); }
+    .mode-pills { display: flex; gap: 3px; }
+    .mode-btn { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: 7px 12px; border-radius: 6px; border: 1px solid var(--border); background: transparent; color: var(--text-3); transition: all .12s ease; }
+    .mode-btn:hover { color: var(--text-2); }
+    .mode-btn.active { background: var(--surface-2); border-color: var(--border-2); color: var(--text); }
+
+    .value-table { border: 1px solid var(--border); border-radius: 11px; overflow: hidden; background: var(--surface-1); }
+    .value-table-header { display: grid; grid-template-columns: minmax(160px,2fr) 130px 24px 130px; padding: 9px 18px; border-bottom: 1px solid var(--border); background: rgba(255,255,255,.02); }
+    .value-table-col { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--text-3); }
+    .value-table-col.center { text-align: center; }
+    .value-rows { display: flex; flex-direction: column; }
+    .value-row { display: grid; grid-template-columns: minmax(160px,2fr) 130px 24px 130px; padding: 11px 18px; border-bottom: 1px solid var(--border); align-items: center; gap: 8px; transition: background .11s ease; }
+    .value-row:last-child { border-bottom: none; }
+    .value-row:hover { background: rgba(255,255,255,.02); }
+    .value-key { font-size: 13px; color: rgba(255,255,255,.7); display: flex; align-items: center; gap: 8px; min-width: 0; padding-right: 8px; }
+    .value-key-text { white-space: normal; word-break: break-word; line-height: 1.4; }
+    .param-num { font-family: var(--mono); font-size: 10px; font-weight: 700; color: var(--amber); background: rgba(245,158,11,.07); border: 1px solid rgba(245,158,11,.2); border-radius: 4px; padding: 2px 6px; flex-shrink: 0; letter-spacing: .04em; align-self: flex-start; margin-top: 1px; }
+    .value-cell { font-family: var(--mono); font-size: 13px; font-weight: 500; color: var(--slate); }
+    .value-cell.is-new { color: var(--blue); font-weight: 600; }
+    .value-sep  { font-family: var(--mono); font-size: 11px; color: var(--text-3); text-align: center; opacity: .4; }
+
+    /* ── STATUS-MODUS ── */
+    .value-table-header.status-header,
+    .value-row.status-row { grid-template-columns: minmax(160px,2fr) 1fr auto; }
+    .status-check-btn {
+      font-family: var(--mono); font-size: 11px; font-weight: 700;
+      letter-spacing: .08em; text-transform: uppercase;
+      padding: 7px 13px; border-radius: 7px;
+      border: 1px solid rgba(6,182,212,.25); background: rgba(6,182,212,.06);
+      color: #06b6d4; transition: all .14s ease; white-space: nowrap;
+    }
+    .status-check-btn:hover { background: rgba(6,182,212,.14); border-color: rgba(6,182,212,.45); }
+    .value-table-header.status-header.no-check,
+    .value-row.status-row.no-check { grid-template-columns: minmax(160px,2fr) 1fr; }
+    .mode-choice-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
+    .mode-choice-card { padding: 26px 22px; gap: 12px; }
+    .mode-choice-icon {
+      width: 52px; height: 52px; border-radius: 13px; display: flex;
+      align-items: center; justify-content: center; font-size: 24px;
+      border: 1px solid var(--border-2); margin-bottom: 4px;
+    }
+    .mode-choice-icon.ombouw { color: var(--amber); background: rgba(245,158,11,.08); border-color: rgba(245,158,11,.25); }
+    .mode-choice-icon.status { color: #06b6d4;     background: rgba(6,182,212,.08);  border-color: rgba(6,182,212,.25); }
+
+    .player-wrap { display: grid; grid-template-columns: 1fr 268px; gap: 14px; align-items: start; }
+    .player-main { border: 1px solid var(--border); border-radius: 13px; background: var(--surface-1); overflow: hidden; position: relative; }
+    .player-main::before { content:''; position:absolute; inset:0; background: linear-gradient(135deg,rgba(255,255,255,.012) 0%,transparent 50%); pointer-events:none; }
+    .player-top-bar { padding: 11px 22px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,.02); }
+    .player-counter { font-family: var(--mono); font-size: 11px; color: var(--text-3); letter-spacing: .1em; flex-shrink: 0; }
+    .player-progress-track { flex: 1; height: 2px; border-radius: 1px; background: rgba(255,255,255,.06); margin: 0 18px; overflow: hidden; position: relative; }
+    .player-progress-fill { height: 100%; background: linear-gradient(90deg, rgba(245,158,11,.5), var(--amber)); border-radius: 1px; transition: width .32s cubic-bezier(.16,1,.3,1); box-shadow: 0 0 8px var(--amber-glow); position: relative; }
+    .player-progress-fill::after { content:''; position:absolute; right:0; top:-2px; bottom:-2px; width:4px; background:#fff; border-radius:2px; box-shadow:0 0 6px var(--amber); opacity:.7; }
+    .player-body { padding: 32px; }
+    .player-key { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--text-3); margin-bottom: 9px; }
+    .player-label { font-size: 24px; font-weight: 700; color: var(--text); letter-spacing: -.04em; line-height: 1.15; margin-bottom: 30px; display: flex; align-items: center; gap: 13px; flex-wrap: wrap; }
+    .player-num { font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--amber); background: rgba(245,158,11,.08); border: 1px solid rgba(245,158,11,.22); border-radius: 5px; padding: 3px 9px; flex-shrink: 0; }
+    .player-values { display: flex; align-items: flex-start; gap: 14px; flex-wrap: wrap; }
+    .player-val-block { flex: 1; min-width: 110px; }
+    .player-val-label { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--text-3); margin-bottom: 7px; }
+    .player-val-box { border: 1px solid var(--border-2); border-radius: 8px; background: rgba(255,255,255,.02); padding: 14px 18px; font-family: var(--mono); font-size: 18px; font-weight: 600; color: rgba(255,255,255,.6); min-height: 56px; display: flex; align-items: center; gap: 9px; transition: all .18s ease; }
+    .player-val-box.new-val { border-color: rgba(59,130,246,.22); background: rgba(59,130,246,.06); color: var(--blue); }
+    .player-arrow-sep { font-family: var(--mono); font-size: 15px; color: var(--text-3); flex-shrink: 0; margin-top: 24px; opacity: .4; }
+    .player-controls { padding: 13px 22px; border-top: 1px solid var(--border); display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,.01); }
+    .player-sidebar { border: 1px solid var(--border); border-radius: 13px; background: var(--surface-1); overflow: hidden; }
+    .player-sidebar-header { padding: 10px 14px; border-bottom: 1px solid var(--border); background: rgba(255,255,255,.02); }
+    .player-sidebar-title { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--text-3); }
+    .mini-list { display: flex; flex-direction: column; max-height: 420px; overflow-y: auto; }
+    .mini-list::-webkit-scrollbar { width: 2px; }
+    .mini-list::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 1px; }
+    .mini-row { display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-bottom: 1px solid var(--border); cursor: pointer; transition: background .1s; width: 100%; text-align: left; }
+    .mini-row:last-child { border-bottom: none; }
+    .mini-row:hover { background: var(--surface-2); }
+    .mini-row.active { background: rgba(245,158,11,.05); border-left: 2px solid var(--amber); padding-left: 10px; }
+    .mini-num { font-family: var(--mono); font-size: 10px; color: var(--text-3); width: 20px; flex-shrink: 0; }
+    .mini-row.active .mini-num { color: var(--amber); }
+    .mini-key { font-size: 12px; color: rgba(255,255,255,.4); flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .mini-row.active .mini-key { color: rgba(255,255,255,.85); font-weight: 600; }
+    .mini-check { font-size: 10px; color: var(--green); }
+
+    .richValue  { display: inline-flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+    .richText   { font-weight: 600; }
+    .colorDots  { display: inline-flex; gap: 4px; align-items: center; }
+    .colorDot   { width: 10px; height: 10px; border-radius: 50%; border: 1px solid rgba(255,255,255,.1); display: inline-block; }
+    .colorDot.wit   { border-color: rgba(255,255,255,.4); }
+    .colorDot.grijs { border-color: rgba(255,255,255,.2); }
+    .colorDot.blauw { background: #3b82f6 !important; border-color: rgba(59,130,246,.5); }
+
+    .loading-screen { display: flex; align-items: center; justify-content: center; flex: 1; padding: 80px; flex-direction: column; gap: 14px; }
+    .loading-bar-wrap { width: 180px; height: 2px; background: var(--border-2); border-radius: 1px; overflow: hidden; }
+    .loading-bar-fill { height: 100%; width: 40%; background: linear-gradient(90deg, transparent, var(--amber), transparent); border-radius: 1px; animation: sweep 1.6s ease-in-out infinite; }
+    @keyframes sweep { 0%{transform:translateX(-200%)} 100%{transform:translateX(500%)} }
+    .loading-label { font-family: var(--mono); font-size: 10px; color: var(--text-3); letter-spacing: .2em; text-transform: uppercase; }
+
+    .emptyNote { padding: 60px 40px; text-align: center; color: var(--text-3); font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+    .emptyNote::before { content:''; display:block; width:36px; height:1px; background: var(--border-2); }
+
+    .check-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; gap: 14px; flex-wrap: wrap; }
+    .check-header-left  { display: flex; align-items: center; gap: 13px; }
+    .check-header-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .check-title { font-size: 19px; font-weight: 700; color: var(--text); letter-spacing: -.03em; }
+
+    .check-player { border: 1px solid var(--border); border-radius: 14px; background: var(--surface-1); overflow: hidden; position: relative; margin-bottom: 14px; }
+    .check-player-top { padding: 12px 22px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,.02); }
+    .check-player-body { padding: 32px; }
+    .check-param-label { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--text-3); margin-bottom: 9px; }
+    .check-param-name { font-size: 26px; font-weight: 700; color: var(--text); letter-spacing: -.04em; line-height: 1.15; margin-bottom: 30px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .check-values-grid { display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; align-items: start; margin-bottom: 28px; }
+    .check-val-block { display: flex; flex-direction: column; gap: 7px; }
+    .check-val-label { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--text-3); }
+    .check-val-box { border: 1px solid var(--border-2); border-radius: 8px; padding: 16px 20px; font-family: var(--mono); font-size: 22px; font-weight: 700; display: flex; align-items: center; gap: 10px; min-height: 62px; transition: all .2s ease; }
+    .check-val-box.expected { background: rgba(255,255,255,.02); color: rgba(255,255,255,.7); }
+    .check-val-box.actual   { background: rgba(255,255,255,.02); color: rgba(255,255,255,.9); }
+    .check-val-box.status-match    { border-color: rgba(34,197,94,.3);  background: rgba(34,197,94,.06);  color: var(--green); }
+    .check-val-box.status-mismatch { border-color: rgba(239,68,68,.3);  background: rgba(239,68,68,.06);  color: var(--red); }
+    .check-val-box.status-saved    { border-color: rgba(6,182,212,.3);  background: rgba(6,182,212,.06);  color: #06b6d4; }
+
+    .check-arrow { font-family: var(--mono); font-size: 16px; color: var(--text-3); opacity: .4; margin-top: 28px; align-self: center; }
+    .check-input-wrap { position: relative; }
+    .check-input { width: 100%; border: none; border-radius: 0; background: transparent; color: inherit; font-family: var(--mono); font-size: 22px; font-weight: 700; padding: 0; outline: none; caret-color: #06b6d4; }
+    .check-input::placeholder { color: var(--text-3); font-size: 16px; font-weight: 400; }
+    .check-val-box:focus-within { border-color: rgba(6,182,212,.35) !important; box-shadow: 0 0 0 3px rgba(6,182,212,.07); }
+
+    .check-status-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 11px; border-radius: 20px; border: 1px solid; font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .check-status-badge.match    { border-color: rgba(34,197,94,.3);  background: rgba(34,197,94,.08);  color: var(--green); }
+    .check-status-badge.mismatch { border-color: rgba(239,68,68,.3);  background: rgba(239,68,68,.08);  color: var(--red); }
+    .check-status-badge.saved    { border-color: rgba(6,182,212,.3);  background: rgba(6,182,212,.08);  color: #06b6d4; }
+    .check-status-badge.pending  { border-color: var(--border-2); background: var(--surface-1); color: var(--text-3); }
+    .check-status-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+
+    .check-confirm-overlay { position: fixed; inset: 0; z-index: 500; background: rgba(0,0,0,.75); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; animation: fadeUp .18s cubic-bezier(.16,1,.3,1) both; }
+    .check-confirm-box { background: #0d0d0d; border: 1px solid var(--border-2); border-radius: 16px; padding: 32px 32px 28px; max-width: 440px; width: 90%; display: flex; flex-direction: column; gap: 18px; box-shadow: 0 24px 80px rgba(0,0,0,.8); }
+    .check-confirm-title { font-size: 18px; font-weight: 700; color: var(--text); letter-spacing: -.03em; }
+    .check-confirm-body  { font-size: 13px; color: var(--text-2); line-height: 1.65; }
+    .check-confirm-vals  { display: flex; align-items: center; gap: 12px; padding: 14px 18px; border-radius: 9px; border: 1px solid var(--border-2); background: rgba(255,255,255,.025); }
+    .check-confirm-val   { font-family: var(--mono); font-size: 16px; font-weight: 700; }
+    .check-confirm-val.old { color: var(--slate); }
+    .check-confirm-val.new { color: var(--blue); }
+    .check-confirm-arr   { font-family: var(--mono); font-size: 13px; color: var(--text-3); opacity: .5; }
+    .confirm-note { width: 100%; min-height: 68px; padding: 11px 13px; border-radius: 8px; border: 1px solid var(--border-2); background: rgba(255,255,255,.03); color: var(--text); font: inherit; font-size: 13px; line-height: 1.5; resize: vertical; outline: none; }
+    .confirm-note::placeholder { color: var(--text-3); }
+    .confirm-note:focus { border-color: rgba(59,130,246,.4); box-shadow: 0 0 0 3px rgba(59,130,246,.07); }
+    .check-confirm-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn-confirm-save { flex: 1; font-size: 13px; font-weight: 700; padding: 11px 18px; border-radius: 9px; background: var(--blue); color: #fff; border: none; transition: all .15s ease; display: flex; align-items: center; justify-content: center; gap: 7px; }
+    .btn-confirm-save:hover { background: #5b9ef8; box-shadow: 0 0 22px rgba(59,130,246,.3); }
+    .btn-confirm-skip { font-size: 13px; font-weight: 500; padding: 11px 18px; border-radius: 9px; border: 1px solid var(--border-2); background: transparent; color: var(--text-2); transition: all .14s ease; }
+    .btn-confirm-skip:hover { background: var(--surface-2); color: var(--text); }
+    .confirm-admin-hint { font-family: var(--mono); font-size: 11px; color: var(--amber); padding: 7px 11px; border-radius: 7px; background: rgba(245,158,11,.07); border: 1px solid rgba(245,158,11,.2); }
+
+    .check-color-btn { flex: 1; padding: 13px 10px; border-radius: 8px; border: 1px solid var(--border-2); background: var(--surface-1); font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; cursor: pointer; transition: all .15s ease; display: flex; align-items: center; justify-content: center; gap: 6px; }
+    .check-color-btn.match { color: var(--green); }
+    .check-color-btn.match:hover { background: rgba(34,197,94,.12); border-color: rgba(34,197,94,.4); box-shadow: 0 0 14px rgba(34,197,94,.18); }
+    .check-color-btn.miss  { color: var(--red); }
+    .check-color-btn.miss:hover  { background: rgba(239,68,68,.12); border-color: rgba(239,68,68,.4); box-shadow: 0 0 14px rgba(239,68,68,.18); }
+    .check-player-nav { padding: 13px 22px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,.01); }
+
+    .check-sidebar { border: 1px solid var(--border); border-radius: 13px; background: var(--surface-1); overflow: hidden; }
+    .check-sidebar-header { padding: 10px 14px; border-bottom: 1px solid var(--border); background: rgba(255,255,255,.02); display: flex; align-items: center; justify-content: space-between; }
+    .check-mini-row { display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-bottom: 1px solid var(--border); cursor: pointer; transition: background .1s; width: 100%; text-align: left; }
+    .check-mini-row:last-child { border-bottom: none; }
+    .check-mini-row:hover { background: var(--surface-2); }
+    .check-mini-row.active { background: rgba(255,255,255,.03); border-left: 2px solid rgba(255,255,255,.2); padding-left: 10px; }
+    .check-mini-num  { font-family: var(--mono); font-size: 10px; color: var(--text-3); width: 20px; flex-shrink: 0; }
+    .check-mini-key  { font-size: 12px; color: rgba(255,255,255,.4); flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .check-mini-row.active .check-mini-key { color: rgba(255,255,255,.8); font-weight: 600; }
+    /* Status nu als glyph (✓ ✕ ↑ ·) i.p.v. alleen kleur — leesbaar bij kleurenblindheid */
+    .check-mini-status { font-family: var(--mono); font-size: 13px; font-weight: 700; flex-shrink: 0; width: 16px; text-align: center; }
+    .check-mini-status.match    { color: var(--green); }
+    .check-mini-status.mismatch { color: var(--red); }
+    .check-mini-status.saved    { color: #06b6d4; }
+    .check-mini-status.pending  { color: var(--text-3); }
+
+    .check-wrap { display: grid; grid-template-columns: 1fr 264px; gap: 14px; align-items: start; }
+    .check-summary-screen { animation: fadeUp .22s cubic-bezier(.16,1,.3,1) both; }
+    .check-summary-hero { font-size: 22px; font-weight: 700; letter-spacing: -.03em; color: var(--text); margin-bottom: 6px; }
+    .check-summary-sub  { font-size: 13px; color: var(--text-2); margin-bottom: 28px; }
+    .check-summary-stats { display: flex; gap: 10px; margin-bottom: 28px; flex-wrap: wrap; }
+    .check-stat-pill { display: inline-flex; align-items: center; gap: 7px; padding: 7px 14px; border-radius: 20px; border: 1px solid; font-family: var(--mono); font-size: 11px; font-weight: 700; }
+    .check-stat-pill.ok   { border-color: rgba(34,197,94,.3);  background: rgba(34,197,94,.07);  color: var(--green); }
+    .check-stat-pill.miss { border-color: rgba(239,68,68,.3);  background: rgba(239,68,68,.07);  color: var(--red); }
+    .check-stat-pill.save { border-color: rgba(59,130,246,.3); background: rgba(59,130,246,.07); color: var(--blue); }
+    .check-stat-pill.skip { border-color: rgba(100,116,139,.25); background: rgba(100,116,139,.06); color: var(--slate); }
+    .check-stat-pill .sn  { font-size: 15px; }
+    .check-changes-title { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--text-3); margin-bottom: 12px; }
+    .check-changes-list  { display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; background: var(--surface-1); margin-bottom: 24px; }
+    .check-changes-row   { display: grid; grid-template-columns: minmax(130px,2fr) 110px 22px 110px 28px; gap: 10px; padding: 12px 18px; border-bottom: 1px solid var(--border); align-items: center; }
+    .check-changes-row:last-child { border-bottom: none; }
+    .check-changes-row.row-match { background: rgba(34,197,94,.025); }
+    .check-changes-row.row-miss  { background: rgba(239,68,68,.03); }
+    .check-changes-row.row-saved { background: rgba(6,182,212,.03); }
+    .check-changes-key   { font-size: 12px; color: rgba(255,255,255,.7); display: flex; align-items: center; gap: 8px; }
+    .check-changes-from  { font-family: var(--mono); font-size: 12px; color: var(--slate); }
+    .check-changes-to    { font-family: var(--mono); font-size: 12px; font-weight: 700; }
+    .check-changes-to.match    { color: var(--green); }
+    .check-changes-to.mismatch { color: var(--red); }
+    .check-changes-to.saved    { color: #06b6d4; }
+    .check-changes-to.pending  { color: var(--text-3); }
+    .check-changes-sep   { font-family: var(--mono); font-size: 11px; color: var(--text-3); opacity: .4; text-align: center; }
+    .check-changes-status { font-family: var(--mono); font-size: 12px; font-weight: 700; text-align: center; }
+    .check-changes-status.match    { color: var(--green); }
+    .check-changes-status.mismatch { color: var(--red); }
+    .check-changes-status.saved    { color: #06b6d4; }
+    .check-summary-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn-save-finish { font-size: 13px; font-weight: 700; padding: 10px 22px; border-radius: 9px; background: var(--green); color: #000; border: none; transition: all .15s ease; display: inline-flex; align-items: center; gap: 7px; }
+    .btn-save-finish:hover { box-shadow: 0 0 22px rgba(34,197,94,.3); transform: translateY(-1px); }
+
+    .tab-bar { display: flex; gap: 3px; margin-bottom: 22px; border-bottom: 1px solid var(--border); padding-bottom: 0; }
+    .tab-btn { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: 9px 16px; border-radius: 6px 6px 0 0; border: 1px solid transparent; border-bottom: none; background: transparent; color: var(--text-3); cursor: pointer; transition: all .14s ease; margin-bottom: -1px; }
+    .tab-btn:hover { color: var(--text-2); }
+    .tab-btn.active { background: var(--surface-2); border-color: var(--border-2); border-bottom-color: var(--surface-2); color: var(--text); }
+
+    .version-list { display: flex; flex-direction: column; gap: 10px; }
+    .version-card { border: 1px solid var(--border); border-radius: 11px; background: var(--surface-1); overflow: hidden; transition: border-color .15s; }
+    .version-card:hover { border-color: var(--border-2); }
+    .version-card-header { padding: 11px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,.02); cursor: pointer; width: 100%; text-align: left; }
+    .version-badge { font-family: var(--mono); font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 4px; background: rgba(245,158,11,.1); border: 1px solid rgba(245,158,11,.2); color: var(--amber); letter-spacing: .08em; flex-shrink: 0; }
+    .version-badge.latest { background: rgba(34,197,94,.1); border-color: rgba(34,197,94,.2); color: var(--green); }
+    .version-meta { font-family: var(--mono); font-size: 11px; color: var(--text-2); flex: 1; }
+    .version-date { font-family: var(--mono); font-size: 11px; color: var(--text-3); flex-shrink: 0; }
+    .version-change-count { font-family: var(--mono); font-size: 10px; padding: 2px 8px; border-radius: 3px; background: var(--surface-2); border: 1px solid var(--border-2); color: var(--text-3); flex-shrink: 0; }
+    .version-body { padding: 14px 18px; display: none; }
+    .version-body.open { display: block; }
+    .version-param-list { display: flex; flex-direction: column; gap: 2px; }
+    .version-param-row { display: grid; grid-template-columns: 1fr 100px 20px 100px auto; gap: 8px; padding: 7px 10px; border-radius: 6px; align-items: center; }
+    .version-param-row:hover { background: rgba(255,255,255,.02); }
+    .version-param-name { font-size: 12px; color: rgba(255,255,255,.6); display: flex; align-items: center; gap: 7px; }
+    .version-param-val  { font-family: var(--mono); font-size: 11px; color: var(--slate); }
+    .version-param-val.new { color: var(--blue); font-weight: 600; }
+    .version-param-sep  { font-family: var(--mono); font-size: 10px; color: var(--text-3); opacity: .4; text-align: center; }
+    .restore-btn { font-family: var(--mono); font-size: 10px; font-weight: 700; padding: 5px 10px; border-radius: 5px; border: 1px solid var(--border-2); background: var(--surface-1); color: var(--text-2); transition: all .14s ease; white-space: nowrap; }
+    .restore-btn:hover { background: rgba(59,130,246,.12); border-color: rgba(59,130,246,.35); color: var(--blue); }
+
+    .audit-list { display: flex; flex-direction: column; gap: 8px; }
+    .audit-entry { border: 1px solid var(--border); border-radius: 10px; background: var(--surface-1); padding: 14px 18px; display: grid; grid-template-columns: auto 1fr auto; gap: 14px; align-items: start; transition: border-color .14s; }
+    .audit-entry:hover { border-color: var(--border-2); }
+    .audit-icon { width: 32px; height: 32px; border-radius: 7px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 13px; }
+    .audit-icon.match    { background: rgba(34,197,94,.1);  border: 1px solid rgba(34,197,94,.2); }
+    .audit-icon.mismatch { background: rgba(239,68,68,.1);  border: 1px solid rgba(239,68,68,.2); }
+    .audit-icon.saved    { background: rgba(59,130,246,.1); border: 1px solid rgba(59,130,246,.2); }
+    .audit-icon.warn     { background: rgba(245,158,11,.1); border: 1px solid rgba(245,158,11,.2); }
+    .audit-icon.skipped  { background: rgba(100,116,139,.1); border: 1px solid rgba(100,116,139,.2); }
+    .audit-body { min-width: 0; }
+    .audit-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+    .audit-meta { font-family: var(--mono); font-size: 11px; color: var(--text-3); line-height: 1.6; }
+    .audit-change { display: inline-flex; align-items: center; gap: 5px; font-family: var(--mono); font-size: 11px; margin-top: 4px; }
+    .audit-old { color: var(--slate); }
+    .audit-arr { color: var(--text-3); opacity: .5; }
+    .audit-new { color: var(--blue); font-weight: 700; }
+    .audit-note { margin-top: 5px; font-size: 12px; color: var(--text-2); font-style: italic; padding: 5px 9px; border-radius: 5px; background: rgba(255,255,255,.03); border-left: 2px solid var(--border-2); }
+    .audit-timestamp { font-family: var(--mono); font-size: 10px; color: var(--text-3); white-space: nowrap; flex-shrink: 0; letter-spacing: .04em; }
+
+    .empty-state { padding: 48px 32px; text-align: center; color: var(--text-3); font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    .empty-state::before { content:''; display:block; width:32px; height:1px; background: var(--border-2); }
+
+    /* ── TOASTS (zichtbare sync/foutmeldingen) ── */
+    .pally-toast {
+      position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); z-index: 9000;
+      background: #111; border: 1px solid var(--border-3); color: var(--text);
+      font-size: 13px; font-weight: 600; padding: 12px 18px; border-radius: 10px;
+      box-shadow: 0 12px 40px rgba(0,0,0,.6); max-width: 92vw; text-align: center;
+      animation: fadeUp .2s ease; transition: opacity .3s ease;
+    }
+    .pally-toast.ok   { border-color: rgba(34,197,94,.45); }
+    .pally-toast.warn { border-color: rgba(245,158,11,.5); }
+    .pally-toast.err  { border-color: rgba(239,68,68,.5); }
+    .pally-toast.out  { opacity: 0; }
+
+    /* ── TOEGANKELIJKHEID ── */
+    :where(button, input, textarea, [tabindex]):focus-visible {
+      outline: 2px solid var(--amber); outline-offset: 2px; border-radius: 6px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+    /* Touch targets: minimaal 44px op touch-apparaten */
+    @media (pointer: coarse) {
+      .mini-row, .check-mini-row { min-height: 44px; }
+      .mode-btn, .view-action-btn, .toggleBtn, .tab-btn, .btn-ghost, .btn-primary, .chip,
+      .btn-confirm-save, .btn-confirm-skip, .restore-btn, .role-badge { min-height: 44px; }
+      .btn-back { width: 44px; height: 44px; }
+      .version-card-header { min-height: 48px; }
+    }
+
+/* ── TABLET ── */
+    @media (max-width: 900px) {
+      .body { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .mobile-flowbar.show { display: flex; }
+      .panel-grid { grid-template-columns: 1fr; gap: 12px; }
+      .section-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .player-wrap, .check-wrap { grid-template-columns: 1fr; }
+      .player-sidebar, .check-sidebar { display: none; }
+      .value-table-header, .value-row { grid-template-columns: minmax(120px,2fr) 80px 20px 80px; }
+      .value-table-header.status-header, .value-row.status-row { grid-template-columns: minmax(110px,1.6fr) 1fr auto; }
+      .mode-choice-grid { grid-template-columns: 1fr; }
+      .version-param-row { grid-template-columns: 1fr 80px 18px 80px auto; }
+      .content { padding: 24px 16px 40px; }
+      .topbar, .breadcrumb { padding: 0 14px; }
+      .topbar { gap: 8px; }
+      .topbar-brand { gap: 8px; min-width: 0; flex: 1; }
+      .topbar-name { font-size: 11px; letter-spacing: .08em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .topbar-sep, .topbar-module { display: none; }
+      .topbar-right { gap: 6px; flex-shrink: 0; }
+      .sync-indicator { padding: 4px 8px; font-size: 10px; }
+      .role-badge { padding: 5px 9px; font-size: 10px; letter-spacing: .06em; }
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 600px) {
+      .content { padding: 18px 12px 32px; }
+      .content-title { font-size: 19px; }
+      .content-sub { font-size: 12px; }
+      .topbar, .breadcrumb { padding: 0 10px; }
+      .panel-grid { grid-template-columns: 1fr; }
+      .section-grid { grid-template-columns: 1fr; gap: 8px; }
+      .section-card { padding: 14px 16px; flex-direction: row; align-items: center; gap: 14px; }
+      .section-card-logo-wrap { width: 56px; height: 56px; }
+      .section-card-title { font-size: 15px; }
+      .section-card-desc { font-size: 12px; }
+      .section-card > div:nth-child(2), .section-card > div:nth-child(3) { flex: 1; min-width: 0; }
+      .section-card-footer { display: none; }
+      .view-header { gap: 8px; }
+      .view-header-right { width: 100%; gap: 6px; }
+      .pill { font-size: 11px; padding: 4px 9px; }
+      .actions-bar { flex-wrap: wrap; gap: 8px; }
+      .check-header-right { width: 100%; }
+      .check-values-grid { grid-template-columns: 1fr; }
+      .check-arrow { display: none; }
+      .check-param-name { font-size: 20px; }
+      .check-val-box { font-size: 18px; padding: 14px 16px; }
+      .preset-btn { min-width: 70px; font-size: 14px; padding: 14px 10px; }
+      .player-body { padding: 22px 18px; }
+      .player-label { font-size: 19px; }
+      .player-val-box { font-size: 15px; padding: 12px 14px; }
+      .player-values { flex-direction: column; gap: 12px; }
+      .player-arrow-sep { display: none; }
+      .check-summary-stats { gap: 6px; }
+      .check-stat-pill { font-size: 10px; padding: 5px 10px; }
+      .check-changes-row { grid-template-columns: minmax(90px,2fr) 70px 16px 70px 22px; padding: 10px 12px; gap: 6px; font-size: 11px; }
+      .tab-btn { padding: 8px 11px; font-size: 10px; letter-spacing: .06em; }
+      .login-box { padding: 24px 22px; }
+      .check-confirm-box { padding: 24px 22px; }
+    }
+
+    .check-values-stacked { display: flex; flex-direction: column; gap: 14px; margin-bottom: 0; }
+    .check-values-stacked .check-val-block { width: 100%; }
+
+    .preset-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 0; }
+    .preset-btn { flex: 1; min-width: 80px; padding: 16px 12px; border: 1px solid var(--border-2); background: var(--surface-2); border-radius: 8px; font-family: var(--mono); font-size: 16px; font-weight: 700; color: var(--text-2); cursor: pointer; transition: all .14s ease; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; text-align: center; line-height: 1.3; }
+    .preset-btn:hover { background: var(--surface-3); color: var(--text); border-color: var(--border-3); }
+    .preset-btn.selected-match { background: rgba(34,197,94,.14); border-color: rgba(34,197,94,.5); color: var(--green); box-shadow: 0 0 0 2px rgba(34,197,94,.12); }
+    .preset-btn.selected-miss { background: rgba(239,68,68,.12); border-color: rgba(239,68,68,.45); color: var(--red); box-shadow: 0 0 0 2px rgba(239,68,68,.1); }
+
+    .seq-display { background: var(--black); border: 1px solid var(--border-2); border-radius: 8px; padding: 14px 16px; font-family: var(--mono); font-size: 13px; color: var(--text-2); letter-spacing: .06em; word-break: break-all; line-height: 1.8; margin-bottom: 10px; }
+    .seq-confirm { display: flex; gap: 8px; }
+    .seq-confirm .preset-btn { font-size: 13px; padding: 12px 10px; }
+
+    /* ── PRINT (lijst op papier als backup) ── */
+    @media print {
+      html, body { background: #fff !important; color: #000 !important; }
+      .topbar, .breadcrumb, .mobile-flowbar, .sidebar, .mode-bar, .toggle-row,
+      .actions-bar, .view-header .btn-back, .view-action-btn, .pally-toast,
+      #pally-error-box { display: none !important; }
+      .body { display: block; }
+      .content { padding: 0; animation: none; }
+      .value-table, .value-row, .value-table-header { border-color: #bbb !important; background: #fff !important; }
+      .value-key, .value-key-text, .value-cell, .view-title, .pill { color: #000 !important; }
+      .value-cell.is-new { color: #1d4ed8 !important; }
+      .param-num { color: #92400e !important; background: #fff !important; border-color: #d97706 !important; }
+      .pill { border-color: #bbb !important; background: #fff !important; }
+      .richText { color: #000 !important; }
+    }
+  </style>
+</head>
+<body>
+<div id="pally-error-box" style="display:none;position:fixed;bottom:12px;left:12px;right:12px;z-index:9999;background:#1a0000;border:1px solid #ef4444;border-radius:8px;padding:10px 14px;font-family:monospace;font-size:12px;color:#ef4444;white-space:pre-wrap;max-height:140px;overflow:auto"
+  onclick="this.style.display='none'"></div>
+
+<div class="shell" id="app-shell"></div>
+<script>
+(function(){
+
+  /* ═══════════════════════════════════════
+     FOUT-OPPERVLAK — onzichtbare fouten worden nu getoond
+  ═══════════════════════════════════════ */
+  function showFatal(msg){
+    try{
+      var box = document.getElementById('pally-error-box');
+      if(box){ box.textContent = '⚠ ' + msg + '  (tik om te sluiten)'; box.style.display = 'block'; }
+    }catch(e){}
+  }
+  window.addEventListener('error', function(e){
+    showFatal('Fout: ' + (e.message || e.type || 'onbekend'));
+  });
+  window.addEventListener('unhandledrejection', function(e){
+    var r = e.reason;
+    showFatal('Async fout: ' + ((r && r.message) || r || 'onbekend'));
+  });
+
+  /* ═══════════════════════════════════════
+     SUPABASE CLOUD SYNC — met CDN-guard:
+     als supabase-js niet laadt (firewall/CDN down) draait de
+     app gewoon door in lokaal-only modus i.p.v. wit scherm.
+  ═══════════════════════════════════════ */
+  const SUPABASE_URL = 'https://ntccfqevzwayxplmxsqc.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_98qpLnBWLaARnKYU6DHwlw_CbpkNinn';
+  let sb = null;
+  try {
+    if(window.supabase && window.supabase.createClient){
+      sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    } else {
+      console.warn('[pally] supabase-js niet geladen — lokaal-only modus');
+    }
+  } catch(err){
+    console.warn('[pally] supabase init mislukt:', err && err.message);
+    sb = null;
+  }
+
+  /* ═══════════════════════════════════════
+     ROLE / AUTH
+  ═══════════════════════════════════════ */
+  /* AUTH — echte Supabase Auth (e-mail + wachtwoord).
+     • Operators loggen NIET in → alleen-lezen (anoniem).
+     • Technici/admins loggen in → mogen schrijven (RLS dwingt dit af).
+     • Offline fallback: als supabase-js niet geladen is, valt het terug op
+       een lokaal noodwachtwoord zodat het hulpmiddel niet onbruikbaar wordt
+       als het CDN onbereikbaar is in de fabriek. */
+  const FALLBACK_PASSWORD = 'admin';   // alleen gebruikt als cloud onbereikbaar is
+  const auth = {
+    role: 'operator',         // wordt 'admin' zodra er een sessie is
+    email: '',
+    showLogin: false,
+    loginError: '',
+    busy: false
+  };
+  function isAdmin(){ return auth.role === 'admin'; }
+
+  async function refreshAuthFromSession(){
+    if(!sb){ return; }
+    try{
+      const { data } = await sb.auth.getSession();
+      if(data && data.session && data.session.user){
+        auth.role = 'admin';
+        auth.email = data.session.user.email || '';
+      } else {
+        auth.role = 'operator';
+        auth.email = '';
+      }
+    }catch(e){ /* laat operator-rol staan */ }
+  }
+
+  async function doLogin(email, password){
+    auth.busy = true; auth.loginError = ''; render();
+    /* Offline noodscenario: geen supabase-js → lokaal wachtwoord */
+    if(!sb){
+      if(password === FALLBACK_PASSWORD){
+        auth.role = 'admin'; auth.email = '(offline)'; auth.showLogin = false; auth.busy = false;
+        showToast('Ingelogd (offline modus)', 'warn');
+        render();
+      } else {
+        auth.busy = false; auth.loginError = 'Verkeerd wachtwoord (offline modus)'; render();
+      }
+      return;
+    }
+    try{
+      const { data, error } = await sb.auth.signInWithPassword({ email: email, password: password });
+      if(error) throw error;
+      auth.role = 'admin';
+      auth.email = (data && data.user && data.user.email) || email;
+      auth.showLogin = false; auth.busy = false; auth.loginError = '';
+      showToast('Ingelogd als ' + auth.email, 'ok');
+      pullFromCloud(true).then(()=> render());
+      render();
+    }catch(err){
+      auth.busy = false;
+      auth.loginError = (err && err.message) === 'Invalid login credentials'
+        ? 'Onjuiste e-mail of wachtwoord'
+        : ('Login mislukt: ' + ((err && err.message) || 'onbekend'));
+      render();
+    }
+  }
+
+  async function doLogout(){
+    if(sb){ try{ await sb.auth.signOut(); }catch(e){} }
+    auth.role = 'operator'; auth.email = '';
+    showToast('Uitgelogd — operator modus', 'ok');
+    render();
+  }
+
+  /* ═══════════════════════════════════════
+     TOASTS — zichtbare meldingen i.p.v. console.warn
+  ═══════════════════════════════════════ */
+  function showToast(msg, type){
+    try{
+      var t = document.createElement('div');
+      t.className = 'pally-toast ' + (type || '');
+      t.textContent = msg;
+      document.body.appendChild(t);
+      setTimeout(function(){
+        t.classList.add('out');
+        setTimeout(function(){ t.remove(); }, 350);
+      }, 3500);
+    }catch(e){}
+  }
+
+  /* ═══════════════════════════════════════
+     SYNC QUEUE — mislukte writes gaan in een wachtrij
+     (localStorage) en worden automatisch opnieuw geprobeerd.
+     Geen stille dataverliezen meer.
+  ═══════════════════════════════════════ */
+  const QUEUE_KEY = 'pally_sync_queue';
+  function loadQueue(){ try{ return JSON.parse(localStorage.getItem(QUEUE_KEY)||'[]'); }catch(e){ return []; } }
+  function saveQueue(q){ try{ localStorage.setItem(QUEUE_KEY, JSON.stringify(q)); }catch(e){} }
+  function enqueue(op){
+    const q = loadQueue(); q.push(op); saveQueue(q);
+    setSyncStatus('queued');
+  }
+  let flushing = false;
+  async function flushSyncQueue(){
+    if(flushing || !sb || !navigator.onLine) return;
+    let q = loadQueue();
+    if(!q.length) return;
+    flushing = true;
+    setSyncStatus('syncing');
+    const remaining = [];
+    let authBlocked = false;
+    for(const op of q){
+      let ok = false;
+      try{
+        if(op.t==='value')   ok = await pushSavedValue(op.a, op.b, op.c, true);
+        if(op.t==='audit')   ok = await pushAuditEntry(op.a, true);
+        if(op.t==='version') ok = await pushVersion(op.a, op.b, true);
+      }catch(e){ ok = false; }
+      if(!ok) remaining.push(op);
+    }
+    saveQueue(remaining);
+    flushing = false;
+
+    /* Als er nog items vastzitten en de gebruiker niet (meer) is ingelogd,
+       is de oorzaak vrijwel zeker dat RLS de schrijfactie blokkeert.
+       Vraag dan opnieuw inloggen i.p.v. stil te blijven proberen. */
+    if(remaining.length && sb && !isAdmin()){
+      authBlocked = true;
+    }
+
+    if(remaining.length){
+      setSyncStatus('queued');
+      if(authBlocked){
+        showToast('⚠ ' + remaining.length + ' wijziging(en) niet opgeslagen — log opnieuw in', 'err');
+      }
+    } else {
+      setSyncStatus('synced');
+      if(q.length) showToast('✓ Alle wachtende wijzigingen gesynchroniseerd', 'ok');
+    }
+  }
+  setInterval(flushSyncQueue, 30000);
+
+  /* ═══════════════════════════════════════
+     SYNC STATUS
+  ═══════════════════════════════════════ */
+  let syncStatus = 'idle';
+  function setSyncStatus(s){
+    syncStatus = s;
+    const el = document.getElementById('sync-indicator');
+    if(!el) return;
+    const qn = loadQueue().length;
+    const cfg = ({
+      idle:    { color:'#475569', label:'·' },
+      syncing: { color:'#f59e0b', label:'⟳ Sync…' },
+      synced:  { color:'#22c55e', label:'✓ Synced' },
+      queued:  { color:'#f59e0b', label:'⟳ ' + qn + ' in wachtrij' },
+      offline: { color:'#64748b', label:'⊘ Offline' },
+      error:   { color:'#ef4444', label:'! Sync fout' }
+    })[s] || {color:'#475569', label:'·'};
+    el.style.color = cfg.color;
+    el.style.borderColor = cfg.color + '40';
+    el.textContent = cfg.label;
+  }
+
+  /* Sync diagnose: test elke tabel apart en toon het exacte foutbericht,
+     zodat duidelijk is of het probleem RLS, een ontbrekende tabel of een
+     kolom-mismatch is. */
+  let lastSyncErrorShown = '';
+  async function diagnoseSync(){
+    if(!sb) return;
+    const lines = [];
+    for(const t of ['current_values','versions','audit_log']){
+      try{
+        const { error } = await sb.from(t).select('*').limit(1);
+        lines.push(t + ': ' + (error ? 'FOUT — ' + error.message : 'OK'));
+      }catch(e){
+        lines.push(t + ': FOUT — ' + ((e && e.message) || 'onbekend'));
+      }
+    }
+    showFatal('SYNC DIAGNOSE\n' + lines.join('\n'));
+  }
+
+  let lastPullAt = 0;
+  let pullInFlight = null;
+  /* throttled pull: slaat een nieuwe pull over als er recent al één was,
+     tenzij force=true. Voorkomt dubbele refetch + geflikker bij snel klikken. */
+  async function pullFromCloud(force){
+    if(!sb){ setSyncStatus(loadQueue().length ? 'queued' : 'offline'); return; }
+    if(pullInFlight) return pullInFlight;
+    if(!force && (Date.now() - lastPullAt) < 8000) return;
+    pullInFlight = doPullFromCloud().finally(()=>{ pullInFlight = null; lastPullAt = Date.now(); });
+    return pullInFlight;
+  }
+
+  async function doPullFromCloud(){
+    if(!sb){ setSyncStatus(loadQueue().length ? 'queued' : 'offline'); return; }
+    await flushSyncQueue();
+    setSyncStatus('syncing');
+    try {
+      const [cv, vs, al] = await Promise.all([
+        sb.from('current_values').select('*'),
+        sb.from('versions').select('*').order('id', { ascending:false }),
+        sb.from('audit_log').select('*').order('id', { ascending:false }).limit(500)
+      ]);
+      if(cv.error) throw cv.error;
+      if(vs.error) throw vs.error;
+      if(al.error) throw al.error;
+
+      const store = getStore();
+      store.currentValues = {};
+      (cv.data || []).forEach(row => {
+        if(!store.currentValues[row.store_key]) store.currentValues[row.store_key] = {};
+        store.currentValues[row.store_key][row.param_key] = row.value;
+      });
+      store.versions = {};
+      (vs.data || []).forEach(row => {
+        if(!store.versions[row.store_key]) store.versions[row.store_key] = [];
+        store.versions[row.store_key].push({
+          v: row.v, ts: row.ts, changes: row.changes, locked: row.locked
+        });
+      });
+      store.auditLog = (al.data || []).map(row => ({
+        ts: row.ts, section: row.section, line: row.line,
+        toBiscuit: row.to_biscuit, toFormat: row.to_format,
+        param: row.param, old: row.old_value, new_: row.new_value,
+        note: row.note || '', action: row.action, changedBy: row.changed_by || ''
+      }));
+
+      /* Nog-niet-gesynchroniseerde lokale wijzigingen uit de wachtrij
+         opnieuw toepassen, anders zou de pull ze lokaal wissen. */
+      loadQueue().forEach(op => {
+        if(op.t==='value'){
+          if(!store.currentValues[op.a]) store.currentValues[op.a] = {};
+          store.currentValues[op.a][op.b] = op.c;
+        }
+        if(op.t==='audit'){
+          store.auditLog.unshift(op.a);
+        }
+        if(op.t==='version'){
+          if(!store.versions[op.a]) store.versions[op.a] = [];
+          const arr = store.versions[op.a];
+          const i = arr.findIndex(v => v.v === op.b.v);
+          if(i >= 0) arr[i] = op.b; else arr.unshift(op.b);
+        }
+      });
+
+      saveStore(store);
+      setSyncStatus(loadQueue().length ? 'queued' : 'synced');
+    } catch(err){
+      console.warn('[pullFromCloud] failed:', err && err.message);
+      const msg = (err && err.message) || 'onbekende fout';
+      if(msg !== lastSyncErrorShown){
+        lastSyncErrorShown = msg;
+        showToast('Sync fout: ' + msg, 'err');
+        diagnoseSync();
+      }
+      setSyncStatus(navigator.onLine ? 'error' : 'offline');
+    }
+  }
+
+  async function pushSavedValue(storeKey, paramKey, value, fromQueue){
+    if(!sb){
+      if(!fromQueue) enqueue({ t:'value', a:storeKey, b:paramKey, c:String(value) });
+      return false;
+    }
+    try {
+      const { error } = await sb.from('current_values').upsert({
+        store_key: storeKey, param_key: paramKey, value: String(value),
+        updated_at: new Date().toISOString(), updated_by: auth.email || ''
+      }, { onConflict: 'store_key,param_key' });
+      if(error) throw error;
+      return true;
+    } catch(err){
+      console.warn('[pushSavedValue] failed:', err && err.message);
+      if(!fromQueue){
+        enqueue({ t:'value', a:storeKey, b:paramKey, c:String(value) });
+        showToast('⚠ Niet gesynchroniseerd: ' + ((err && err.message) || 'fout') + ' — wordt opnieuw geprobeerd', 'warn');
+      }
+      return false;
+    }
+  }
+
+  async function pushAuditEntry(entry, fromQueue){
+    if(!sb){
+      if(!fromQueue) enqueue({ t:'audit', a:entry });
+      return false;
+    }
+    try {
+      const { error } = await sb.from('audit_log').insert({
+        ts: entry.ts, section: entry.section, line: entry.line || '',
+        to_biscuit: entry.toBiscuit, to_format: entry.toFormat,
+        param: entry.param, old_value: entry.old, new_value: entry.new_,
+        note: entry.note || '', action: entry.action, changed_by: entry.changedBy || ''
+      });
+      if(error) throw error;
+      return true;
+    } catch(err){
+      console.warn('[pushAuditEntry] failed:', err && err.message);
+      if(!fromQueue) enqueue({ t:'audit', a:entry });
+      return false;
+    }
+  }
+
+  async function pushVersion(storeKey, version, fromQueue){
+    if(!sb){
+      if(!fromQueue) enqueue({ t:'version', a:storeKey, b:JSON.parse(JSON.stringify(version)) });
+      return false;
+    }
+    try {
+      const { data: existing, error: selErr } = await sb
+        .from('versions').select('id')
+        .eq('store_key', storeKey).eq('v', version.v).limit(1);
+      if(selErr) throw selErr;
+
+      if(existing && existing.length){
+        const { error } = await sb.from('versions').update({
+          ts: version.ts, changes: version.changes, locked: !!version.locked
+        }).eq('id', existing[0].id);
+        if(error) throw error;
+      } else {
+        const { error } = await sb.from('versions').insert({
+          store_key: storeKey, v: version.v, ts: version.ts,
+          changes: version.changes, locked: !!version.locked
+        });
+        if(error) throw error;
+      }
+      return true;
+    } catch(err){
+      console.warn('[pushVersion] failed:', err && err.message);
+      if(!fromQueue) enqueue({ t:'version', a:storeKey, b:JSON.parse(JSON.stringify(version)) });
+      return false;
+    }
+  }
+
+  /* ═══════════════════════════════════════
+     CONSTANTS
+  ═══════════════════════════════════════ */
+  const BISCUITS = [
+    { id:'richtea',    label:'Rich Tea',   formats:['5x6','3x6'], color:'blauw' },
+    { id:'koffiekoek', label:'Koffiekoek', formats:['4x4','5x4','5x5'], color:'bruin' },
+    { id:'theekokos',  label:'Thee/Kokos', formats:['4x4'], color:'wit', formatMap:{'4x4':'5x5'} }
+  ];
+
+  const FILES = {
+    cavanna9:   './data/cavanna9.json',
+    cavanna10:  './data/cavanna10.json',
+    robertpack: './data/robertpack.json',
+    dozen:      './data/dozen.json',
+    dekselaar:  './data/dekselaar.json'
+  };
+
+  const state = {
+    loading:true, error:'', data:null,
+    appMode:null,
+    stage:1,
+    fromBiscuit:null, fromFormat:null,
+    toBiscuit:null,   toFormat:null,
+    section:null,
+    cavannaLine:'9', robertpackLine:'9',
+    viewMode:null, onlyChanges:true, stepIndex:0,
+    statusChecking:false
+  };
+
+  const COLOR_MAP = {
+    rood:'#ef4444', grijs:'#64748b', bruin:'#7a4a21',
+    wit:'#ffffff',  blauw:'#3b82f6', zwart:'#111', groen:'#22c55e'
+  };
+
+  const biscuitLabel      = id => { const _b = BISCUITS.find(b=>b.id===id); return _b ? _b.label || '' : ''; };
+  const formatsForBiscuit = id => { const _b = BISCUITS.find(b=>b.id===id); return _b ? _b.formats || [] : []; };
+  const getBiscuitMeta    = id => BISCUITS.find(b=>b.id===id) || null;
+
+  /* Resolves a UI format label to the internal data key.
+     E.g. for Thee/Kokos, "4x4" maps to "5x5" in the JSON files. */
+  function resolveDataFormat(biscuitId, uiFormat){
+    const meta = getBiscuitMeta(biscuitId);
+    if(meta && meta.formatMap && meta.formatMap[uiFormat]) return meta.formatMap[uiFormat];
+    return uiFormat;
+  }
+  function buildFlowRows(fromObj, toObj){
+    const keys = Array.from(new Set([...Object.keys(fromObj||{}), ...Object.keys(toObj||{})]));
+    return keys.map(k => [k, fromObj && fromObj[k] != null ? fromObj[k] : '—', toObj && toObj[k] != null ? toObj[k] : '—']);
+  }
+
+  function escapeHtml(v){
+    return String(v != null ? v : '')
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  }
+
+  function cleanNumberToken(token){
+    let s = String(token).trim();
+    if(!s) return s;
+    if(!/^[-+]?\d+[\.,]?\d*$/.test(s)) return s;
+    const hasComma=s.includes(','), hasDot=s.includes('.');
+    const sep = hasComma?',':(hasDot?'.':'');
+    let parts = sep ? s.split(sep) : [s];
+    let intPart = parts[0].replace(/^0+(\d)/,'$1');
+    if(intPart==='') intPart='0';
+    if(parts.length===1) return intPart;
+    let decPart = parts[1].replace(/0+$/,'');
+    if(decPart==='') return intPart;
+    return intPart+','+decPart;
+  }
+
+  function normalizeDisplayValue(value){
+    return String(value != null ? value : '').replace(/\u0392/g,'B')
+      .split('/').map(p=>cleanNumberToken(p.trim())).join(' / ');
+  }
+
+  function normalizeCompareValue(value){
+    return normalizeDisplayValue(value).toLowerCase().replace(/\s+/g,' ').trim();
+  }
+
+  const filterRows = (rows, onlyChanges) =>
+    onlyChanges ? rows.filter(r=>normalizeCompareValue(r[1])!==normalizeCompareValue(r[2])) : rows;
+
+  const isColorToken = t => Object.prototype.hasOwnProperty.call(COLOR_MAP, String(t).trim().toLowerCase());
+
+  function renderColorDot(token){
+    const name = String(token).trim().toLowerCase();
+    const color = COLOR_MAP[name];
+    if(!color) return '';
+    return `<span class="colorDot ${name}" style="background:${color}"></span>`;
+  }
+
+  function renderRichValue(value){
+    const norm  = normalizeDisplayValue(value);
+    const parts = norm.split('/').map(p=>p.trim()).filter(Boolean);
+    if(parts.length && parts.every(isColorToken))
+      return `<span class="richValue"><span class="colorDots">${parts.map(renderColorDot).join('')}</span></span>`;
+    const html = parts.map(p=>
+      isColorToken(p) ? renderColorDot(p) : `<span class="richText">${escapeHtml(p)}</span>`
+    );
+    return `<span class="richValue">${html.join('<span class="richText">/</span>')}</span>`;
+  }
+
+  function renderParamKey(key){
+    const m = String(key).match(/^(\d+[A-Z]?)\s+(.+)$/);
+    if(!m) return `<span class="value-key-text">${escapeHtml(key)}</span>`;
+    return `<span class="param-num">${escapeHtml(m[1])}</span><span class="value-key-text">${escapeHtml(m[2])}</span>`;
+  }
+
+  function renderPlayerLabel(key){
+    const m = String(key).match(/^(\d+[A-Z]?)\s+(.+)$/);
+    if(!m) return `<span>${escapeHtml(key)}</span>`;
+    return `<span class="player-num">${escapeHtml(m[1])}</span><span>${escapeHtml(m[2])}</span>`;
+  }
+
+  const SECTION_LOGOS = {
+    cavanna:    './cavanna-logo.png',
+    robertpack: './robertpack-logo.png',
+    dozen:      './dozen-logo.png',
+    dekselaar:  './dekselaar-logo.png'
+  };
+
+  const SECTION_ICONS = {
+    cavanna: `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>`,
+    robertpack: `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><path d="M10 6.5h4M14 4v5"/><path d="M14 6.5c2 0 3 .5 4 2l1 2"/><path d="M19 10.5v4a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-4"/><rect x="7" y="16" width="10" height="5" rx="1"/><path d="M10 16v-2M14 16v-2"/></svg>`,
+    dozen: `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5M12 22V12"/></svg>`,
+    dekselaar: `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="12" width="18" height="9" rx="1"/><path d="M3 12l2.5-6h13L21 12"/><path d="M2 12h20"/><path d="M9 12V9M15 12V9"/></svg>`
+  };
+
+  const SECTION_DESCS = {
+    cavanna:    'Instellingen voor Cavanna 9 en 10',
+    robertpack: 'Instellingen voor RobertPack 9 en 10',
+    dozen:      'Instellingen voor Dozen Opzetter',
+    dekselaar:  'Instellingen voor Dekselaar Opzetter'
+  };
+
+  /* ═══════════════════════════════════════
+     CHECK MODE STATE
+  ═══════════════════════════════════════ */
+  const checkState = {
+    active: false,
+    stepIndex: 0,
+    results: {},
+    showSummary: false,
+    pendingSave: null,
+    tab: 'check',
+    onlyChanges: true,
+    statusParam: null
+  };
+
+  /* ═══════════════════════════════════════
+     SESSIE-PERSISTENTIE — refresh of vergrendeld tablet
+     gooit de sessie niet meer weg.
+  ═══════════════════════════════════════ */
+  const SESSION_KEY = 'pally_session';
+  function persistSession(){
+    try{
+      sessionStorage.setItem(SESSION_KEY, JSON.stringify({
+        s: {
+          appMode: state.appMode,
+          stage: state.stage,
+          fromBiscuit: state.fromBiscuit, fromFormat: state.fromFormat,
+          toBiscuit: state.toBiscuit, toFormat: state.toFormat,
+          section: state.section,
+          cavannaLine: state.cavannaLine, robertpackLine: state.robertpackLine,
+          viewMode: state.viewMode, onlyChanges: state.onlyChanges, stepIndex: state.stepIndex,
+          statusChecking: state.statusChecking
+        },
+        c: {
+          active: checkState.active, stepIndex: checkState.stepIndex,
+          results: checkState.results, showSummary: checkState.showSummary,
+          tab: checkState.tab, onlyChanges: checkState.onlyChanges,
+          statusParam: checkState.statusParam
+        }
+      }));
+    }catch(e){}
+  }
+  function restoreSession(){
+    try{
+      const raw = sessionStorage.getItem(SESSION_KEY);
+      if(!raw) return;
+      const d = JSON.parse(raw);
+      if(d && d.s) Object.assign(state, d.s);
+      if(d && d.c) Object.assign(checkState, d.c);
+      checkState.pendingSave = null;
+    }catch(e){}
+  }
+
+  function loadStore(){ try{ return JSON.parse(localStorage.getItem('pally_store')||'{}'); }catch(e){return {};} }
+  function saveStore(s){ try{ localStorage.setItem('pally_store', JSON.stringify(s)); }catch(e){} }
+
+  function getStore(){
+    const s = loadStore();
+    if(!s.versions) s.versions = {};
+    if(!s.auditLog) s.auditLog = [];
+    if(!s.currentValues) s.currentValues = {};
+    return s;
+  }
+
+  function buildStoreKey(){
+    const line = state.section==='cavanna' ? state.cavannaLine :
+                 state.section==='robertpack' ? state.robertpackLine : '';
+    return `${state.section}|${state.toBiscuit}|${state.toFormat}|${line}`;
+  }
+
+  function nowStr(){ return new Date().toLocaleString('nl-NL',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}); }
+
+  async function loadData(){
+    try{
+      const entries = await Promise.all(
+        Object.entries(FILES).map(async([key,path])=>{
+          const res = await fetch(path,{cache:'no-store'});
+          if(!res.ok) throw new Error('Failed: '+path);
+          return [key, await res.json()];
+        })
+      );
+      state.data = Object.fromEntries(entries);
+    } catch(err){
+      state.error = err.message||'Failed to load data.';
+    } finally{
+      state.loading = false;
+      render();
+      pullFromCloud(true).then(()=> render());
+    }
+  }
+
+  function setState(patch){ Object.assign(state,patch); render(); }
+
+  function resetAll(){
+    Object.assign(state,{
+      appMode:null,
+      stage:1, fromBiscuit:null, fromFormat:null,
+      toBiscuit:null, toFormat:null, section:null,
+      cavannaLine:'9', robertpackLine:'9',
+      viewMode:null, onlyChanges:true, stepIndex:0,
+      statusChecking:false
+    });
+    checkState.active = false; checkState.stepIndex = 0; checkState.results = {}; checkState.tab = 'check';
+    checkState.showSummary = false; checkState.pendingSave = null;
+    render();
+  }
+
+  function getRobertPackValuesForFormat(format,col){
+    var rp = state.data && state.data.robertpack;
+    var byFormat = rp && rp.values && rp.values[format] ? rp.values[format] : {};
+    return (byFormat[col]) || {};
+  }
+
+  /* FIX: opgeslagen waarden (uit Check Mode / cloud) worden nu óók
+     toegepast op de "Nieuw"-kolom in de gewone weergave, zodat
+     operators altijd de geldende waarde zien — niet de verouderde
+     JSON-waarde. */
+  function applySavedValues(rows){
+    if(!state.section || !state.toBiscuit || !state.toFormat) return rows;
+    const store = getStore();
+    const sk = buildStoreKey();
+    const cv = store.currentValues && store.currentValues[sk];
+    if(!cv) return rows;
+    return rows.map(r => (cv[r[0]] != null && cv[r[0]] !== '') ? [r[0], r[1], cv[r[0]]] : r);
+  }
+
+  function getRows(){
+    if(!state.data) return [];
+    const fromKey = resolveDataFormat(state.fromBiscuit, state.fromFormat);
+    const toKey   = resolveDataFormat(state.toBiscuit,   state.toFormat);
+    if(state.section==='cavanna'){
+      const src = state.cavannaLine==='10' ? state.data.cavanna10 : state.data.cavanna9;
+      return applySavedValues(buildFlowRows((src && src.values && src.values[fromKey])||{}, (src && src.values && src.values[toKey])||{}));
+    }
+    if(state.section==='robertpack')
+      return applySavedValues(buildFlowRows(
+        getRobertPackValuesForFormat(fromKey, state.robertpackLine),
+        getRobertPackValuesForFormat(toKey,   state.robertpackLine)
+      ));
+    if(state.section==='dozen')
+      return applySavedValues(buildFlowRows((state.data.dozen && state.data.dozen.values && state.data.dozen.values[fromKey] || {}), (state.data.dozen && state.data.dozen.values && state.data.dozen.values[toKey] || {})));
+    if(state.section==='dekselaar')
+      return applySavedValues(buildFlowRows((state.data.dekselaar && state.data.dekselaar.values && state.data.dekselaar.values[fromKey] || {}), (state.data.dekselaar && state.data.dekselaar.values && state.data.dekselaar.values[toKey] || {})));
+    return [];
+  }
+
+  /* Check Mode respecteert nu ook het Alles/Wijzigingen-filter.
+     In Status-modus zijn het enkele-waarde-rijen (geen Van→Naar, geen
+     wijzigingen-filter want er is geen "oude" waarde om mee te vergelijken). */
+  function getCheckRows(){
+    if(state.appMode==='status'){
+      const rows = getStatusRows();
+      if(checkState.statusParam){
+        const only = rows.filter(r => r[0] === checkState.statusParam);
+        if(only.length) return only;
+      }
+      return rows;
+    }
+    return filterRows(getRows(), checkState.onlyChanges);
+  }
+
+  /* STATUS-MODUS: één waarde per parameter (de geldende waarde) voor
+     het gekozen product+formaat+sectie — zonder Van→Naar.
+     Rijvorm [param, '', huidigeWaarde] zodat dezelfde renderers/check
+     werken; kolom 2 (oud) blijft leeg. */
+  function getStatusBaseValues(){
+    if(!state.data) return {};
+    const key = resolveDataFormat(state.toBiscuit, state.toFormat);
+    if(state.section==='cavanna'){
+      const src = state.cavannaLine==='10' ? state.data.cavanna10 : state.data.cavanna9;
+      return (src && src.values && src.values[key]) || {};
+    }
+    if(state.section==='robertpack')
+      return getRobertPackValuesForFormat(key, state.robertpackLine);
+    if(state.section==='dozen')
+      return (state.data.dozen && state.data.dozen.values && state.data.dozen.values[key]) || {};
+    if(state.section==='dekselaar')
+      return (state.data.dekselaar && state.data.dekselaar.values && state.data.dekselaar.values[key]) || {};
+    return {};
+  }
+
+  function getStatusRows(){
+    const base = getStatusBaseValues();
+    const store = getStore();
+    const sk = buildStoreKey();
+    const cv = (store.currentValues && store.currentValues[sk]) || {};
+    return Object.keys(base).map(k => {
+      const val = (cv[k] != null && cv[k] !== '') ? cv[k] : base[k];
+      return [k, '', val];
+    });
+  }
+
+  function getExpectedValue(paramKey, originalExpected){
+    const store = getStore();
+    const sk = buildStoreKey();
+    const cv = store.currentValues && store.currentValues[sk];
+    return (cv && cv[paramKey]) || originalExpected;
+  }
+
+  function openCheckMode(){
+    /* Check & Verify is admin-only. Een operator wordt naar de login geleid. */
+    if(!isAdmin()){
+      auth.showLogin = true;
+      auth.loginError = '';
+      render();
+      showToast('🔒 Log in als admin voor Check & Verify', 'warn');
+      return;
+    }
+    checkState.active = true;
+    checkState.stepIndex = 0;
+    checkState.results = {};
+    checkState.showSummary = false;
+    checkState.pendingSave = null;
+    checkState._finishAfterSave = false;
+    checkState.statusParam = null;   /* hele lijst checken */
+    pullFromCloud(true).then(()=> render());
+    render();
+  }
+
+  /* Status-modus: Check Mode openen gericht op één parameter
+     (de admin tikte 'Check' naast een specifiek nummer). */
+  function openStatusCheck(paramKey){
+    if(!isAdmin()){
+      auth.showLogin = true;
+      auth.loginError = '';
+      render();
+      showToast('🔒 Log in als admin om te checken', 'warn');
+      return;
+    }
+    checkState.active = true;
+    checkState.stepIndex = 0;
+    checkState.results = {};
+    checkState.showSummary = false;
+    checkState.pendingSave = null;
+    checkState._finishAfterSave = false;
+    checkState.statusParam = paramKey || null;
+    pullFromCloud(true).then(()=> render());
+    render();
+  }
+
+  function closeCheckMode(){
+    checkState.active = false;
+    checkState.showSummary = false;
+    checkState.pendingSave = null;
+    checkState.statusParam = null;
+    render();
+  }
+
+  function advanceCheck(){
+    checkState.pendingSave = null;
+    if(checkState._finishAfterSave){
+      checkState._finishAfterSave = false;
+      checkState.showSummary = true;
+      render();
+      return;
+    }
+    const rows = getCheckRows();
+    if(checkState.stepIndex < rows.length - 1){
+      checkState.stepIndex++;
+      render();
+    } else {
+      checkState.showSummary = true;
+      render();
+    }
+  }
+
+  /* Gedeelde opslag-logica voor Check Mode én versie-herstel:
+     schrijft currentValues + audit + versie, en synct met wachtrij. */
+  function persistValueChange(paramKey, oldVal, newVal, note){
+    const store = getStore();
+    const sk = buildStoreKey();
+
+    if(!store.currentValues[sk]) store.currentValues[sk] = {};
+    store.currentValues[sk][paramKey] = String(newVal);
+
+    const auditEntry = {
+      ts: nowStr(),
+      section: getSectionTitle(state.section),
+      line: state.section==='cavanna'?state.cavannaLine:state.section==='robertpack'?state.robertpackLine:'',
+      toBiscuit: biscuitLabel(state.toBiscuit), toFormat: state.toFormat,
+      param: paramKey,
+      old: normalizeDisplayValue(String(oldVal)),
+      new_: normalizeDisplayValue(String(newVal)),
+      note: note || '', action: 'saved',
+      changedBy: auth.email || ''
+    };
+    store.auditLog.unshift(auditEntry);
+
+    if(!store.versions[sk]) store.versions[sk] = [];
+    const last = store.versions[sk][0];
+    const changeEntry = {
+      param: paramKey,
+      old: normalizeDisplayValue(String(oldVal)),
+      new_: normalizeDisplayValue(String(newVal)),
+      note: note || ''
+    };
+    let versionToPush;
+    if(!last || last.locked){
+      versionToPush = { v:(store.versions[sk].length+1), ts:nowStr(), changes:[changeEntry], locked:false };
+      store.versions[sk].unshift(versionToPush);
+    } else {
+      const idx = last.changes.findIndex(c=>c.param===paramKey);
+      if(idx>=0) last.changes[idx]=changeEntry; else last.changes.push(changeEntry);
+      last.ts = nowStr();
+      versionToPush = last;
+    }
+    saveStore(store);
+
+    setSyncStatus('syncing');
+    Promise.all([
+      pushSavedValue(sk, paramKey, newVal),
+      pushAuditEntry(auditEntry),
+      pushVersion(sk, versionToPush)
+    ]).then(results => {
+      if(results.every(r=>r)) setSyncStatus('synced');
+      else setSyncStatus(loadQueue().length ? 'queued' : (navigator.onLine ? 'error' : 'offline'));
+    }).catch(()=>{
+      setSyncStatus(loadQueue().length ? 'queued' : (navigator.onLine ? 'error' : 'offline'));
+    });
+  }
+
+  function confirmSave(){
+    const p = checkState.pendingSave;
+    if(!p) return;
+
+    /* Opslaan van een nieuwe geldende waarde vereist admin */
+    if(!isAdmin()){
+      auth.showLogin = true;
+      auth.loginError = '';
+      render();
+      showToast('🔒 Log in als admin om de nieuwe waarde op te slaan', 'warn');
+      return;
+    }
+
+    const noteEl = document.getElementById('confirm-note');
+    const note = noteEl ? noteEl.value.trim() : '';
+
+    persistValueChange(p.paramKey, p.expectedVal, p.actualVal, note);
+
+    checkState.results[p.paramKey] = { status:'saved', actual:p.actualVal };
+    removeConfirmOverlay();
+
+    const finishAfter = checkState._finishAfterSave;
+    checkState._finishAfterSave = false;
+
+    if(finishAfter){ checkState.showSummary = true; render(); }
+    else { advanceCheck(); }
+  }
+
+  function confirmSkip(){
+    const p = checkState.pendingSave;
+    if(!p) return;
+    const noteEl = document.getElementById('confirm-note');
+    const note = noteEl ? noteEl.value.trim() : '';
+    checkState.results[p.paramKey] = { status:'mismatch', actual:p.actualVal, note: note };
+    removeConfirmOverlay();
+    const finishAfter = checkState._finishAfterSave;
+    checkState._finishAfterSave = false;
+    if(finishAfter){ checkState.showSummary = true; render(); }
+    else { advanceCheck(); }
+  }
+
+  function renderConfirmOverlay(){
+    const p = checkState.pendingSave;
+    if(!p) return;
+    const existing = document.getElementById('check-confirm-overlay');
+    if(existing) existing.remove();
+    const adminHint = isAdmin() ? '' :
+      `<div class="confirm-admin-hint">🔒 Opslaan vereist admin — je wordt gevraagd in te loggen.</div>`;
+    const div = document.createElement('div');
+    div.className = 'check-confirm-overlay';
+    div.id = 'check-confirm-overlay';
+    div.innerHTML = `
+      <div class="check-confirm-box">
+        <div class="check-confirm-title">Waarde verschilt</div>
+        <div class="check-confirm-body">De machine-waarde verschilt van de lijst. Wil je de nieuwe waarde opslaan als de geldende waarde?</div>
+        <div class="check-confirm-vals">
+          <span class="check-confirm-val old">${escapeHtml(normalizeDisplayValue(String(p.expectedVal)))}</span>
+          <span class="check-confirm-arr">→</span>
+          <span class="check-confirm-val new">${escapeHtml(normalizeDisplayValue(String(p.actualVal)))}</span>
+        </div>
+        <textarea class="confirm-note" id="confirm-note" placeholder="Notitie (optioneel) — bv. reden van de afwijking…"></textarea>
+        ${adminHint}
+        <div class="check-confirm-actions">
+          <button class="btn-confirm-save" id="confirm-save-btn">↑ Ja, opslaan als nieuwe waarde</button>
+          <button class="btn-confirm-skip" id="confirm-skip-btn">Nee, doorgaan</button>
+        </div>
+      </div>`;
+    document.body.appendChild(div);
+    document.getElementById('confirm-save-btn').addEventListener('click', confirmSave);
+    document.getElementById('confirm-skip-btn').addEventListener('click', confirmSkip);
+  }
+
+  function removeConfirmOverlay(){
+    const el = document.getElementById('check-confirm-overlay');
+    if(el) el.remove();
+  }
+
+  /* Versie-herstel: zet een parameter terug naar een eerdere waarde */
+  function restoreParam(paramKey, oldValue){
+    if(!isAdmin()){
+      auth.showLogin = true;
+      auth.loginError = '';
+      render();
+      showToast('🔒 Log in als admin om een waarde te herstellen', 'warn');
+      return;
+    }
+    const rows = state.appMode==='status' ? getStatusRows() : getRows();
+    const row  = rows.find(r => r[0] === paramKey);
+    const currentVal = row ? getExpectedValue(paramKey, row[2]) : '—';
+    persistValueChange(paramKey, currentVal, oldValue, 'Hersteld naar eerdere waarde');
+    showToast('↩ ' + paramKey + ' hersteld naar ' + normalizeDisplayValue(String(oldValue)), 'ok');
+    render();
+  }
+
+  async function commitAndClose(){
+    const store = getStore();
+    const sk = buildStoreKey();
+    if((store.versions[sk] && store.versions[sk][0]) && !store.versions[sk][0].locked){
+      store.versions[sk][0].locked = true;
+      saveStore(store);
+      setSyncStatus('syncing');
+      const ok = await pushVersion(sk, store.versions[sk][0]);
+      setSyncStatus(ok ? 'synced' : (loadQueue().length ? 'queued' : (navigator.onLine ? 'error' : 'offline')));
+    }
+    closeCheckMode();
+  }
+
+  function renderChipGroup(items, value, onClick, formatter=x=>x){
+    return `<div class="chipRow">${items.map(item=>`
+      <button class="chip${value===item?' active':''}" data-action="${onClick}" data-value="${item}">
+        <span class="chipInner">${formatter(item)}</span>
+      </button>`).join('')}</div>`;
+  }
+
+  function renderStatusList(rows){
+    if(!rows.length) return `<div class="emptyNote">Geen parameters gevonden voor deze combinatie</div>`;
+    const admin = isAdmin();
+    return `
+      <div class="value-table">
+        <div class="value-table-header status-header${admin?'':' no-check'}">
+          <span class="value-table-col">Parameter</span>
+          <span class="value-table-col">Waarde</span>
+          ${admin?`<span class="value-table-col center"></span>`:''}
+        </div>
+        <div class="value-rows">
+          ${rows.map(r=>`
+            <div class="value-row status-row${admin?'':' no-check'}">
+              <span class="value-key">${renderParamKey(r[0])}</span>
+              <span class="value-cell is-new">${renderRichValue(r[2])}</span>
+              ${admin?`<button class="status-check-btn" data-action="status-check-one" data-param="${escapeHtml(r[0])}" title="Controleer ${escapeHtml(r[0])} op de machine">⊙ Check</button>`:''}
+            </div>`).join('')}
+        </div>
+      </div>`;
+  }
+
+  function renderValueList(rows){
+    if(!rows.length) return `<div class="emptyNote">Geen data gevonden</div>`;
+    return `
+      <div class="value-table">
+        <div class="value-table-header">
+          <span class="value-table-col">Parameter</span>
+          <span class="value-table-col">Huidig</span>
+          <span class="value-table-col center"></span>
+          <span class="value-table-col">Nieuw</span>
+        </div>
+        <div class="value-rows">
+          ${rows.map(r=>`
+            <div class="value-row">
+              <span class="value-key">${renderParamKey(r[0])}</span>
+              <span class="value-cell">${renderRichValue(r[1])}</span>
+              <span class="value-sep">→</span>
+              <span class="value-cell is-new">${renderRichValue(r[2])}</span>
+            </div>`).join('')}
+        </div>
+      </div>`;
+  }
+
+  function renderStepPlayer(rows){
+    const total = rows.length;
+    const cur   = rows[state.stepIndex];
+    if(!total||!cur) return `<div class="emptyNote">Geen data gevonden</div>`;
+    const pct    = ((state.stepIndex+1)/total*100).toFixed(1);
+    const isLast = state.stepIndex >= total-1;
+    const miniRows = rows.map((r,i)=>`
+      <button class="mini-row${i===state.stepIndex?' active':''}" data-action="jump-step" data-value="${i}">
+        <span class="mini-num">${String(i+1).padStart(2,'0')}</span>
+        <span class="mini-key">${escapeHtml(r[0])}</span>
+        ${i<state.stepIndex?'<span class="mini-check">✓</span>':''}
+      </button>`).join('');
+    return `
+      <div class="player-wrap">
+        <div class="player-main">
+          <div class="player-top-bar">
+            <span class="player-counter">${state.stepIndex+1} / ${total}</span>
+            <div class="player-progress-track"><div class="player-progress-fill" style="width:${pct}%"></div></div>
+            <span class="player-counter">${pct}%</span>
+          </div>
+          <div class="player-body">
+            <div class="player-key">PARAMETER</div>
+            <div class="player-label">${renderPlayerLabel(cur[0])}</div>
+            <div class="player-values">
+              <div class="player-val-block">
+                <div class="player-val-label">Huidig</div>
+                <div class="player-val-box">${renderRichValue(cur[1])}</div>
+              </div>
+              <div class="player-arrow-sep">→</div>
+              <div class="player-val-block">
+                <div class="player-val-label">Nieuw</div>
+                <div class="player-val-box new-val">${renderRichValue(cur[2])}</div>
+              </div>
+            </div>
+          </div>
+          <div class="player-controls">
+            <button class="btn-ghost" data-action="prev-step" ${state.stepIndex===0?'disabled':''}>← Vorige</button>
+            <button class="btn-primary" data-action="next-step">${isLast ? 'Afronden ✓' : 'Volgende →'}</button>
+          </div>
+        </div>
+        <div class="player-sidebar">
+          <div class="player-sidebar-header"><div class="player-sidebar-title">Stappen overzicht</div></div>
+          <div class="mini-list">${miniRows}</div>
+        </div>
+      </div>`;
+  }
+
+  function detectPresetType(expectedVal) {
+    var norm = normalizeCompareValue(String(expectedVal));
+    if(norm === '-' || norm === '—') return { type:'dash', options:null };
+    if(norm === 'ja' || norm === 'nee') return { type:'yn', options:['JA','NEE'] };
+    if(norm === 'open' || norm === 'dicht') return { type:'preset', options:['OPEN','DICHT'] };
+    if(norm === 'a' || norm === 'b') return { type:'preset', options:['A','B'] };
+    if(/^x\d+$/.test(norm)) return { type:'preset', options:['x1','x2','x3','x4','x5','x6','x7','x8'] };
+    if(norm === 'uit' || norm === 'in') return { type:'preset', options:['uit','in'] };
+    if(/gat$/.test(norm)) return { type:'preset', options:['1ste gat','4de gat'] };
+    if(/^nr\.\d+\s*-\s*\d+x$/.test(norm)) return { type:'racetrack', options:null };
+    if(norm.indexOf('->') >= 0 || norm.indexOf('<-') >= 0 || /^[x\d\-]+/.test(norm)) {
+      if(norm.length > 8) return { type:'sequence', options:null };
+    }
+    if(norm.length > 20 && !/^[-+]?[\d,./]+$/.test(norm)) return { type:'freetext', options:null };
+    return null;
+  }
+
+  function buildActualArea(colorMode, boxClass, liveStatus, curKey, actualVal, expectedVal){
+    if(colorMode){
+      var matchSt    = liveStatus==='match'    ? 'background:rgba(34,197,94,.18);border-color:rgba(34,197,94,.5);' : '';
+      var mismatchSt = liveStatus==='mismatch' ? 'background:rgba(239,68,68,.18);border-color:rgba(239,68,68,.5);' : '';
+      return '<div class="check-val-box color-confirm ' + boxClass + '" style="flex-direction:column;gap:12px;padding:20px;">'
+        + '<div style="font-family:var(--mono);font-size:11px;color:var(--text-3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px">Klopt dit op de machine?</div>'
+        + '<div style="display:flex;gap:10px;width:100%">'
+        + '<button class="check-color-btn match" data-action="check-color-confirm" data-key="' + escapeHtml(curKey) + '" data-value="match" style="' + matchSt + '">✓ Ja, klopt</button>'
+        + '<button class="check-color-btn miss"  data-action="check-color-confirm" data-key="' + escapeHtml(curKey) + '" data-value="mismatch" style="' + mismatchSt + '">✕ Nee, afwijking</button>'
+        + '</div></div>';
+    }
+
+    var preset = detectPresetType(expectedVal);
+
+    if(preset && preset.type === 'dash') {
+      var matchSt0 = liveStatus==='match' ? 'selected-match' : '';
+      return '<div class="check-val-lbl" style="font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3);margin-bottom:8px;">Niet van toepassing</div>'
+        + '<div class="seq-confirm">'
+        + '<button class="preset-btn ' + matchSt0 + '" data-action="check-preset" data-key="' + escapeHtml(curKey) + '" data-value="-" style="font-size:13px;padding:12px 10px;">✓ N.v.t. — bevestigen</button>'
+        + '</div>';
+    }
+
+    if(preset && preset.type !== 'sequence' && preset.type !== 'racetrack' && preset.type !== 'freetext' && preset.options) {
+      var normExp  = normalizeCompareValue(String(expectedVal));
+      var btns = preset.options.map(function(opt) {
+        var normOpt = normalizeCompareValue(opt);
+        var isExp = normOpt === normExp;
+        var isSel = liveStatus === 'match' && normalizeCompareValue(actualVal || String(expectedVal)) === normOpt;
+        var isMiss = liveStatus === 'mismatch' && normalizeCompareValue(actualVal) === normOpt;
+        var cls = isSel ? 'selected-match' : (isMiss ? 'selected-miss' : '');
+        return '<button class="preset-btn ' + cls + '" data-action="check-preset" data-key="' + escapeHtml(curKey) + '" data-value="' + escapeHtml(opt) + '">'
+          + escapeHtml(opt)
+          + (isExp ? '<span style="display:block;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.6;margin-top:3px;">verwacht</span>' : '')
+          + '</button>';
+      }).join('');
+      return '<div class="check-val-lbl" style="font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3);margin-bottom:8px;">Selecteer waarde</div>'
+        + '<div class="preset-grid">' + btns + '</div>';
+    }
+
+    if(preset && (preset.type === 'racetrack' || preset.type === 'freetext')) {
+      var matchSt2 = liveStatus==='match'    ? 'selected-match' : '';
+      var missSt2  = liveStatus==='mismatch' ? 'selected-miss'  : '';
+      return '<div class="check-val-lbl" style="font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3);margin-bottom:8px;">Controleer op machine</div>'
+        + '<div class="seq-display">' + escapeHtml(normalizeDisplayValue(String(expectedVal))) + '</div>'
+        + '<div class="seq-confirm">'
+        + '<button class="preset-btn ' + matchSt2 + '" data-action="check-preset" data-key="' + escapeHtml(curKey) + '" data-value="' + escapeHtml(String(expectedVal)) + '" style="font-size:13px;padding:12px 10px;">✓ Klopt</button>'
+        + '<button class="preset-btn ' + missSt2  + '" data-action="check-preset-miss" data-key="' + escapeHtml(curKey) + '" style="font-size:13px;padding:12px 10px;">✕ Afwijking</button>'
+        + '</div>';
+    }
+
+    if(preset && preset.type === 'sequence') {
+      var matchSt3 = liveStatus==='match'    ? 'selected-match' : '';
+      var missSt3  = liveStatus==='mismatch' ? 'selected-miss'  : '';
+      var dispVal  = normalizeDisplayValue(String(expectedVal));
+      return '<div class="check-val-lbl" style="font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3);margin-bottom:8px;">Volgorde controleren</div>'
+        + '<div class="seq-display" style="font-size:15px;letter-spacing:.12em;">' + escapeHtml(dispVal) + '</div>'
+        + '<div class="seq-confirm">'
+        + '<button class="preset-btn ' + matchSt3 + '" data-action="check-preset" data-key="' + escapeHtml(curKey) + '" data-value="' + escapeHtml(String(expectedVal)) + '" style="font-size:13px;padding:12px 10px;">✓ Volgorde klopt</button>'
+        + '<button class="preset-btn ' + missSt3  + '" data-action="check-preset-miss" data-key="' + escapeHtml(curKey) + '" style="font-size:13px;padding:12px 10px;">✕ Afwijking</button>'
+        + '</div>';
+    }
+
+    /* Vrij invoerveld — numeriek toetsenbord als de verwachte waarde numeriek is */
+    var isNumeric = /^[\s\d.,\/+-]+$/.test(normalizeDisplayValue(String(expectedVal)));
+    return '<div class="check-val-box ' + boxClass + '">'
+      + '<input class="check-input" id="check-actual-input"'
+      + ' placeholder="Voer waarde in\u2026"'
+      + ' value="' + escapeHtml(actualVal) + '"'
+      + ' type="text" inputmode="' + (isNumeric ? 'decimal' : 'text') + '" autocomplete="off"'
+      + ' data-param="' + escapeHtml(curKey) + '"'
+      + ' data-expected="' + escapeHtml(String(expectedVal)) + '">'
+      + '</div>';
+  }
+
+  function renderCheckMode(checkRows){
+    const total = checkRows.length;
+    const isStatus = state.appMode==='status';
+
+    /* Alles/Wijzigingen-filter — alleen in Ombouw-modus.
+       In Status-modus is er geen "oude" waarde, dus geen filter. */
+    const checkToggle = isStatus
+      ? `<div class="mode-bar" style="margin-bottom:14px">
+           <span style="font-family:var(--mono);font-size:11px;color:#06b6d4">≡ Status-check${checkState.statusParam?' · '+escapeHtml(checkState.statusParam):''}</span>
+           <span style="font-family:var(--mono);font-size:11px;color:var(--text-3)">${total} parameter${total!==1?'s':''}</span>
+         </div>`
+      : `<div class="mode-bar" style="margin-bottom:14px">
+        <div class="mode-pills">
+          <button class="mode-btn${!checkState.onlyChanges?' active':''}" data-action="check-show-mode" data-value="all">Alles</button>
+          <button class="mode-btn${checkState.onlyChanges?' active':''}" data-action="check-show-mode" data-value="changes">Wijzigingen</button>
+        </div>
+        <span style="font-family:var(--mono);font-size:11px;color:var(--text-3)">${total} parameter${total!==1?'s':''}</span>
+      </div>`;
+
+    if(!total){
+      const secData  = state.section==='cavanna' ? (state.data && state.data.cavanna9) :
+                       state.section==='robertpack' ? (state.data && state.data.robertpack) :
+                       state.section==='dozen' ? (state.data && state.data.dozen) :
+                       (state.data && state.data.dekselaar);
+      const fmtKeys  = (secData && secData.values) ? Object.keys(secData.values) : [];
+      return checkToggle + `<div class="emptyNote">
+        ${isStatus ? 'Geen parameters gevonden' : (checkState.onlyChanges ? 'Geen wijzigingen — schakel naar "Alles" om alle parameters te checken' : 'Geen parameters gevonden')}<br>
+        <span style="font-size:10px;margin-top:8px;display:block">
+          Sectie: ${state.section} · Format: ${state.toFormat}<br>
+          Beschikbare formats: ${fmtKeys.join(', ')||'—'}
+        </span>
+      </div>`;
+    }
+
+    if(checkState.showSummary) return renderCheckSummary(checkRows);
+
+    if(checkState.stepIndex >= total) checkState.stepIndex = 0;
+
+    const done  = checkRows.filter(r=>(checkState.results[r[0]] && checkState.results[r[0]].status) && (checkState.results[r[0]] && checkState.results[r[0]].status)!=='pending').length;
+    const pct   = Math.round(done/total*100);
+
+    const statusGlyph = s => s==='match'?'✓':s==='mismatch'?'✕':s==='saved'?'↑':'·';
+
+    const miniList = checkRows.map(([key],i)=>{
+      const s = (checkState.results[key] && checkState.results[key].status) || 'pending';
+      return `
+        <button class="check-mini-row${i===checkState.stepIndex?' active':''}" data-action="check-jump" data-value="${i}">
+          <span class="check-mini-num">${String(i+1).padStart(2,'0')}</span>
+          <span class="check-mini-key">${escapeHtml(key)}</span>
+          <span class="check-mini-status ${s}">${statusGlyph(s)}</span>
+        </button>`;
+    }).join('');
+
+    const cur = checkRows[checkState.stepIndex];
+    if(!cur) return checkToggle + `<div class="emptyNote">Geen parameter</div>`;
+    const [curKey, , curExpRaw] = cur;
+
+    const curResult  = checkState.results[curKey] || {};
+    const expectedVal= getExpectedValue(curKey, curExpRaw);
+    const actualVal  = curResult.actual || '';
+    const isLast     = checkState.stepIndex >= total-1;
+
+    const liveStatus = curResult.status || (
+      actualVal.trim()
+        ? (normalizeCompareValue(String(expectedVal))===normalizeCompareValue(actualVal) ? 'match' : 'mismatch')
+        : 'pending'
+    );
+
+    const isColorValue = v => {
+      const norm  = normalizeDisplayValue(String(v));
+      const parts = norm.split('/').map(p=>p.trim()).filter(Boolean);
+      return parts.length > 0 && parts.every(isColorToken);
+    };
+    const colorMode = isColorValue(expectedVal);
+
+    const boxClass    = liveStatus==='match' ? 'status-match' : liveStatus==='mismatch' ? 'status-mismatch' : liveStatus==='saved' ? 'status-saved' : 'actual';
+    const badgeLabel  = { match:'✓ Match', mismatch:'✕ Mismatch', saved:'↑ Opgeslagen', pending:'Wacht…' };
+    const badgeCls    = { match:'match', mismatch:'mismatch', saved:'saved', pending:'pending' };
+
+    const actualArea = buildActualArea(colorMode, boxClass, liveStatus, curKey, actualVal, expectedVal);
+
+    const paramCard = `
+      <div class="check-player">
+        <div class="check-player-top">
+          <span class="player-counter">${checkState.stepIndex+1} / ${total}</span>
+          <div class="player-progress-track" style="flex:1;margin:0 18px">
+            <div class="player-progress-fill" style="width:${pct}%"></div>
+          </div>
+          <span class="check-status-badge ${badgeCls[liveStatus]||'pending'}">
+            <span class="check-status-dot"></span>${badgeLabel[liveStatus]||'Wacht…'}
+          </span>
+        </div>
+
+        <div class="check-player-body">
+          <div class="check-param-label">PARAMETER</div>
+          <div class="check-param-name">${renderPlayerLabel(curKey)}</div>
+
+          ${(function(){
+            var _preset = detectPresetType(expectedVal);
+            var _isStacked = _preset && (_preset.type==='racetrack'||_preset.type==='freetext'||_preset.type==='sequence'||_preset.type==='dash');
+            if(_isStacked) {
+              return '<div class="check-values-stacked">'
+                + '<div class="check-val-block"><div class="check-val-label">Expected (lijst)</div>'
+                + '<div class="check-val-box expected">' + renderRichValue(String(expectedVal)) + '</div></div>'
+                + '<div class="check-val-block">' + actualArea + '</div>'
+                + '</div>';
+            }
+            return '<div class="check-values-grid">'
+              + '<div class="check-val-block"><div class="check-val-label">Expected (lijst)</div>'
+              + '<div class="check-val-box expected">' + renderRichValue(String(expectedVal)) + '</div></div>'
+              + '<div class="check-arrow">→</div>'
+              + '<div class="check-val-block"><div class="check-val-label">Actual (machine)</div>'
+              + actualArea + '</div>'
+              + '</div>';
+          })()}
+        </div>
+
+        <div class="check-player-nav">
+          <button class="btn-ghost" data-action="check-prev" ${checkState.stepIndex===0?'disabled':''}>← Vorige</button>
+          <div style="display:flex;gap:8px;align-items:center">
+            <span class="player-counter-done" style="font-family:var(--mono);font-size:11px;color:var(--text-3)">${done}/${total}</span>
+            ${isLast
+              ? `<button class="btn-primary" data-action="check-finish" data-param="${escapeHtml(curKey)}" data-expected="${escapeHtml(String(expectedVal))}" data-status="${liveStatus}">Afronden ✓</button>`
+              : `<button class="btn-primary" data-action="check-next"  data-param="${escapeHtml(curKey)}" data-expected="${escapeHtml(String(expectedVal))}" data-status="${liveStatus}">Volgende →</button>`
+            }
+          </div>
+        </div>
+      </div>`;
+
+    return `
+      ${checkToggle}
+      <div class="check-wrap">
+        <div>${paramCard}</div>
+        <div class="check-sidebar">
+          <div class="check-sidebar-header">
+            <span class="player-sidebar-title">Parameters</span>
+            <span style="font-family:var(--mono);font-size:10px;color:var(--text-3)">${pct}%</span>
+          </div>
+          <div class="mini-list">${miniList}</div>
+        </div>
+      </div>`;
+  }
+
+  function renderCheckSummary(checkRows){
+    const saved      = checkRows.filter(([k])=>(checkState.results[k] && checkState.results[k].status)==='saved');
+    const mismatches = checkRows.filter(([k])=>(checkState.results[k] && checkState.results[k].status)==='mismatch');
+    const matches    = checkRows.filter(([k])=>(checkState.results[k] && checkState.results[k].status)==='match');
+    const pending    = checkRows.filter(([k])=>!(checkState.results[k] && checkState.results[k].status) || (checkState.results[k] && checkState.results[k].status)==='pending');
+
+    const allChecked = [...saved, ...mismatches, ...matches];
+
+    const changeRows = allChecked.map(([key, , expRaw]) => {
+      const r = checkState.results[key];
+      const status = (r && r.status) || 'pending';
+      const expectedDisp = normalizeDisplayValue(String(getExpectedValue(key, expRaw)));
+      const expParts = expectedDisp.split('/').map(p=>p.trim()).filter(Boolean);
+      const isColor  = expParts.length > 0 && expParts.every(isColorToken);
+
+      const actualDisplay = isColor
+        ? renderRichValue(expectedDisp)
+        : escapeHtml(normalizeDisplayValue(String(r && r.actual ? r.actual : '—')));
+
+      const statusIco = status==='match'?'✓':status==='saved'?'↑':status==='mismatch'?'✕':'·';
+      const rowCls = status==='match'?'row-match':status==='saved'?'row-saved':status==='mismatch'?'row-miss':'';
+      return `
+        <div class="check-changes-row ${rowCls}">
+          <span class="check-changes-key">${renderParamKey(key)}</span>
+          <span class="check-changes-from">${renderRichValue(expectedDisp)}</span>
+          <span class="check-changes-sep">→</span>
+          <span class="check-changes-to ${status}">${actualDisplay}</span>
+          <span class="check-changes-status ${status}">${statusIco}</span>
+        </div>`;
+    }).join('');
+
+    return `
+      <div class="check-summary-screen">
+        <div class="check-summary-hero">Check afgerond</div>
+        <div class="check-summary-sub">${getSectionTitle(state.section)} · ${escapeHtml(biscuitLabel(state.toBiscuit))} ${escapeHtml(state.toFormat||'')}</div>
+        <div class="check-summary-stats">
+          <span class="check-stat-pill ok">  <span class="sn">${matches.length}</span> Match</span>
+          <span class="check-stat-pill miss"><span class="sn">${mismatches.length}</span> Mismatch</span>
+          <span class="check-stat-pill save"><span class="sn">${saved.length}</span> Opgeslagen</span>
+          ${pending.length ? `<span class="check-stat-pill skip"><span class="sn">${pending.length}</span> Niet gecheckt</span>` : ''}
+        </div>
+        ${allChecked.length ? `
+          <div class="check-changes-title">Gecheckte parameters</div>
+          <div class="check-changes-list">${changeRows}</div>
+        ` : `<div class="emptyNote" style="padding:32px;margin-bottom:24px">Geen parameters gecheckt</div>`}
+        <div class="check-summary-actions">
+          ${saved.length ? `<button class="btn-save-finish" data-action="check-commit">✓ Opslaan &amp; sluiten</button>` : ''}
+          <button class="btn-ghost" data-action="close-check">Sluiten</button>
+        </div>
+      </div>`;
+  }
+
+  function renderHistory(){
+    const store = getStore();
+    const sk    = buildStoreKey();
+    const versions = store.versions[sk] || [];
+    if(!versions.length) return `<div class="empty-state">Geen versies gevonden — nog geen waarden opgeslagen</div>`;
+    return `<div class="version-list">
+      ${versions.map((v,vi)=>`
+        <div class="version-card">
+          <button class="version-card-header" data-action="toggle-version" data-value="${vi}">
+            <span class="version-badge${vi===0?' latest':''}">v${v.v}</span>
+            <span class="version-meta">${biscuitLabel(state.toBiscuit)} ${state.toFormat} · ${getSectionTitle(state.section)}</span>
+            <span class="version-change-count">${v.changes.length} wijziging${v.changes.length!==1?'en':''}</span>
+            <span class="version-date">${v.ts}</span>
+          </button>
+          <div class="version-body${vi===0?' open':''}" id="version-body-${vi}">
+            <div class="version-param-list">
+              ${v.changes.map(c=>`
+                <div class="version-param-row">
+                  <span class="version-param-name">${renderParamKey(c.param)}</span>
+                  <span class="version-param-val">${escapeHtml(c.old)}</span>
+                  <span class="version-param-sep">→</span>
+                  <span class="version-param-val new">${escapeHtml(c.new_)}</span>
+                  <button class="restore-btn" data-action="restore-param" data-param="${escapeHtml(c.param)}" data-oldval="${escapeHtml(c.old)}" title="Zet ${escapeHtml(c.param)} terug naar ${escapeHtml(c.old)}">↩ Herstel</button>
+                </div>
+                ${c.note ? `<div style="padding:0 10px 6px 10px"><span style="font-family:var(--mono);font-size:11px;color:var(--text-3);font-style:italic">"${escapeHtml(c.note)}"</span></div>` : ''}
+              `).join('')}
+            </div>
+          </div>
+        </div>`).join('')}
+    </div>`;
+  }
+
+  function renderAudit(){
+    const store = getStore();
+    const logs = store.auditLog.filter(e=>
+      e.section===getSectionTitle(state.section) &&
+      e.toBiscuit===biscuitLabel(state.toBiscuit) &&
+      e.toFormat===state.toFormat
+    );
+    if(!logs.length) return `<div class="empty-state">Geen wijzigingen gelogd voor deze combinatie</div>`;
+    const iconMap = { match:'✓', warn:'!', mismatch:'✕', saved:'↑', skipped:'—' };
+    return `<div class="audit-list">
+      ${logs.map(e=>`
+        <div class="audit-entry">
+          <div class="audit-icon ${e.action}">${iconMap[e.action]||'·'}</div>
+          <div class="audit-body">
+            <div class="audit-title">${escapeHtml(e.param)}</div>
+            <div class="audit-meta">${escapeHtml(e.section)}${e.line?' · Lijn '+e.line:''} · ${escapeHtml(e.toBiscuit)} ${escapeHtml(e.toFormat)}${e.changedBy?' · door '+escapeHtml(e.changedBy):''}</div>
+            <div class="audit-change">
+              <span class="audit-old">${escapeHtml(e.old)}</span>
+              <span class="audit-arr">→</span>
+              <span class="audit-new">${escapeHtml(e.new_)}</span>
+            </div>
+            ${e.note ? `<div class="audit-note">"${escapeHtml(e.note)}"</div>` : ''}
+          </div>
+          <div class="audit-timestamp">${escapeHtml(e.ts)}</div>
+        </div>`).join('')}
+    </div>`;
+  }
+
+  function renderSidebar(){
+    const canContinue = state.fromBiscuit&&state.fromFormat&&state.toBiscuit&&state.toFormat;
+    const fromLabel   = state.fromBiscuit ? biscuitLabel(state.fromBiscuit) : '—';
+    const toLabel     = state.toBiscuit   ? biscuitLabel(state.toBiscuit)   : '—';
+    const fromFmt     = state.fromFormat  || '—';
+    const toFmt       = state.toFormat    || '—';
+    const sectionLabel = !state.section ? null :
+      state.section==='cavanna'    ? `Cavanna · L${state.cavannaLine}` :
+      state.section==='robertpack' ? `Robert Pack · L${state.robertpackLine}` :
+      state.section==='dozen'      ? 'Dozen Opzetter' : 'Dekselaar Opzetter';
+
+    /* Check & Verify is nu altijd zichtbaar als stap — ook voor operators.
+       Alleen het opslaan van nieuwe waarden vereist admin. */
+    const steps = [
+      { label:'Product & Formaat', done: canContinue,                        active: state.stage===1 },
+      { label:'Sectie & Ombouw',   done: state.stage===2 && !!state.section, active: state.stage===2 && !checkState.active },
+      { label:'Check & Verify',    done: false,                              active: checkState.active, checkActive: checkState.active }
+    ];
+
+    return `
+      <div class="sidebar">
+        <div class="sidebar-section">
+          <div class="sidebar-label">Ombouw sessie</div>
+          <div class="flow-card">
+            <div class="flow-card-row">
+              <div class="flow-block">
+                <div class="flow-block-label">Van</div>
+                <div class="flow-block-value ${state.fromBiscuit?'':'dim'}">${fromLabel}${state.fromFormat?` · ${fromFmt}`:''}</div>
+              </div>
+              <div class="flow-arrow-col">→</div>
+              <div class="flow-block">
+                <div class="flow-block-label">Naar</div>
+                <div class="flow-block-value ${state.toBiscuit?'amber':'dim'}">${toLabel}${state.toFormat?` · ${toFmt}`:''}</div>
+              </div>
+            </div>
+          </div>
+          ${sectionLabel?`<div class="section-tag"><div class="tag-dot"></div>${escapeHtml(sectionLabel)}</div>`:''}
+        </div>
+        <div class="sidebar-sep"></div>
+        <div class="step-list">
+          <div class="sidebar-label" style="padding:0 2px;margin-bottom:10px">Workflow</div>
+          ${steps.map((s,i)=>`
+            <div class="step-item${s.done?' done':''}${s.active&&!s.done?' active':''}${s.checkActive?' check-active':''}">
+              <div class="step-num">${s.done?'✓':i+1}</div>
+              <div class="step-text">${s.label}</div>
+            </div>`).join('')}
+        </div>
+      </div>`;
+  }
+
+  /* Compacte Van→Naar balk voor tablet/mobiel, waar de sidebar verborgen is. */
+  function renderMobileFlowbar(){
+    if(!state.fromBiscuit && !state.toBiscuit) return '';
+    const fromLabel = state.fromBiscuit ? biscuitLabel(state.fromBiscuit) : '—';
+    const toLabel   = state.toBiscuit   ? biscuitLabel(state.toBiscuit)   : '—';
+    const sectionLabel = !state.section ? '' :
+      state.section==='cavanna'    ? ` · Cavanna L${state.cavannaLine}` :
+      state.section==='robertpack' ? ` · Robert Pack L${state.robertpackLine}` :
+      state.section==='dozen'      ? ' · Dozen Opzetter' : ' · Dekselaar Opzetter';
+    return `
+      <div class="mobile-flowbar show">
+        <span>${escapeHtml(fromLabel)}${state.fromFormat?' · '+escapeHtml(state.fromFormat):''}</span>
+        <span class="mf-sep">→</span>
+        <b>${escapeHtml(toLabel)}${state.toFormat?' · '+escapeHtml(state.toFormat):''}</b>
+        <span class="mf-sep">${escapeHtml(sectionLabel)}</span>
+      </div>`;
+  }
+
+  const getSectionTitle = s =>
+    s==='cavanna'?'Cavanna':s==='robertpack'?'Robert Pack':s==='dozen'?'Dozen Opzetter':'Dekselaar Opzetter';
+
+  function renderLoginOverlay(){
+    if(!auth.showLogin) return '';
+    const offline = !sb;
+    return `
+      <div class="login-overlay" id="login-overlay">
+        <div class="login-box">
+          <div class="login-title">🔒 Inloggen voor wijzigingen</div>
+          <div class="login-sub">${offline
+            ? 'Cloud onbereikbaar — voer het noodwachtwoord in (offline modus).'
+            : 'Log in met je technicus-account om waarden te kunnen checken en opslaan. Operators hoeven niet in te loggen.'}</div>
+          ${offline ? '' : `<input type="email" class="login-input" id="login-email" placeholder="E-mail" autocomplete="username" inputmode="email">`}
+          <input type="password" class="login-input" id="login-input" placeholder="Wachtwoord" autocomplete="current-password">
+          ${auth.loginError ? `<div class="login-error">${escapeHtml(auth.loginError)}</div>` : ''}
+          <div class="login-actions">
+            <button class="btn-login-cancel" data-action="login-cancel">Annuleren</button>
+            <button class="btn-login" data-action="login-submit" ${auth.busy?'disabled':''}>${auth.busy?'Bezig…':'Inloggen'}</button>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function render(){
+    const shell       = document.getElementById('app-shell');
+    /* Veiligheidsslot: Check Mode is admin-only. Als de rol geen admin
+       (meer) is — bv. uitgelogd tijdens een check of herstelde sessie —
+       sluit Check Mode automatisch zodat de operator het nooit ziet. */
+    if(checkState.active && !isAdmin()){
+      checkState.active = false;
+      checkState.showSummary = false;
+      checkState.pendingSave = null;
+      checkState.statusParam = null;
+      removeConfirmOverlay();
+    }
+    const canContinue = state.fromBiscuit&&state.fromFormat&&state.toBiscuit&&state.toFormat;
+    const rows        = getRows();
+    const visibleRows = filterRows(rows, state.onlyChanges);
+
+    let bcParts = [];
+    if(state.stage>=1){
+      const modeLabel = state.appMode==='status' ? 'Wat draait nu' : state.appMode==='ombouw' ? 'Ombouw' : 'Start';
+      bcParts.push(`<span class="bc-item${state.stage===1&&!checkState.active?' active':''}">${modeLabel}</span>`);
+    }
+    if(state.stage>=2) bcParts.push(`<span class="bc-sep"> › </span><span class="bc-item${state.stage===2&&!checkState.active&&!state.section?' active':''}">Sectie kiezen</span>`);
+    if(state.stage===2&&state.section) bcParts.push(`<span class="bc-sep"> › </span><span class="bc-item${!checkState.active?' active':''}">${getSectionTitle(state.section)}</span>`);
+    if(checkState.active) bcParts.push(`<span class="bc-sep"> › </span><span class="bc-item active" style="color:#06b6d4">Check Mode</span>`);
+    const bc = bcParts.join('');
+
+    let mainContent = '';
+
+    if(state.loading){
+      mainContent = `<div class="loading-screen"><div class="loading-bar-wrap"><div class="loading-bar-fill"></div></div><div class="loading-label">Systeem initialiseren</div></div>`;
+    }
+    else if(state.error){
+      mainContent = `<div class="content"><div class="emptyNote">${escapeHtml(state.error)}</div></div>`;
+    }
+    else if(checkState.active && state.stage===2 && state.section){
+      /* Check Mode is nu ook voor operators toegankelijk (alleen-controleren).
+         Opslaan van afwijkingen blijft admin-only via confirmSave. */
+      const checkRows = getCheckRows();
+      const tabContent =
+        checkState.tab==='check'   ? renderCheckMode(checkRows) :
+        checkState.tab==='history' ? renderHistory() :
+        renderAudit();
+
+      mainContent = `
+        <div class="content">
+          <div class="check-header">
+            <div class="check-header-left">
+              <button class="btn-back" data-action="close-check" aria-label="Check Mode sluiten">‹</button>
+              <div class="check-title">Check Mode <span style="font-family:var(--mono);font-size:12px;color:var(--text-3);font-weight:400;margin-left:4px">— ${getSectionTitle(state.section)}</span></div>
+            </div>
+            <div class="check-header-right">
+              <div class="pill">${renderColorDot((getBiscuitMeta(state.toBiscuit) && getBiscuitMeta(state.toBiscuit).color))} ${escapeHtml(biscuitLabel(state.toBiscuit))} ${escapeHtml(state.toFormat||'')}</div>
+              ${state.section==='cavanna'?`<div class="pill">Lijn ${state.cavannaLine}</div>`:''}
+              ${state.section==='robertpack'?`<div class="pill">Lijn ${state.robertpackLine}</div>`:''}
+            </div>
+          </div>
+
+          <div class="tab-bar">
+            <button class="tab-btn${checkState.tab==='check'?' active':''}" data-action="check-tab" data-value="check">⊙ Check</button>
+            <button class="tab-btn${checkState.tab==='history'?' active':''}" data-action="check-tab" data-value="history">◷ Versies</button>
+            <button class="tab-btn${checkState.tab==='audit'?' active':''}" data-action="check-tab" data-value="audit">≡ Logboek</button>
+          </div>
+
+          ${tabContent}
+        </div>`;
+    }
+    else if(state.stage===1 && !state.appMode){
+      mainContent = `
+        <div class="content">
+          <div class="content-header">
+            <div class="content-title">Wat wil je doen?</div>
+            <div class="content-sub">Kies tussen een ombouw voorbereiden of de huidige instellingen van een lopende productie bekijken.</div>
+          </div>
+          <div class="section-grid mode-choice-grid">
+            <button class="section-card mode-choice-card" data-action="pick-mode" data-value="ombouw">
+              <div class="mode-choice-icon ombouw">⇄</div>
+              <div class="section-card-title">Ombouw</div>
+              <div class="section-card-desc">Van het ene product naar het andere — toont wat er verandert (Van → Naar).</div>
+              <div class="section-card-footer"><span class="section-card-arrow">→</span></div>
+            </button>
+            <button class="section-card mode-choice-card" data-action="pick-mode" data-value="status">
+              <div class="mode-choice-icon status">≡</div>
+              <div class="section-card-title">Wat draait nu</div>
+              <div class="section-card-desc">Bekijk de geldende waarden van een lopend product — kies product, formaat en sectie en check de nummers.</div>
+              <div class="section-card-footer"><span class="section-card-arrow">→</span></div>
+            </button>
+          </div>
+        </div>`;
+    }
+    else if(state.stage===1 && state.appMode==='status'){
+      mainContent = `
+        <div class="content">
+          <div class="view-header">
+            <div class="view-header-left">
+              <button class="btn-back" data-action="reset-all" aria-label="Terug naar startkeuze">‹</button>
+              <div class="view-title">Wat draait nu</div>
+            </div>
+          </div>
+          <div class="content-sub" style="margin-bottom:22px">Welk product en formaat draait er op de lijn?</div>
+          <div class="panel-grid" style="grid-template-columns:1fr">
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">Lopend product</span>
+                ${state.toBiscuit&&state.toFormat?'<span class="panel-badge">GEREED</span>':''}
+              </div>
+              <div class="panel-body">
+                <div class="field-label">Product</div>
+                ${renderChipGroup(BISCUITS.map(b=>b.id), state.toBiscuit, 'to-product',
+                  id=>`${renderColorDot((getBiscuitMeta(id) && getBiscuitMeta(id).color))}<span>${escapeHtml(biscuitLabel(id))}</span>`)}
+                ${state.toBiscuit?`<div class="field-label">Formaat</div>${renderChipGroup(formatsForBiscuit(state.toBiscuit), state.toFormat, 'to-format')}`:''}
+              </div>
+            </div>
+          </div>
+          <div class="actions-bar">
+            <button class="btn-ghost" data-action="reset-all">Annuleren</button>
+            <button class="btn-primary" data-action="status-go-sections" ${state.toBiscuit&&state.toFormat?'':'disabled'}>Kies sectie →</button>
+          </div>
+        </div>`;
+    }
+    else if(state.stage===1){
+      mainContent = `
+        <div class="content">
+          <div class="view-header">
+            <div class="view-header-left">
+              <button class="btn-back" data-action="reset-all" aria-label="Terug naar startkeuze">‹</button>
+              <div class="view-title">Configureer ombouw</div>
+            </div>
+          </div>
+          <div class="content-sub" style="margin-bottom:22px">Selecteer van welk product je komt en naar welk product je gaat.</div>
+          <div class="panel-grid">
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">Van</span>
+                ${state.fromBiscuit&&state.fromFormat?'<span class="panel-badge">GEREED</span>':''}
+              </div>
+              <div class="panel-body">
+                <div class="field-label">Product</div>
+                ${renderChipGroup(BISCUITS.map(b=>b.id), state.fromBiscuit, 'from-product',
+                  id=>`${renderColorDot((getBiscuitMeta(id) && getBiscuitMeta(id).color))}<span>${escapeHtml(biscuitLabel(id))}</span>`)}
+                ${state.fromBiscuit?`<div class="field-label">Formaat</div>${renderChipGroup(formatsForBiscuit(state.fromBiscuit), state.fromFormat, 'from-format')}`:''}
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">Naar</span>
+                ${state.toBiscuit&&state.toFormat?'<span class="panel-badge">GEREED</span>':''}
+              </div>
+              <div class="panel-body">
+                <div class="field-label">Product</div>
+                ${renderChipGroup(BISCUITS.map(b=>b.id), state.toBiscuit, 'to-product',
+                  id=>`${renderColorDot((getBiscuitMeta(id) && getBiscuitMeta(id).color))}<span>${escapeHtml(biscuitLabel(id))}</span>`)}
+                ${state.toBiscuit?`<div class="field-label">Formaat</div>${renderChipGroup(formatsForBiscuit(state.toBiscuit), state.toFormat, 'to-format')}`:''}
+              </div>
+            </div>
+          </div>
+          <div class="actions-bar">
+            <button class="btn-ghost" data-action="reset-all">Reset</button>
+            <button class="btn-primary" data-action="go-sections" ${canContinue?'':'disabled'}>Volgende stap →</button>
+          </div>
+        </div>`;
+    }
+    else if(state.stage===2&&!state.section){
+      const sectionAction = state.appMode==='status' ? 'status-open-section' : 'open-section';
+      const cards = ['cavanna','robertpack','dozen','dekselaar'].map(id=>{
+        const logoSrc = SECTION_LOGOS[id];
+        const title   = getSectionTitle(id);
+        const desc    = SECTION_DESCS[id];
+        const icon    = SECTION_ICONS[id];
+        return '<button class="section-card" data-action="'+sectionAction+'" data-value="'+id+'">'
+          + '<div class="section-card-logo-wrap">'
+          + '<img class="section-card-logo" src="'+logoSrc+'" alt="'+escapeHtml(title)+'" onerror="this.parentElement.classList.add(\'logo-failed\')">'
+          + '<div class="section-card-logo-fallback">'+icon+'</div>'
+          + '</div>'
+          + '<div class="section-card-title">'+escapeHtml(title)+'</div>'
+          + '<div class="section-card-desc">'+escapeHtml(desc)+'</div>'
+          + '<div class="section-card-footer">'
+          + '<span class="section-card-arrow">→</span>'
+          + '</div>'
+          + '</button>';
+      }).join('');
+      mainContent = `
+        <div class="content">
+          <div class="view-header">
+            <div class="view-header-left">
+              <button class="btn-back" data-action="back-setup" aria-label="Terug naar configuratie">‹</button>
+              <div class="view-title">Kies sectie</div>
+            </div>
+          </div>
+          <div class="section-grid">${cards}</div>
+        </div>`;
+    }
+    else if(state.appMode==='status' && state.stage===2 && state.section){
+      const statusRows = getStatusRows();
+      mainContent = `
+        <div class="content">
+          <div class="view-header">
+            <div class="view-header-left">
+              <button class="btn-back" data-action="status-close-section" aria-label="Terug naar secties">‹</button>
+              <img src="${SECTION_LOGOS[state.section]}" alt="${getSectionTitle(state.section)}" class="section-header-logo" onerror="this.style.display='none'">
+            </div>
+            <div class="view-header-right">
+              <div class="pill">≡ Status</div>
+              <div class="pill">${renderColorDot((getBiscuitMeta(state.toBiscuit) && getBiscuitMeta(state.toBiscuit).color))} ${escapeHtml(biscuitLabel(state.toBiscuit))} ${escapeHtml(state.toFormat||'')}</div>
+              ${isAdmin() ? `<button class="view-action-btn check-btn" data-action="open-check" style="margin-left:6px">⊙ Check &amp; Verify</button>` : ''}
+            </div>
+          </div>
+
+          <div class="toggle-row">
+            ${state.section==='cavanna'?`
+              <button class="toggleBtn lineToggle ${state.cavannaLine==='9'?'active':''}" data-action="cav-line" data-value="9">${renderColorDot('rood')}<span>Lijn 9</span></button>
+              <button class="toggleBtn lineToggle ${state.cavannaLine==='10'?'active':''}" data-action="cav-line" data-value="10">${renderColorDot('grijs')}<span>Lijn 10</span></button>
+            `:''}
+            ${state.section==='robertpack'?`
+              <button class="toggleBtn lineToggle ${state.robertpackLine==='9'?'active':''}" data-action="rp-line" data-value="9">${renderColorDot('rood')}<span>Lijn 9</span></button>
+              <button class="toggleBtn lineToggle ${state.robertpackLine==='10'?'active':''}" data-action="rp-line" data-value="10">${renderColorDot('grijs')}<span>Lijn 10</span></button>
+            `:''}
+          </div>
+
+          <div class="mode-bar">
+            <div class="content-sub" style="margin:0">Geldende waarden voor ${escapeHtml(biscuitLabel(state.toBiscuit))} ${escapeHtml(state.toFormat||'')} — ${getSectionTitle(state.section)}. Tik op Check om een nummer op de machine te controleren.</div>
+            <button class="view-action-btn" data-action="print-list">⎙ Print</button>
+          </div>
+
+          ${renderStatusList(statusRows)}
+        </div>`;
+    }
+    else if(state.stage===2&&state.section){
+      mainContent = `
+        <div class="content">
+          <div class="view-header">
+            <div class="view-header-left">
+              <button class="btn-back" data-action="close-section" aria-label="Terug naar secties">‹</button>
+              <img src="${SECTION_LOGOS[state.section]}" alt="${getSectionTitle(state.section)}" class="section-header-logo" onerror="this.style.display='none'">
+            </div>
+            <div class="view-header-right">
+              <div class="pill">${renderColorDot((getBiscuitMeta(state.fromBiscuit) && getBiscuitMeta(state.fromBiscuit).color))} ${escapeHtml(biscuitLabel(state.fromBiscuit))} ${escapeHtml(state.fromFormat||'')}</div>
+              <span style="color:var(--text-3);font-family:var(--mono);font-size:11px">→</span>
+              <div class="pill">${renderColorDot((getBiscuitMeta(state.toBiscuit) && getBiscuitMeta(state.toBiscuit).color))} ${escapeHtml(biscuitLabel(state.toBiscuit))} ${escapeHtml(state.toFormat||'')}</div>
+              ${isAdmin() ? `<button class="view-action-btn check-btn" data-action="open-check" style="margin-left:6px">⊙ Check &amp; Verify</button>` : ''}
+            </div>
+          </div>
+
+          <div class="toggle-row">
+            ${state.section==='cavanna'?`
+              <button class="toggleBtn lineToggle ${state.cavannaLine==='9'?'active':''}" data-action="cav-line" data-value="9">${renderColorDot('rood')}<span>Lijn 9</span></button>
+              <button class="toggleBtn lineToggle ${state.cavannaLine==='10'?'active':''}" data-action="cav-line" data-value="10">${renderColorDot('grijs')}<span>Lijn 10</span></button>
+            `:''}
+            ${state.section==='robertpack'?`
+              <button class="toggleBtn lineToggle ${state.robertpackLine==='9'?'active':''}" data-action="rp-line" data-value="9">${renderColorDot('rood')}<span>Lijn 9</span></button>
+              <button class="toggleBtn lineToggle ${state.robertpackLine==='10'?'active':''}" data-action="rp-line" data-value="10">${renderColorDot('grijs')}<span>Lijn 10</span></button>
+            `:''}
+          </div>
+
+          <div class="mode-bar">
+            <div class="view-actions">
+              <button class="view-action-btn${state.viewMode==='start'?' active':''}" data-action="view-mode" data-value="start">▶ Stap voor stap</button>
+              <button class="view-action-btn${state.viewMode==='list'?' active':''}" data-action="view-mode" data-value="list">☰ Lijst</button>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+              ${state.viewMode?`
+                <div class="mode-pills">
+                  <button class="mode-btn${!state.onlyChanges?' active':''}" data-action="show-mode" data-value="all">Alles</button>
+                  <button class="mode-btn${state.onlyChanges?' active':''}" data-action="show-mode" data-value="changes">Wijzigingen</button>
+                </div>`:''
+              }
+              ${state.viewMode==='list'?`<button class="view-action-btn" data-action="print-list">⎙ Print</button>`:''}
+            </div>
+          </div>
+
+          ${state.viewMode==='start' ? renderStepPlayer(visibleRows) : ''}
+          ${state.viewMode==='list'  ? renderValueList(visibleRows) : ''}
+          ${!state.viewMode ? `<div class="emptyNote">Kies hierboven hoe je de informatie wilt weergeven.</div>` : ''}
+        </div>`;
+    }
+
+    const roleBadge = isAdmin()
+      ? `<button class="role-badge admin" data-action="role-logout" title="${escapeHtml(auth.email||'')} — klik om uit te loggen">🔓 ${escapeHtml(auth.email ? auth.email.split('@')[0] : 'Admin')}</button>`
+      : `<button class="role-badge operator" data-action="role-login" title="Klik om in te loggen voor wijzigingen">🔒 Operator</button>`;
+
+    shell.innerHTML = `
+      <div class="topbar">
+        <div class="topbar-brand">
+          <div class="topbar-logo"><img src="./pally-logo.png" alt="Pally" onerror="this.style.display='none'"></div>
+          <span class="topbar-name">Pally Biscuits</span>
+          <div class="topbar-sep"></div>
+          <span class="topbar-module">${checkState.active ? 'Check Mode' : 'Ombouwen'}</span>
+        </div>
+        <div class="topbar-right">
+          <button class="sync-indicator" id="sync-indicator" data-action="manual-refresh" title="Klik om te verversen" aria-live="polite">·</button>
+          ${roleBadge}
+        </div>
+      </div>
+      <div class="body">
+        ${renderSidebar()}
+        <div class="main">
+          <div class="breadcrumb">${bc}</div>
+          ${renderMobileFlowbar()}
+          ${mainContent}
+        </div>
+      </div>
+      ${renderLoginOverlay()}`;
+
+    setSyncStatus(syncStatus);
+    bindActions();
+    persistSession();
+  }
+
+  function saveCurrentInput(){
+    const inp  = document.getElementById('check-actual-input');
+    const rows = getCheckRows();
+    const cur  = rows[checkState.stepIndex];
+    if(!cur) return;
+    const key    = cur[0];
+    const expRaw = cur[2];
+    const normExp  = normalizeDisplayValue(String(expRaw));
+    const expParts = normExp.split('/').map(p=>p.trim()).filter(Boolean);
+    const isColor  = expParts.length > 0 && expParts.every(isColorToken);
+    if(isColor) return;
+    var presetType2 = detectPresetType(expRaw);
+    if(presetType2 && presetType2.options) return;
+    const val    = inp ? inp.value : (checkState.results[key] && checkState.results[key].actual ? checkState.results[key].actual : '');
+    const exp    = getExpectedValue(key, expRaw);
+    const status = val.trim()
+      ? (normalizeCompareValue(String(exp)) === normalizeCompareValue(val) ? 'match' : 'mismatch')
+      : ((checkState.results[key] && checkState.results[key].status) || 'pending');
+    checkState.results[key] = { ...(checkState.results[key]||{}), actual: val, status };
+  }
+
+  function attemptLogin(){
+    const emailInp = document.getElementById('login-email');
+    const passInp  = document.getElementById('login-input');
+    if(!passInp) return;
+    const email = emailInp ? emailInp.value.trim() : '';
+    const pass  = passInp.value;
+    if(sb && !email){ auth.loginError = 'Vul je e-mail in'; render(); return; }
+    doLogin(email, pass);
+  }
+
+  function bindActions(){
+    document.querySelectorAll('[data-action]').forEach(el=>{
+      if(el.tagName==='INPUT'||el.tagName==='TEXTAREA') return;
+      el.addEventListener('click', ()=>{
+        const action = el.dataset.action;
+        const value  = el.dataset.value;
+
+        /* ── auth ── */
+        if(action==='manual-refresh'){ showToast('Verversen…', 'ok'); pullFromCloud(true).then(()=> render()); }
+        if(action==='role-login'){ auth.showLogin = true; auth.loginError = ''; render(); }
+        if(action==='role-logout'){ doLogout(); }
+        if(action==='login-cancel'){ auth.showLogin = false; auth.loginError = ''; render(); }
+        if(action==='login-submit'){ attemptLogin(); }
+
+        if(action==='from-product')  setState({fromBiscuit:value, fromFormat:null});
+        if(action==='to-product')    setState({toBiscuit:value,   toFormat:null});
+        if(action==='from-format')   setState({fromFormat:value});
+        if(action==='to-format')     {
+          setState({toFormat:value});
+        }
+        if(action==='reset-all')     resetAll();
+        if(action==='pick-mode'){
+          setState({ appMode: value, stage: 1, section: null });
+        }
+        if(action==='go-sections' && state.fromBiscuit&&state.fromFormat&&state.toBiscuit&&state.toFormat) setState({stage:2});
+        if(action==='status-go-sections' && state.toBiscuit&&state.toFormat) setState({stage:2, section:null});
+        if(action==='back-setup')    setState({stage:1});
+        if(action==='open-section')  {
+          setState({section:value, viewMode:null, stepIndex:0});
+          pullFromCloud(true).then(()=> render());
+        }
+        if(action==='status-open-section'){
+          setState({section:value});
+          pullFromCloud(true).then(()=> render());
+        }
+        if(action==='close-section') setState({section:null, viewMode:null, stepIndex:0});
+        if(action==='status-close-section') setState({section:null});
+        if(action==='status-check-one'){
+          /* Open Check Mode gericht op deze parameter */
+          openStatusCheck(el.dataset.param);
+        }
+        if(action==='cav-line')      {
+          setState({cavannaLine:value, stepIndex:0});
+        }
+        if(action==='rp-line')       {
+          setState({robertpackLine:value, stepIndex:0});
+        }
+        if(action==='show-mode')     setState({onlyChanges:value==='changes', stepIndex:0});
+        if(action==='jump-step')     setState({stepIndex:parseInt(value)});
+        if(action==='prev-step' && state.stepIndex>0) setState({stepIndex:state.stepIndex-1});
+        if(action==='view-mode')     setState({viewMode: state.viewMode===value ? null : value, stepIndex:0});
+        if(action==='next-step'){
+          const vr = filterRows(getRows(), state.onlyChanges);
+          if(state.stepIndex < vr.length-1) setState({stepIndex:state.stepIndex+1});
+          else setState({viewMode:null, stepIndex:0});
+        }
+        if(action==='print-list'){ window.print(); }
+
+        if(action==='open-check')  openCheckMode();
+        if(action==='close-check') closeCheckMode();
+        if(action==='check-commit'){ commitAndClose(); }
+        if(action==='check-tab')   { checkState.tab = value; render(); }
+        if(action==='check-show-mode'){
+          checkState.onlyChanges = (value==='changes');
+          checkState.stepIndex = 0;
+          render();
+        }
+        if(action==='restore-param'){
+          restoreParam(el.dataset.param, el.dataset.oldval);
+        }
+
+        if(action==='check-jump'){
+          saveCurrentInput();
+          checkState.stepIndex = parseInt(value);
+          render();
+        }
+        if(action==='check-prev'){
+          saveCurrentInput();
+          if(checkState.stepIndex > 0){ checkState.stepIndex--; render(); }
+        }
+        if(action==='check-next'){
+          saveCurrentInput();
+          const rows = getCheckRows();
+          const cur  = rows[checkState.stepIndex];
+          if(!cur) return;
+          const curKey = cur[0], expRaw = cur[2];
+          const res = checkState.results[curKey] || {};
+          if(res.status === 'mismatch'){
+            checkState.pendingSave = {
+              paramKey: curKey,
+              expectedVal: getExpectedValue(curKey, expRaw),
+              actualVal: res.actual || ''
+            };
+            renderConfirmOverlay();
+          } else {
+            advanceCheck();
+          }
+        }
+        if(action==='check-finish'){
+          saveCurrentInput();
+          const rows = getCheckRows();
+          const cur  = rows[checkState.stepIndex];
+          if(!cur) return;
+          const curKey = cur[0], expRaw = cur[2];
+          const res = checkState.results[curKey] || {};
+          if(res.status === 'mismatch'){
+            checkState.pendingSave = {
+              paramKey: curKey,
+              expectedVal: getExpectedValue(curKey, expRaw),
+              actualVal: res.actual || ''
+            };
+            checkState._finishAfterSave = true;
+            renderConfirmOverlay();
+          } else {
+            checkState.showSummary = true;
+            render();
+          }
+        }
+        if(action==='check-preset'){
+          var pKey = el.dataset.key;
+          var pVal = el.dataset.value;
+          var pExp = getExpectedValue(pKey, (getCheckRows().find(function(r){ return r[0]===pKey; }) || [])[2] || '');
+          var isMatch = normalizeCompareValue(pVal) === normalizeCompareValue(String(pExp));
+          checkState.results[pKey] = { actual: pVal, status: isMatch ? 'match' : 'mismatch' };
+          updateCheckCardColors(isMatch ? 'match' : 'mismatch');
+          render();
+        }
+        if(action==='check-preset-miss'){
+          var pKey2 = el.dataset.key;
+          checkState.results[pKey2] = { actual: '—', status: 'mismatch' };
+          updateCheckCardColors('mismatch');
+          render();
+        }
+        if(action==='check-color-confirm'){
+          const key    = el.dataset.key;
+          const status = el.dataset.value;
+          checkState.results[key] = { ...(checkState.results[key]||{}), actual: status==='match' ? '✓' : '✕', status };
+          updateCheckCardColors(status);
+          document.querySelectorAll('.check-color-btn').forEach(b=>{
+            b.style.background = '';
+            b.style.borderColor = '';
+          });
+          if(status==='match'){
+            el.style.background = 'rgba(34,197,94,.18)';
+            el.style.borderColor = 'rgba(34,197,94,.5)';
+          } else {
+            el.style.background = 'rgba(239,68,68,.18)';
+            el.style.borderColor = 'rgba(239,68,68,.5)';
+          }
+        }
+        if(action==='toggle-version' || action==='toggle-history'){
+          const body = document.getElementById('version-body-' + value);
+          if(body) body.classList.toggle('open');
+        }
+      });
+    });
+
+    /* Login input — Enter to submit */
+    const loginEmail = document.getElementById('login-email');
+    const loginInp = document.getElementById('login-input');
+    if(loginInp){
+      (loginEmail || loginInp).focus();
+      const onKey = e=>{
+        if(e.key === 'Enter') attemptLogin();
+        if(e.key === 'Escape'){ auth.showLogin = false; auth.loginError = ''; render(); }
+      };
+      loginInp.addEventListener('keydown', onKey);
+      if(loginEmail) loginEmail.addEventListener('keydown', onKey);
+    }
+
+    const inp = document.getElementById('check-actual-input');
+    if(inp){
+      inp.addEventListener('input', ()=>{
+        const rows = getCheckRows();
+        const cur  = rows[checkState.stepIndex];
+        if(!cur) return;
+        const key    = cur[0];
+        const expRaw = cur[2];
+        const val    = inp.value;
+        const exp    = getExpectedValue(key, expRaw);
+        const status = val.trim()
+          ? (normalizeCompareValue(String(exp))===normalizeCompareValue(val) ? 'match' : 'mismatch')
+          : 'pending';
+        checkState.results[key] = { ...(checkState.results[key]||{}), actual: val, status };
+        updateCheckCardColors(status);
+      });
+      inp.focus();
+      const len = inp.value.length;
+      inp.setSelectionRange(len, len);
+    }
+  }
+
+  function updateCheckCardColors(status){
+    const inp = document.getElementById('check-actual-input');
+    if(inp){
+      const box = inp.closest('.check-val-box');
+      if(box){
+        box.className = 'check-val-box ' +
+          (status==='match'    ? 'status-match'    :
+           status==='mismatch' ? 'status-mismatch' :
+           status==='saved'    ? 'status-saved'    : 'actual');
+      }
+    }
+    const badge = document.querySelector('.check-status-badge');
+    if(badge){
+      const labels = { match:'✓ Match', mismatch:'✕ Mismatch', saved:'↑ Opgeslagen', pending:'Wacht…' };
+      const cls    = { match:'match',   mismatch:'mismatch',    saved:'saved',         pending:'pending' };
+      badge.className = 'check-status-badge ' + (cls[status]||'pending');
+      badge.innerHTML = `<span class="check-status-dot"></span>${labels[status]||'Wacht…'}`;
+    }
+    const btn = document.querySelector('[data-action="check-next"]') ||
+                document.querySelector('[data-action="check-finish"]');
+    if(btn) btn.dataset.status = status;
+
+    const rows  = getCheckRows();
+    const done  = rows.filter(([k]) => {
+      const s = (checkState.results[k] && checkState.results[k].status);
+      return s && s !== 'pending';
+    }).length;
+    const total = rows.length;
+    const pct   = total ? Math.round(done / total * 100) : 0;
+    const fill  = document.querySelector('.check-player-top .player-progress-fill');
+    if(fill) fill.style.width = pct + '%';
+  }
+
+  window.addEventListener('online', ()=>{
+    setSyncStatus('syncing');
+    flushSyncQueue().then(()=> pullFromCloud(true)).then(()=> render());
+  });
+  window.addEventListener('offline', ()=> setSyncStatus('offline'));
+
+  restoreSession();
+  render();
+
+  /* Auth-sessie herstellen (ingelogd blijven na refresh) en
+     reageren op login/logout in andere tabs. */
+  if(sb){
+    refreshAuthFromSession().then(()=> render());
+    try{
+      sb.auth.onAuthStateChange((_event, session)=>{
+        if(session && session.user){ auth.role='admin'; auth.email=session.user.email||''; }
+        else { auth.role='operator'; auth.email=''; }
+        render();
+      });
+    }catch(e){}
+  }
+
+  loadData();
+
+})();
+</script>
+</body>
+</html>
