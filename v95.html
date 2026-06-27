@@ -756,7 +756,7 @@
     nl: {
       module_ombouwen:'Ombouwen', module_check:'Check Mode',
       sync_refresh:'Klik om te verversen', refreshing:'Verversen…',
-      role_operator:'Operator', login_title:'Inloggen voor wijzigingen',
+      role_operator:'Operator', role_admin:'Admin', login_title:'Inloggen voor wijzigingen',
       login_sub:'Log in met je technicus-account om waarden te kunnen checken en opslaan. Operators hoeven niet in te loggen.',
       login_sub_offline:'Cloud onbereikbaar — voer het noodwachtwoord in (offline modus).',
       email:'E-mail', password:'Wachtwoord', cancel:'Annuleren', login:'Inloggen', busy:'Bezig…',
@@ -814,7 +814,7 @@
     en: {
       module_ombouwen:'Changeover', module_check:'Check Mode',
       sync_refresh:'Click to refresh', refreshing:'Refreshing…',
-      role_operator:'Operator', login_title:'Log in to make changes',
+      role_operator:'Operator', role_admin:'Admin', login_title:'Log in to make changes',
       login_sub:'Log in with your technician account to check and save values. Operators do not need to log in.',
       login_sub_offline:'Cloud unreachable — enter the emergency password (offline mode).',
       email:'Email', password:'Password', cancel:'Cancel', login:'Log in', busy:'Working…',
@@ -872,7 +872,7 @@
     es: {
       module_ombouwen:'Cambio', module_check:'Modo Check',
       sync_refresh:'Haz clic para actualizar', refreshing:'Actualizando…',
-      role_operator:'Operario', login_title:'Inicia sesión para hacer cambios',
+      role_operator:'Operario', role_admin:'Admin', login_title:'Inicia sesión para hacer cambios',
       login_sub:'Inicia sesión con tu cuenta de técnico para verificar y guardar valores. Los operarios no necesitan iniciar sesión.',
       login_sub_offline:'Nube no disponible — introduce la contraseña de emergencia (modo offline).',
       email:'Correo', password:'Contraseña', cancel:'Cancelar', login:'Entrar', busy:'Procesando…',
@@ -930,7 +930,7 @@
     pl: {
       module_ombouwen:'Przezbrojenie', module_check:'Tryb Check',
       sync_refresh:'Kliknij, aby odświeżyć', refreshing:'Odświeżanie…',
-      role_operator:'Operator', login_title:'Zaloguj się, aby wprowadzać zmiany',
+      role_operator:'Operator', role_admin:'Admin', login_title:'Zaloguj się, aby wprowadzać zmiany',
       login_sub:'Zaloguj się kontem technika, aby sprawdzać i zapisywać wartości. Operatorzy nie muszą się logować.',
       login_sub_offline:'Brak połączenia z chmurą — wpisz hasło awaryjne (tryb offline).',
       email:'E-mail', password:'Hasło', cancel:'Anuluj', login:'Zaloguj', busy:'Przetwarzanie…',
@@ -988,7 +988,7 @@
     el: {
       module_ombouwen:'Αλλαγή', module_check:'Λειτουργία Check',
       sync_refresh:'Κάνε κλικ για ανανέωση', refreshing:'Ανανέωση…',
-      role_operator:'Χειριστής', login_title:'Σύνδεση για αλλαγές',
+      role_operator:'Χειριστής', role_admin:'Admin', login_title:'Σύνδεση για αλλαγές',
       login_sub:'Συνδέσου με τον λογαριασμό τεχνικού για να ελέγχεις και να αποθηκεύεις τιμές. Οι χειριστές δεν χρειάζεται να συνδεθούν.',
       login_sub_offline:'Το cloud δεν είναι διαθέσιμο — βάλε τον κωδικό έκτακτης ανάγκης (λειτουργία offline).',
       email:'Email', password:'Κωδικός', cancel:'Άκυρο', login:'Σύνδεση', busy:'Επεξεργασία…',
@@ -1046,7 +1046,7 @@
     tr: {
       module_ombouwen:'Geçiş', module_check:'Kontrol Modu',
       sync_refresh:'Yenilemek için tıkla', refreshing:'Yenileniyor…',
-      role_operator:'Operatör', login_title:'Değişiklik için giriş yap',
+      role_operator:'Operatör', role_admin:'Admin', login_title:'Değişiklik için giriş yap',
       login_sub:'Değerleri kontrol etmek ve kaydetmek için teknisyen hesabınla giriş yap. Operatörlerin giriş yapmasına gerek yok.',
       login_sub_offline:'Buluta erişilemiyor — acil durum şifresini gir (çevrimdışı mod).',
       email:'E-posta', password:'Şifre', cancel:'İptal', login:'Giriş', busy:'İşleniyor…',
@@ -1104,7 +1104,7 @@
     ar: {
       module_ombouwen:'التحويل', module_check:'وضع الفحص',
       sync_refresh:'انقر للتحديث', refreshing:'جارٍ التحديث…',
-      role_operator:'مشغّل', login_title:'سجّل الدخول لإجراء التغييرات',
+      role_operator:'مشغّل', role_admin:'مسؤول', login_title:'سجّل الدخول لإجراء التغييرات',
       login_sub:'سجّل الدخول بحساب الفني لفحص القيم وحفظها. المشغّلون لا يحتاجون لتسجيل الدخول.',
       login_sub_offline:'تعذّر الوصول إلى السحابة — أدخل كلمة مرور الطوارئ (وضع غير متصل).',
       email:'البريد الإلكتروني', password:'كلمة المرور', cancel:'إلغاء', login:'دخول', busy:'جارٍ المعالجة…',
@@ -3216,8 +3216,8 @@
     }
 
     const roleBadge = isAdmin()
-      ? `<button class="role-badge admin" data-action="role-logout" title="${escapeHtml(auth.email||'')} — klik om uit te loggen">${t('role_admin_full')}${auth.email?(' · '+escapeHtml(auth.email.split('@')[0])):''}</button>`
-      : `<button class="role-badge operator" data-action="role-login" title="${t('login_hint')}">${t('role_operator_full')}</button>`;
+      ? `<button class="role-badge admin" data-action="role-logout" title="${escapeHtml(auth.email||'')} · ${t('role_admin_full')}">🔓 ${t('role_admin')}</button>`
+      : `<button class="role-badge operator" data-action="role-login" title="${t('role_operator_full')}">🔒 ${t('role_operator')}</button>`;
 
     shell.innerHTML = `
       <div class="topbar">
@@ -3546,4 +3546,4 @@
 })();
 </script>
 </body>
-</html>
+  </html>
