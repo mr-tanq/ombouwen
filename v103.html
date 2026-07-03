@@ -3173,13 +3173,15 @@
         + '</div>';
     }
 
-    /* Vrij invoerveld — numeriek toetsenbord als de verwachte waarde numeriek is */
-    var isNumeric = /^[\s\d.,\/+-]+$/.test(normalizeDisplayValue(String(expectedVal)));
+    /* Vrij invoerveld. Waarden kunnen tekst bevatten (bv. "1 Thee / 5 Kokos"
+       of "35 (98 food aid)"), dus het toetsenbord mag NOOIT op alleen-cijfers
+       vergrendeld worden. We gebruiken altijd het volledige tekst-toetsenbord;
+       een numerieke hint zou letters blokkeren op mobiel. */
     return '<div class="check-val-box ' + boxClass + '">'
       + '<input class="check-input" id="check-actual-input"'
       + ' placeholder="Voer waarde in\u2026"'
       + ' value="' + escapeHtml(actualVal) + '"'
-      + ' type="text" inputmode="' + (isNumeric ? 'decimal' : 'text') + '" autocomplete="off"'
+      + ' type="text" inputmode="text" autocomplete="off"'
       + ' data-param="' + escapeHtml(curKey) + '"'
       + ' data-expected="' + escapeHtml(String(expectedVal)) + '">'
       + '</div>';
@@ -4183,4 +4185,4 @@
 })();
 </script>
 </body>
-</html>
+  </html>
