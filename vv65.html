@@ -3895,22 +3895,32 @@
      SYNC STATUS
   ═══════════════════════════════════════ */
   let syncStatus = 'idle';
-  function setSyncStatus(s){
-    syncStatus = s;
-    const el = document.getElementById('sync-indicator');
-    if(!el) return;
+  /* Kleur + label voor de sync-indicator. Eén bron, gebruikt door zowel de
+     render (direct de juiste staat, geen flikkering) als setSyncStatus. */
+  function syncCfg(s){
+    const st = s || syncStatus;
     const qn = loadQueue().length;
-    const cfg = ({
+    return ({
       idle:    { color:'#475569', label:'·' },
       syncing: { color:'#f59e0b', label:'⟳ Sync…' },
       synced:  { color:'#22c55e', label:'✓ Synced' },
       queued:  { color:'#f59e0b', label:'⟳ ' + qn + ' in wachtrij' },
       offline: { color:'#64748b', label:'⊘ Offline' },
       error:   { color:'#ef4444', label:'! Sync fout' }
-    })[s] || {color:'#475569', label:'·'};
-    el.style.color = cfg.color;
-    el.style.borderColor = cfg.color + '40';
-    el.textContent = cfg.label;
+    })[st] || { color:'#475569', label:'·' };
+  }
+  function setSyncStatus(s){
+    syncStatus = s;
+    const el = document.getElementById('sync-indicator');
+    if(!el) return;
+    const cfg = syncCfg(s);
+    /* Alleen aanraken als er echt iets verandert — voorkomt onnodige
+       herteken-flits bij elke render. */
+    if(el.textContent !== cfg.label) el.textContent = cfg.label;
+    if(el.style.color !== cfg.color){
+      el.style.color = cfg.color;
+      el.style.borderColor = cfg.color + '40';
+    }
   }
 
   /* Sync diagnose: test elke tabel apart en toon het exacte foutbericht,
@@ -6881,7 +6891,7 @@ ${groupLines().map((ln,i)=>`<button class="toggleBtn lineToggle ${state.robertpa
             <button class="lang-btn theme-btn" data-action="theme-toggle" title="${t('theme_toggle')}" aria-label="${t('theme_toggle')}">${(document.documentElement.getAttribute('data-theme')==='light')?'☾':'☀'}</button>
             ${auth.langOpen ? `<div class="lang-menu">${LANGUAGES.map(function(l){return '<button class="lang-item'+(l.code===currentLang?' active':'')+'" data-action="set-lang" data-value="'+l.code+'"><span class="lang-flag">'+l.flag+'</span><span>'+l.label+'</span></button>';}).join('')}</div>` : ''}
           </div>
-          <button class="sync-indicator" id="sync-indicator" data-action="manual-refresh" title="${t('sync_refresh')}" aria-live="polite">·</button>
+          <button class="sync-indicator" id="sync-indicator" data-action="manual-refresh" title="${t('sync_refresh')}" aria-live="polite" style="color:${syncCfg().color};border-color:${syncCfg().color}40">${escapeHtml(syncCfg().label)}</button>
           ${isAdmin() ? `<button class="health-btn" data-action="health-toggle" title="${t('health_title')}">⚙${pendingReports.length ? `<span class="notif-badge">${pendingReports.length}</span>` : ''}</button>` : ''}
           ${roleBadge}
         </div>
